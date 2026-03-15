@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Wedding Times - Full Edition</title>
+<div id="formContainer">
+    <div id="verify-hint" style="font-size: 0.8rem; font-style: italic; margin-bottom: 10px; color: var(--navy-dark); opacity: 0.8;">
+        Please enter your full name as written on your invitation to access the details.
+    </div>
+    
+    <div class="official-verify-text">Official Guest Verification</div>
+    
+    <div class="input-group">
+        <input type="text" id="guestName" placeholder="ENTER FULL NAME HERE">
+        <button class="btn-verify" onclick="checkGuest()">Verify</button>
+    </div>
+    <div id="message"></div>
+</div>
+
+<script>
+    // Updated window.onload to customize the hint based on the link
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const nameParam = urlParams.get('name');
+        
+        if (nameParam) {
+            const cleanName = decodeURIComponent(nameParam);
+            // Update the name on the small card
+            document.getElementById('guest-display').innerText = cleanName;
+            
+            // PRO-TIP: Update the hint text to feel more personal
+            document.getElementById('verify-hint').innerHTML = 
+                "Hi <strong>" + cleanName + "</strong>! Please enter your full name below to verify your invitation.";
+        }
+    };
+
+    // ... (rest of your existing toggle functions) ...
+
+    function checkGuest() {
+        const nameInput = document.getElementById('guestName').value.trim().toLowerCase();
+        const msg = document.getElementById('message');
+        
+        const validNames = ["harvy", "christine"]; 
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('name')) {
+            validNames.push(decodeURIComponent(urlParams.get('name')).toLowerCase());
+        }
+
+        if (nameInput === "") {
+             msg.innerHTML = "<span style='color:orange;'>Field cannot be empty.</span>";
+             return;
+        }
+
+        if (validNames.includes(nameInput)) {
+            msg.innerHTML = "<span style='color:green;'>Verified! Welcome.</span>";
+            setTimeout(() => { window.location.href = "main.html"; }, 1000);
+        } else {
+            msg.innerHTML = "<span style='color:red;'>Access Denied. Please use your full name.</span>";
+        }
+    }
+</script>
+<style>
+    :root {
+        --navy: #001f3f;
+        --navy-dark: #001226;
+        --news-paper: #f4f1ea; 
+        --ink: #1a1a1a;
+        --bg-color: #d1cdc4;
+        --grey-outline: #8e8e8e;
+    }
+
+    body {
+        font-family: 'Times New Roman', Times, serif;
+        margin: 0;
+        background-color: var(--bg-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        overflow: hidden;
+    }
+
+    #landing { 
+        position: relative;
+        width: 100%;
+        max-width: 600px; 
+        height: 100vh; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .scene {
+        position: relative;
+        width: 100%;
+        height: 450px; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #envelope-wrapper {
+        position: relative;
+        width: 450px;
+        height: 280px; 
+        perspective: 1500px;
+        z-index: 200;
+    }
+
+    .envelope-back {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+        border-radius: 4px;
+        z-index: 1;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+
+    #flap {
+        position: absolute;
+        top: 0; left: 0;
+        width: 0; height: 0;
+        border-left: 225px solid transparent;
+        border-right: 225px solid transparent;
+        border-top: 150px solid var(--navy-dark);
+        z-index: 400; 
+        transform-origin: top;
+        transition: transform 0.6s ease-in-out, z-index 0.2s;
+        cursor: pointer;
+    }
+
+    .envelope-front-v {
+        position: absolute;
+        bottom: 0; width: 100%; height: 100%;
+        background: var(--navy);
+        z-index: 300; 
+        clip-path: polygon(0% 25%, 50% 65%, 100% 25%, 100% 100%, 0% 100%);
+        pointer-events: none;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        padding-bottom: 20px;
+    }
+
+    .pocket-label {
+        color: rgba(255, 255, 255, 0.6);
+        font-family: 'Georgia', serif;
+        font-style: italic;
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 5px 15px;
+        border-radius: 20px;
+        opacity: 0;
+        transition: opacity 0.8s ease;
+        text-transform: uppercase;
+    }
+
+    #envelope-wrapper.open .pocket-label { opacity: 1; }
+
+    .card-container {
+        position: absolute;
+        width: 100%;
+        bottom: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        z-index: 50; 
+        opacity: 0;
+        transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s;
+        pointer-events: none;
+    }
+
+    #envelope-wrapper.open #flap { transform: rotateX(180deg); z-index: 10; }
+    #envelope-wrapper.open .card-container {
+        opacity: 1;
+        transform: translateY(-130px); 
+        pointer-events: all;
+    }
+
+    .card { 
+        box-shadow: 0 10px 25px rgba(0,0,0,0.4); 
+        border-radius: 2px; 
+        background: white; 
+        position: relative;
+        transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0.1s;
+        cursor: pointer;
+    }
+
+    #card-photo { 
+        width: 210px; height: 275px; 
+        transform: rotate(-4deg); 
+        padding: 8px; margin-right: -130px; 
+        z-index: 51; 
+    }
+    #card-photo img { width: 100%; height: 100%; object-fit: cover; }
+    
+    #card-news {
+        width: 230px; height: 360px; 
+        background-color: var(--news-paper);
+        transform: rotate(2deg); 
+        padding: 15px;
+        z-index: 52;
+        box-sizing: border-box;
+        display: flex; flex-direction: column;
+        color: var(--ink);
+    }
+
+    #card-invite {
+        position: absolute;
+        width: 240px; 
+        height: 110px; 
+        background: var(--navy-dark);
+        bottom: -40px; 
+        left: 50%;
+        margin-left: -120px;
+        z-index: 55;
+        transform: rotate(-6deg); 
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid var(--grey-outline);
+        color: #e0e0e0;
+    }
+
+    .invite-text { font-family: 'Georgia', serif; font-style: italic; font-size: 0.9rem; margin-bottom: 5px; }
+    .guest-name { font-family: 'Times New Roman', serif; font-weight: bold; text-transform: uppercase; font-size: 1.2rem; letter-spacing: 2px; border-top: 1px solid rgba(142, 142, 142, 0.4); padding-top: 5px; }
+
+    #card-photo.expanded, #card-news.expanded, #card-invite.expanded { z-index: 1000 !important; }
+    #card-photo.expanded { transform: translate(60px, -40px) rotate(0deg) scale(1.2) !important; }
+    #card-news.expanded { transform: translate(-60px, -30px) rotate(0deg) scale(1.15) !important; }
+    #card-invite.expanded { transform: translate(0, -200px) rotate(0deg) scale(1.5) !important; }
+
+    /* NEWSPAPER STYLES */
+    .news-top-bar { display: flex; justify-content: space-between; font-size: 0.5rem; border-bottom: 1.5px solid #000; padding-bottom: 3px; text-transform: uppercase; }
+    .masthead-title { font-family: 'Old English Text MT', serif; font-size: 1.7rem; text-align: center; margin: 5px 0; }
+    .news-date-bar { display: flex; justify-content: space-between; font-size: 0.45rem; border-top: 1px solid #000; border-bottom: 2.5px double #000; padding: 2px 0; margin-bottom: 10px; }
+    .news-headline { font-size: 1.9rem; font-weight: 900; line-height: 0.9; margin: 0 0 10px 0; text-transform: uppercase; text-align: center; border-bottom: 1.5px solid #000; padding-bottom: 8px; }
+    .news-content { font-size: 0.65rem; line-height: 1.4; text-align: justify; }
+    .rsvp-note-box { margin-top: auto; border: 1px dashed #000; padding: 6px; font-size: 0.55rem; font-style: italic; text-align: center; font-weight: bold; text-transform: uppercase;}
+    .hashtag-box { border: 1.5px solid #000; padding: 4px; text-align: center; font-family: monospace; font-size: 0.55rem; font-weight: bold; margin-top: 8px; }
+
+    /* Verification Form */
+    #formContainer { 
+        position: absolute;
+        bottom: 5vh;
+        width: 100%; 
+        display: none; 
+        opacity: 0; 
+        transition: opacity 0.6s ease;
+        text-align: center; 
+        z-index: 3000;
+    }
+    .official-verify-text { text-transform: uppercase; font-size: 0.75rem; font-weight: 900; margin-bottom: 15px; color: var(--navy-dark); }
+    .input-group { display: flex; justify-content: center; gap: 8px; padding: 0 20px; }
+    input { padding: 12px; border: 1px solid #888; border-radius: 4px; width: 60%; max-width: 220px; outline: none; }
+    .btn-verify { background: var(--navy); color: white; border: none; padding: 0 20px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+    #message { margin-top: 10px; font-weight: bold; font-size: 0.8rem; height: 1.2rem; }
+
+    @media (max-width: 500px) {
+        #envelope-wrapper { width: 320px; height: 200px; }
+        #flap { border-left: 160px solid transparent; border-right: 160px solid transparent; border-top: 110px solid var(--navy-dark); }
+        #card-invite { width: 200px; height: 80px; bottom: -30px; margin-left: -100px; }
+        #card-invite.expanded { transform: translate(0, -140px) scale(1.6) !important; margin-left: -100px; }
+    }
+</style>
+</head>
+<body>
+
+<div id="landing">
+    <div class="scene">
+        <div id="envelope-wrapper">
+            <div id="flap" onclick="toggleEnvelope()"></div>
+            <div class="envelope-back"></div>
+            
+            <div class="card-container">
+                <div class="card" id="card-photo" onclick="toggleCard(this)">
+                    <img src="IMG/gallery-2.JPG" alt="Photo">
+                </div>
+                
+                <div class="card" id="card-news" onclick="toggleCard(this)">
+                    <div class="news-top-bar"><span>SUNNY - 30°C</span><span>CEBU, PH</span></div>
+                    <h2 class="masthead-title">The Wedding Times</h2>
+                    <div class="news-date-bar"><span>VOL. 1 ... NO. 01</span><span>JUNE 12, 2026</span></div>
+                    <h1 class="news-headline">SAVE<br>THE DATE</h1>
+                    <div class="news-content">
+                        <strong>Harvy & Christine</strong> are officially set to tie the knot. This special edition marks the beginning of their journey. Friends and family are invited to witness this long-awaited union.
+                    </div>
+                    <div class="rsvp-note-box">Note: Wedding details are on the next page. Respond to RSVP at the bottom.</div>
+                    <div class="hashtag-box">#TineFoundHerHarvyEverAfter</div>
+                </div>
+
+                <div class="card" id="card-invite" onclick="toggleCard(this)">
+                    <div class="invite-text">You are Invited,</div>
+                    <div id="guest-display" class="guest-name">Special Guest</div>
+                </div>
+            </div>
+            
+            <div class="envelope-front-v">
+                <div class="pocket-label">Tap items to view</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="formContainer">
+        <div class="official-verify-text">Official Guest Verification</div>
+        <div class="input-group">
+            <input type="text" id="guestName" placeholder="FULL NAME">
+            <button class="btn-verify" onclick="checkGuest()">Verify</button>
+        </div>
+        <div id="message"></div>
+    </div>
+</div>
+
+<script>
+    // Personalize card name only, no input pre-fill
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const nameParam = urlParams.get('name');
+        
+        if (nameParam) {
+            const cleanName = decodeURIComponent(nameParam);
+            document.getElementById('guest-display').innerText = cleanName;
+        }
+    };
+
+    function toggleEnvelope() {
+        const wrapper = document.getElementById('envelope-wrapper');
+        const form = document.getElementById('formContainer');
+        if (!wrapper.classList.contains('open')) {
+            wrapper.classList.add('open');
+            setTimeout(() => {
+                form.style.display = 'block';
+                setTimeout(() => { form.style.opacity = '1'; }, 50);
+            }, 1200);
+        }
+    }
+
+    function toggleCard(card) {
+        if (!document.getElementById('envelope-wrapper').classList.contains('open')) return;
+        const isExpanded = card.classList.contains('expanded');
+        document.querySelectorAll('.card').forEach(c => c.classList.remove('expanded'));
+        if (!isExpanded) { card.classList.add('expanded'); }
+    }
+
+    function checkGuest() {
+        const nameInput = document.getElementById('guestName').value.trim().toLowerCase();
+        const msg = document.getElementById('message');
+        
+        const validNames = ["harvy", "christine", "special guest"]; 
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('name')) {
+            validNames.push(decodeURIComponent(urlParams.get('name')).toLowerCase());
+        }
+
+        if (nameInput === "") {
+             msg.innerHTML = "<span style='color:orange;'>Please enter your name.</span>";
+             return;
+        }
+
+        if (validNames.includes(nameInput)) {
+            msg.innerHTML = "<span style='color:green;'>Verified! Redirecting...</span>";
+            setTimeout(() => { window.location.href = "main.html"; }, 1000);
+        } else {
+            msg.innerHTML = "<span style='color:red;'>Access Denied. Check spelling.</span>";
+        }
+    }
+</script>
+
+</body>
+</html>
