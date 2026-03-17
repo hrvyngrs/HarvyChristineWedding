@@ -1179,68 +1179,61 @@ body {
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    const scriptURL = 'YOUR_APPS_SCRIPT_URL';
-    const rsvpForm = document.getElementById('rsvp-form');
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbz-IvHfLrejG0qpvxxTbD7K0qlDP2ysrpaTWlR78sZBeLWNUikDkJLn4T-JzGAocgb2VQ/exec';
+	const rsvpForm = document.getElementById('rsvp-form');
 
-    rsvpForm.addEventListener('submit', e => {
-        e.preventDefault();
-        const btn = document.getElementById('submit-btn');
-        btn.disabled = true;
-        btn.innerText = "SENDING...";
+rsvpForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    
+    btn.disabled = true;
+    btn.innerText = "SENDING...";
 
-        fetch(scriptURL, { method: 'POST', body: new FormData(rsvpForm)})
-        .then(res => {
-            // Mobile sync fix: Slight delay before UI update
-            setTimeout(() => {
-                Swal.fire({
-                    title: 'THANK YOU!',
-                    text: 'Your response has been successfully logged.',
-                    icon: 'success',
-                    confirmButtonColor: '#1a2a44'
-                });
-                rsvpForm.reset();
-                btn.disabled = false;
-                btn.innerText = "SEND RSVP";
-            }, 500);
-        })
-        .catch(err => {
-            setTimeout(() => {
-                Swal.fire({ title: 'ERROR', text: 'Please try again.', icon: 'error' });
-                btn.disabled = false;
-                btn.innerText = "SEND RSVP";
-            }, 500);
-        });
-    });
-</script>
-
-<script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbz-IvHfLrejG0qpvxxTbD7K0qlDP2ysrpaTWlR78sZBeLWNUikDkJLn4T-JzGAocgb2VQ/exec'; // Paste your Google Script URL here
-    const rsvpForm = document.getElementById('rsvp-form');
-
-    rsvpForm.addEventListener('submit', e => {
-        e.preventDefault();
-        const btn = document.getElementById('submit-btn');
-        btn.disabled = true;
-        btn.innerText = "Sending...";
-
-        fetch(scriptURL, { method: 'POST', body: new FormData(rsvpForm)})
-        .then(res => {
+    fetch(scriptURL, { method: 'POST', body: new FormData(rsvpForm)})
+    .then(res => {
+        setTimeout(() => {
             Swal.fire({
-                title: 'Thank You!',
-                text: 'Your RSVP has been successfully sent.',
+                title: 'RESPONSE LOGGED!',
+                html: `
+                    <p style="color: #707b7c; margin-bottom: 20px;">
+                        Your seat is now reserved. Your table and seat number will be available <b>3 days before the wedding day</b>.
+                    </p>
+                    <a href="seat-finder.html" style="
+                        display: inline-block;
+                        padding: 10px 20px;
+                        background-color: #707b7c;
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 4px;
+                        text-transform: uppercase;
+                        font-size: 0.8rem;
+                        letter-spacing: 1px;
+                    ">Go to Seat Finder</a>
+                `,
                 icon: 'success',
-                confirmButtonColor: '#d4af37'
+                showConfirmButton: true,
+                confirmButtonText: 'CLOSE',
+                confirmButtonColor: '#1a2a44'
             });
+            
             rsvpForm.reset();
             btn.disabled = false;
-            btn.innerText = "Send RSVP";
-        })
-        .catch(err => {
-            Swal.fire({ title: 'Error', text: 'Please try again later.', icon: 'error' });
+            btn.innerText = "SEND RSVP";
+        }, 500);
+    })
+    .catch(err => {
+        setTimeout(() => {
+            Swal.fire({ 
+                title: 'ERROR', 
+                text: 'Please try again or contact us directly.', 
+                icon: 'error',
+                confirmButtonColor: '#1a2a44'
+            });
             btn.disabled = false;
-            btn.innerText = "Send RSVP";
-        });
+            btn.innerText = "SEND RSVP";
+        }, 500);
     });
+});
 </script>
 	
     </div>
