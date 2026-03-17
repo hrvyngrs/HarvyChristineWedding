@@ -1052,173 +1052,140 @@ body {
         </p>
 
 	
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
-
 <style>
-    :root {
-        --midnight-depth: #000814; 
-        --silver-glimmer: #e2e8f0; 
-        --muted-gray: #94a3b8;
-        --white-glow: #ffffff;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Lato:wght@300;400&display=swap');
 
-    /* THE MILLENNIAL GLASS CARD */
-    .rsvp-card {
-        width: 90%;
-        max-width: 500px;
+    .rsvp-section {
+        max-width: 480px;
         margin: 40px auto;
-        padding: 55px 30px;
-        background: rgba(255, 255, 255, 0.03); /* Soft glass effect */
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 20px; /* Modern rounded corners */
+        padding: 50px 40px;
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        border-top: 5px solid #1a2a44; /* Navy Blue Accent Strip */
         text-align: center;
-        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
-        font-family: 'Montserrat', sans-serif;
-        position: relative;
-        overflow: hidden;
+        font-family: 'Lato', sans-serif;
+        color: #1a2a44; 
     }
 
-    /* Subtle shimmer across the card */
-    .rsvp-card::before {
-        content: "";
-        position: absolute;
-        top: -50%; left: -50%;
-        width: 200%; height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-        pointer-events: none;
-    }
-
-    .rsvp-title {
+    .rsvp-section h2 {
         font-family: 'Playfair Display', serif;
-        font-size: clamp(3rem, 12vw, 4rem);
+        font-size: 2.6rem;
+        margin-bottom: 8px;
+        color: #1a2a44; /* Navy */
+    }
+
+    .rsvp-section p.subtitle {
         font-style: italic;
-        color: var(--white-glow);
-        margin-bottom: 0;
-        text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-    }
-
-    .rsvp-tagline {
-        font-family: 'Cinzel', serif;
-        color: var(--silver-glimmer);
-        letter-spacing: 5px;
-        font-size: 1rem;
-        font-weight: 400;
-        margin-bottom: 45px;
-        text-transform: uppercase;
-        opacity: 0.9;
-    }
-
-    /* FORM STYLING: Accessible but Minimal */
-    #rsvp-form {
-        display: flex;
-        flex-direction: column;
-        gap: 35px;
-        align-items: center;
-        position: relative;
-        z-index: 1;
-    }
-
-    #rsvp-form input, 
-    #rsvp-form select {
-        width: 100%;
-        max-width: 380px;
-        background: transparent;
-        border: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        padding: 15px 5px;
-        color: var(--white-glow);
-        font-size: 1.2rem; /* Easy for older eyes */
+        margin-bottom: 35px;
+        color: #707b7c; /* Gray */
         font-weight: 300;
-        text-align: center;
-        outline: none;
-        transition: all 0.4s ease;
-        border-radius: 0;
     }
 
-    /* Millennial hover effect */
-    #rsvp-form input:focus, 
-    #rsvp-form select:focus {
-        border-bottom: 1px solid var(--white-glow);
-        letter-spacing: 1px;
+    .form-group {
+        text-align: left;
+        margin-bottom: 25px;
     }
 
-    #rsvp-form select option {
-        background-color: #010b1a;
-        color: white;
-    }
-
-    #rsvp-form input::placeholder {
-        color: rgba(255, 255, 255, 0.25);
-        font-size: 0.9rem;
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 400;
+        font-size: 0.8rem;
         text-transform: uppercase;
         letter-spacing: 2px;
+        color: #1a2a44;
     }
 
-    /* THE "CATCHY" BUTTON */
-    #submit-btn {
-        margin-top: 25px;
-        background: transparent;
-        border: 1px solid var(--silver-glimmer);
-        color: var(--silver-glimmer);
-        font-family: 'Cinzel', serif;
-        padding: 16px 0;
+    .rsvp-input {
         width: 100%;
-        max-width: 380px;
-        letter-spacing: 4px;
+        padding: 14px;
+        border: 1px solid #d5d8dc; /* Gray Border */
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 1rem;
+        background-color: #f8f9f9;
+        transition: all 0.3s ease;
+    }
+
+    .rsvp-input:focus {
+        border-color: #1a2a44;
+        background-color: #fff;
+        outline: none;
+    }
+
+    #submit-btn {
+        background: #1a2a44; /* Navy Button */
+        color: #ffffff;
+        border: none;
+        padding: 16px;
+        width: 100%;
+        border-radius: 4px;
         cursor: pointer;
-        transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        font-size: 1rem;
+        letter-spacing: 2px;
         text-transform: uppercase;
-        font-size: 0.9rem;
-        font-weight: 700;
-        border-radius: 50px; /* Pill shape for millennial look */
+        transition: background 0.3s;
     }
 
     #submit-btn:hover {
-        background: var(--white-glow);
-        color: var(--midnight-depth);
-        border-color: var(--white-glow);
-        box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
-        transform: translateY(-2px);
-    }
-
-    /* Standardizes appearance on mobile */
-    input[type="number"] { -moz-appearance: textfield; }
-    input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
+        background: #2c3e50; /* Slightly lighter navy/gray-blue on hover */
     }
 </style>
 
-<div class="rsvp-card">
-    <div class="rsvp-title">RSVP</div>
-    <div class="rsvp-tagline">Kindly Respond</div>
-
+<div class="rsvp-section">
+    <h2>RSVP</h2>
+    <p class="subtitle">Please respond by the deadline</p>
+    
     <form id="rsvp-form">
-        <input type="text" name="Full Name" placeholder="Your Full Name" required>
-        
-        <select name="Attendance">
-            <option value="Yes">Joyfully Accepts</option>
-            <option value="No">Regretfully Declines</option>
-        </select>
-
-        <input type="number" name="Total Guests" placeholder="Number of Guests" min="1" required>
-
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" name="Full Name" class="rsvp-input" placeholder="Guest Name" required>
+        </div>
+        <div class="form-group">
+            <label>Attendance</label>
+            <select name="Attendance" class="rsvp-input" required>
+                <option value="" disabled selected>Will you attend?</option>
+                <option value="Yes">Joyfully Accepts</option>
+                <option value="No">Regretfully Declines</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Total Guests</label>
+            <input type="number" name="Total Guests" class="rsvp-input" min="1" placeholder="1" required>
+        </div>
         <button type="submit" id="submit-btn">Send RSVP</button>
     </form>
 </div>
 
 <script>
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbz-IvHfLrejG0qpvxxTbD7K0qlDP2ysrpaTWlR78sZBeLWNUikDkJLn4T-JzGAocgb2VQ/exec'
-  const form = document.getElementById('rsvp-form')
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbz-IvHfLrejG0qpvxxTbD7K0qlDP2ysrpaTWlR78sZBeLWNUikDkJLn4T-JzGAocgb2VQ/exec'; // Paste your Google Script URL here
+    const rsvpForm = document.getElementById('rsvp-form');
 
-  form.addEventListener('submit', e => {
-    e.preventDefault()
-    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-      .then(response => alert("Thanks for RSVPing! See you there!"))
-      .catch(error => console.error('Error!', error.message))
-  })
+    rsvpForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const btn = document.getElementById('submit-btn');
+        btn.disabled = true;
+        btn.innerText = "Sending...";
+
+        fetch(scriptURL, { method: 'POST', body: new FormData(rsvpForm)})
+        .then(res => {
+            Swal.fire({
+                title: 'Thank You!',
+                text: 'Your RSVP has been successfully sent.',
+                icon: 'success',
+                confirmButtonColor: '#d4af37'
+            });
+            rsvpForm.reset();
+            btn.disabled = false;
+            btn.innerText = "Send RSVP";
+        })
+        .catch(err => {
+            Swal.fire({ title: 'Error', text: 'Please try again later.', icon: 'error' });
+            btn.disabled = false;
+            btn.innerText = "Send RSVP";
+        });
+    });
 </script>
 	
     </div>

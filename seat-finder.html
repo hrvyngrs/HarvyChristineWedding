@@ -136,7 +136,7 @@
     <p class="subtitle">Enter your name to see your table assignment</p>
 
     <div class="search-box">
-        <input type="text" id="guest-name-input" placeholder="e.g. Harvy Pidlaoan" onkeypress="handleKeyPress(event)">
+        <input type="text" id="guest-name-input" placeholder="e.g. Juan Dela Cruz" onkeypress="handleKeyPress(event)">
         <button onclick="findSeat()">Search</button>
     </div>
 
@@ -208,7 +208,7 @@
             }
         } catch (error) {
             console.error("Error details:", error);
-            resultArea.innerHTML = "<p class='error-text'>Unable to load guest list. Ensure the sheet is shared as 'Anyone with the link'.</p>";
+            resultArea.innerHTML = "<p class='error-text'>Unable to load guest list.</p>";
         }
     }
 </script>
