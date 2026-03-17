@@ -1,262 +1,217 @@
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Your Seat | Wedding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #d4af37;
+            --dark-blue: #2c3e50;
+            --bg: #fdfbf7;
+        }
 
-<style>
-    :root {
-        /* Softened palette to reduce eye strain */
-        --midnight: #0a1128; /* Softer than pure black */
-        --soft-silver: #d1d5db; /* Muted silver for better readability */
-        --accent-silver: #9ca3af;
-        --glass-fill: rgba(255, 255, 255, 0.02);
-    }
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg);
+            color: var(--dark-blue);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
 
-    body {
-        background-color: var(--midnight);
-        margin: 0;
-        font-family: 'Montserrat', sans-serif;
-        color: var(--soft-silver);
-        /* Subtle gradient to depth without harsh edges */
-        background-image: radial-gradient(circle at center, #111a36 0%, #0a1128 100%);
-    }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid #eee;
+        }
 
-    /* 1. ELEGANT HEADER - Softened Contrast */
-    .brand-header {
-        text-align: center;
-        padding: 60px 20px 20px;
-    }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: var(--dark-blue);
+        }
 
-    .brand-name {
-        font-family: 'Playfair Display', serif;
-        font-size: clamp(2.5rem, 9vw, 4rem);
-        font-style: italic;
-        color: #f3f4f6; /* Off-white for comfort */
-        margin: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        letter-spacing: -1px;
-    }
+        p.subtitle {
+            font-style: italic;
+            margin-bottom: 30px;
+            color: #7f8c8d;
+        }
 
-    .heart-svg {
-        width: clamp(45px, 7vw, 65px);
-        margin: 0 10px;
-        opacity: 0.8;
-    }
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
 
-    .heart-path {
-        stroke: var(--accent-silver);
-        stroke-width: 1.5;
-        fill: none;
-        stroke-dasharray: 300;
-        stroke-dashoffset: 300;
-        animation: drawHeart 6s ease-in-out infinite;
-    }
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
 
-    @keyframes drawHeart {
-        0% { stroke-dashoffset: 300; opacity: 0; }
-        20% { opacity: 0.8; }
-        50%, 85% { stroke-dashoffset: 0; opacity: 0.8; }
-        100% { stroke-dashoffset: 0; opacity: 0; }
-    }
+        input:focus {
+            border-color: var(--gold);
+        }
 
-    /* 2. SEARCH CONTAINER - Softer Glassmorphism */
-    .search-container {
-        width: 88%;
-        max-width: 480px;
-        margin: 10px auto;
-        padding: 50px 25px;
-        background: var(--glass-fill);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(209, 213, 219, 0.1);
-        border-radius: 8px;
-        text-align: center;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    }
+        button {
+            background-color: var(--dark-blue);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
 
-    .search-container h2 {
-        font-family: 'Cinzel', serif;
-        color: var(--soft-silver);
-        letter-spacing: 5px;
-        font-size: 1.4rem;
-        margin-bottom: 8px;
-        text-transform: uppercase;
-    }
+        button:hover {
+            background-color: #34495e;
+        }
 
-    .search-container p {
-        color: var(--accent-silver);
-        font-size: 0.75rem;
-        letter-spacing: 2px;
-        margin-bottom: 35px;
-        font-weight: 300;
-    }
+        #result-area {
+            margin-top: 30px;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
 
-    /* 3. INPUT & BUTTON - Visual Comfort Optimized */
-    #guest-name-input {
-        width: 100%;
-        max-width: 320px;
-        background: transparent;
-        border: none;
-        border-bottom: 1px solid rgba(209, 213, 219, 0.2);
-        padding: 12px 0;
-        color: #ffffff;
-        font-size: 1.15rem;
-        text-align: center;
-        outline: none;
-        transition: 0.4s;
-        border-radius: 0;
-    }
+        .result-card {
+            background: #fffaf0;
+            border: 1px solid var(--gold);
+            padding: 20px;
+            border-radius: 10px;
+            animation: fadeIn 0.5s ease;
+        }
 
-    #guest-name-input::placeholder {
-        color: rgba(255, 255, 255, 0.15);
-        font-size: 0.9rem;
-    }
+        .result-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
 
-    #guest-name-input:focus {
-        border-bottom: 1px solid var(--soft-silver);
-    }
+        .seat-info {
+            font-size: 1.1rem;
+            color: var(--dark-blue);
+        }
 
-    button {
-        margin-top: 40px;
-        background: transparent;
-        border: 1px solid var(--accent-silver);
-        color: var(--soft-silver);
-        font-family: 'Cinzel', serif;
-        padding: 12px 55px;
-        letter-spacing: 3px;
-        cursor: pointer;
-        transition: 0.4s;
-        text-transform: uppercase;
-        font-size: 0.85rem;
-    }
+        .gold-text {
+            color: var(--gold);
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
 
-    button:hover {
-        background: var(--soft-silver);
-        color: var(--midnight);
-    }
+        .error-text {
+            color: #e74c3c;
+            font-size: 0.9rem;
+        }
 
-    /* 4. RESULT AREA */
-    #result-area {
-        margin-top: 40px;
-        min-height: 120px;
-    }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
 
-    .table-number {
-        font-family: 'Playfair Display', serif;
-        font-size: clamp(4rem, 15vw, 5.5rem);
-        font-style: italic;
-        color: #ffffff;
-        margin: 5px 0;
-        animation: smoothFade 0.7s ease-out forwards;
-    }
+<div class="container">
+    <h1>Find Your Seat</h1>
+    <p class="subtitle">Enter your name to see your table assignment</p>
 
-    .status-msg {
-        font-size: 0.7rem;
-        letter-spacing: 5px;
-        color: var(--accent-silver);
-        text-transform: uppercase;
-    }
-
-    @keyframes smoothFade {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-</style>
-
-<div class="brand-header">
-    <h1 class="brand-name">
-        Harvy 
-        <svg class="heart-svg" viewBox="0 0 50 50">
-            <path class="heart-path" d="M25 40 C15 30 5 25 5 15 C5 8 12 5 18 10 C22 13 25 18 25 18 C25 18 28 13 32 10 C38 5 45 8 45 15 C45 25 35 30 25 40" />
-        </svg>
-        Christine
-    </h1>
-</div>
-
-<div class="search-container">
-    <h2>Find Your Seat</h2>
-    <p>Please enter your full name as it appeared on your RSVP.</p>
-    
-    <input type="text" id="guest-name-input" placeholder="e.g. John Doe" autocomplete="off">
-    <br>
-    <button onclick="findSeat()">Search</button>
+    <div class="search-box">
+        <input type="text" id="guest-name-input" placeholder="e.g. Harvy Pidlaoan" onkeypress="handleKeyPress(event)">
+        <button onclick="findSeat()">Search</button>
+    </div>
 
     <div id="result-area">
         </div>
 </div>
 
 <script>
-    // Logic remains identical to your base
-    const guestList = {
-        "harvy pidlaoan": "Table 01",
-        "christine frasco": "Table 01"
-    };
+    // 1. UPDATE THIS WITH YOUR SHEET ID
+    const sheetId = '1ZSKHoNvsZ79jPjFXGF-9wdDO9cgJxs11148wNT7L4MY';
+    
+    // This URL format bypasses most CORS issues and gets clean CSV data
+    const csvURL = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=Sheet1`;
 
-    function findSeat() {
-        const input = document.getElementById('guest-name-input').value.toLowerCase().trim();
+    function handleKeyPress(e) {
+        if (e.key === 'Enter') findSeat();
+    }
+
+    async function findSeat() {
+        const searchInput = document.getElementById('guest-name-input').value.trim().toLowerCase();
         const resultArea = document.getElementById('result-area');
         
-        if (input === "") {
-            resultArea.innerHTML = "<span class='status-msg' style='color:#cca7a7;'>Enter a name to search</span>";
+        if (!searchInput) {
+            resultArea.innerHTML = "<p class='error-text'>Please enter your name.</p>";
             return;
         }
 
-        const table = guestList[input];
+        resultArea.innerHTML = "<p>Searching...</p>";
 
-        if (table) {
-            resultArea.innerHTML = `
-                <div>
-                    <span class="status-msg">Seat Located</span>
-                    <div class="table-number">${table}</div>
-                    <span class="status-msg">We are excited to see you</span>
-                </div>
-            `;
-        } else {
-            resultArea.innerHTML = "<span class='status-msg'>Name not found</span>";
+        try {
+            const response = await fetch(csvURL);
+            if (!response.ok) throw new Error('Could not fetch data');
+            
+            const data = await response.text();
+            
+            // Clean up the CSV: remove quotes and extra spaces from every cell
+            const rows = data.split('\n').map(row => 
+                row.split(',').map(cell => cell.replace(/^"(.*)"$/, '$1').replace(/"/g, '').trim())
+            );
+
+            // DEBUG: See what the website sees in your browser console (F12)
+            console.log("Cleaned Data:", rows);
+
+            // Search in Column B (Index 1)
+            // If your names are in Column A, change rows.find(row => row[0]...)
+            const guestMatch = rows.find(row => 
+                row[1] && row[1].toLowerCase() === searchInput
+            );
+
+            if (guestMatch) {
+                // Assuming Table is Column E (Index 4) and Seat is Column F (Index 5)
+                const tableNum = guestMatch[4] || "TBD";
+                const seatNum = guestMatch[5] || "TBD";
+
+                resultArea.innerHTML = `
+                    <div class="result-card">
+                        <div class="result-name">Welcome, ${guestMatch[1]}!</div>
+                        <div class="seat-info">
+                            Table: <span class="gold-text">${tableNum}</span><br>
+                            Seat: <span class="gold-text">${seatNum}</span>
+                        </div>
+                    </div>
+                `;
+            } else {
+                resultArea.innerHTML = `
+                    <p class="error-text">Name not found.<br>
+                    <small>Please try your full name or check with the coordinator.</small></p>
+                `;
+            }
+        } catch (error) {
+            console.error("Error details:", error);
+            resultArea.innerHTML = "<p class='error-text'>Unable to load guest list. Ensure the sheet is shared as 'Anyone with the link'.</p>";
         }
     }
 </script>
 
-<script>
-	const sheetId = '1ZSKHoNvsZ79jPjFXGF-9wdDO9cgJxs11148wNT7L4MY';
-	const csvURL = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=Sheet1`;
-
-  async function findSeat() {
-    const searchName = document.getElementById('guest-name-input').value.trim().toLowerCase();
-    const resultArea = document.getElementById('result-area');
-    
-    if (!searchName) {
-      resultArea.innerHTML = "Please enter a name.";
-      return;
-    }
-
-    try {
-      // 1. Fetch the data from the published Google Sheet
-      const response = await fetch(csvURL);
-      const data = await response.text();
-      
-      // 2. Convert CSV text into an Array
-      const rows = data.split('\n').map(row => row.split(','));
-      
-      // 3. Search for the guest (Assuming Name is Column B, Table is E, Seat is F)
-      // Note: Index starts at 0, so Col B = 1, Col E = 4, Col F = 5
-      const guestMatch = rows.find(row => row[1] && row[1].toLowerCase().trim() === searchName);
-
-      if (guestMatch) {
-        const tableNum = guestMatch[4] || "TBD";
-        const seatNum = guestMatch[5] || "TBD";
-        
-        resultArea.innerHTML = `
-          <div style="color: #2c3e50;">
-            Hello ${guestMatch[1]}!<br>
-            Table Number: <span style="color: #e67e22;">${tableNum}</span><br>
-            Seat Number: <span style="color: #e67e22;">${seatNum}</span>
-          </div>`;
-      } else {
-        resultArea.innerHTML = "Name not found. Please check your spelling or contact the coordinator.";
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      resultArea.innerHTML = "Unable to load the guest list. Please try again later.";
-    }
-  }
-</script>
+</body>
+</html>
