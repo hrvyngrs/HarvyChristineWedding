@@ -177,6 +177,16 @@ body {
         transform: translateY(30px);
     }
 
+    /* Keep names on one line and adjust size for small screens */
+    .name {
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: nowrap;
+        font-size: calc(1.5rem + 4vw) !important; /* Adjusts based on screen width */
+    }
+
     /* One-time animation keyframes */
     @keyframes slideInUp {
         to {
@@ -211,6 +221,14 @@ body {
         vertical-align: middle;
         /* Slight tilt for hand-written feel */
         transform: rotate(-5deg);
+    }
+
+    /* Scale heart for mobile */
+    @media (max-width: 576px) {
+        .heart-svg {
+            width: 40px;
+            height: 40px;
+        }
     }
 
     .heart-path {
@@ -1062,7 +1080,7 @@ body {
         background: #ffffff;
         border-radius: 8px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-        border-top: 5px solid #1a2a44; /* Navy Blue Accent Strip */
+        border-top: 6px solid #1a2a44; /* Navy Blue Accent */
         text-align: center;
         font-family: 'Lato', sans-serif;
         color: #1a2a44; 
@@ -1072,7 +1090,8 @@ body {
         font-family: 'Playfair Display', serif;
         font-size: 2.6rem;
         margin-bottom: 8px;
-        color: #1a2a44; /* Navy */
+        color: #1a2a44;
+        letter-spacing: 1px;
     }
 
     .rsvp-section p.subtitle {
@@ -1100,7 +1119,7 @@ body {
     .rsvp-input {
         width: 100%;
         padding: 14px;
-        border: 1px solid #d5d8dc; /* Gray Border */
+        border: 1px solid #d5d8dc;
         border-radius: 4px;
         box-sizing: border-box;
         font-size: 1rem;
@@ -1115,32 +1134,32 @@ body {
     }
 
     #submit-btn {
-        background: #1a2a44; /* Navy Button */
+        background: #1a2a44;
         color: #ffffff;
         border: none;
         padding: 16px;
         width: 100%;
         border-radius: 4px;
         cursor: pointer;
-        font-size: 1rem;
+        font-size: 0.9rem;
         letter-spacing: 2px;
         text-transform: uppercase;
         transition: background 0.3s;
     }
 
     #submit-btn:hover {
-        background: #2c3e50; /* Slightly lighter navy/gray-blue on hover */
+        background: #2c3e50;
     }
 </style>
 
 <div class="rsvp-section">
     <h2>RSVP</h2>
-    <p class="subtitle">Please respond by the deadline</p>
+    <p class="subtitle">Kindly respond by the deadline</p>
     
     <form id="rsvp-form">
         <div class="form-group">
             <label>Full Name</label>
-            <input type="text" name="Full Name" class="rsvp-input" placeholder="Guest Name" required>
+            <input type="text" name="Full Name" class="rsvp-input" placeholder="Enter name" required>
         </div>
         <div class="form-group">
             <label>Attendance</label>
@@ -1152,11 +1171,47 @@ body {
         </div>
         <div class="form-group">
             <label>Total Guests</label>
-            <input type="number" name="Total Guests" class="rsvp-input" min="1" placeholder="1" required>
+            <input type="number" name="Total Guests" class="rsvp-input" min="1" placeholder="0" required>
         </div>
         <button type="submit" id="submit-btn">Send RSVP</button>
     </form>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const scriptURL = 'YOUR_APPS_SCRIPT_URL';
+    const rsvpForm = document.getElementById('rsvp-form');
+
+    rsvpForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const btn = document.getElementById('submit-btn');
+        btn.disabled = true;
+        btn.innerText = "SENDING...";
+
+        fetch(scriptURL, { method: 'POST', body: new FormData(rsvpForm)})
+        .then(res => {
+            // Mobile sync fix: Slight delay before UI update
+            setTimeout(() => {
+                Swal.fire({
+                    title: 'THANK YOU!',
+                    text: 'Your response has been successfully logged.',
+                    icon: 'success',
+                    confirmButtonColor: '#1a2a44'
+                });
+                rsvpForm.reset();
+                btn.disabled = false;
+                btn.innerText = "SEND RSVP";
+            }, 500);
+        })
+        .catch(err => {
+            setTimeout(() => {
+                Swal.fire({ title: 'ERROR', text: 'Please try again.', icon: 'error' });
+                btn.disabled = false;
+                btn.innerText = "SEND RSVP";
+            }, 500);
+        });
+    });
+</script>
 
 <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbz-IvHfLrejG0qpvxxTbD7K0qlDP2ysrpaTWlR78sZBeLWNUikDkJLn4T-JzGAocgb2VQ/exec'; // Paste your Google Script URL here
