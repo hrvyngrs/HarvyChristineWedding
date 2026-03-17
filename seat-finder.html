@@ -1,0 +1,262 @@
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        /* Softened palette to reduce eye strain */
+        --midnight: #0a1128; /* Softer than pure black */
+        --soft-silver: #d1d5db; /* Muted silver for better readability */
+        --accent-silver: #9ca3af;
+        --glass-fill: rgba(255, 255, 255, 0.02);
+    }
+
+    body {
+        background-color: var(--midnight);
+        margin: 0;
+        font-family: 'Montserrat', sans-serif;
+        color: var(--soft-silver);
+        /* Subtle gradient to depth without harsh edges */
+        background-image: radial-gradient(circle at center, #111a36 0%, #0a1128 100%);
+    }
+
+    /* 1. ELEGANT HEADER - Softened Contrast */
+    .brand-header {
+        text-align: center;
+        padding: 60px 20px 20px;
+    }
+
+    .brand-name {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2.5rem, 9vw, 4rem);
+        font-style: italic;
+        color: #f3f4f6; /* Off-white for comfort */
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        letter-spacing: -1px;
+    }
+
+    .heart-svg {
+        width: clamp(45px, 7vw, 65px);
+        margin: 0 10px;
+        opacity: 0.8;
+    }
+
+    .heart-path {
+        stroke: var(--accent-silver);
+        stroke-width: 1.5;
+        fill: none;
+        stroke-dasharray: 300;
+        stroke-dashoffset: 300;
+        animation: drawHeart 6s ease-in-out infinite;
+    }
+
+    @keyframes drawHeart {
+        0% { stroke-dashoffset: 300; opacity: 0; }
+        20% { opacity: 0.8; }
+        50%, 85% { stroke-dashoffset: 0; opacity: 0.8; }
+        100% { stroke-dashoffset: 0; opacity: 0; }
+    }
+
+    /* 2. SEARCH CONTAINER - Softer Glassmorphism */
+    .search-container {
+        width: 88%;
+        max-width: 480px;
+        margin: 10px auto;
+        padding: 50px 25px;
+        background: var(--glass-fill);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(209, 213, 219, 0.1);
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    .search-container h2 {
+        font-family: 'Cinzel', serif;
+        color: var(--soft-silver);
+        letter-spacing: 5px;
+        font-size: 1.4rem;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+    }
+
+    .search-container p {
+        color: var(--accent-silver);
+        font-size: 0.75rem;
+        letter-spacing: 2px;
+        margin-bottom: 35px;
+        font-weight: 300;
+    }
+
+    /* 3. INPUT & BUTTON - Visual Comfort Optimized */
+    #guest-name-input {
+        width: 100%;
+        max-width: 320px;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid rgba(209, 213, 219, 0.2);
+        padding: 12px 0;
+        color: #ffffff;
+        font-size: 1.15rem;
+        text-align: center;
+        outline: none;
+        transition: 0.4s;
+        border-radius: 0;
+    }
+
+    #guest-name-input::placeholder {
+        color: rgba(255, 255, 255, 0.15);
+        font-size: 0.9rem;
+    }
+
+    #guest-name-input:focus {
+        border-bottom: 1px solid var(--soft-silver);
+    }
+
+    button {
+        margin-top: 40px;
+        background: transparent;
+        border: 1px solid var(--accent-silver);
+        color: var(--soft-silver);
+        font-family: 'Cinzel', serif;
+        padding: 12px 55px;
+        letter-spacing: 3px;
+        cursor: pointer;
+        transition: 0.4s;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+    }
+
+    button:hover {
+        background: var(--soft-silver);
+        color: var(--midnight);
+    }
+
+    /* 4. RESULT AREA */
+    #result-area {
+        margin-top: 40px;
+        min-height: 120px;
+    }
+
+    .table-number {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(4rem, 15vw, 5.5rem);
+        font-style: italic;
+        color: #ffffff;
+        margin: 5px 0;
+        animation: smoothFade 0.7s ease-out forwards;
+    }
+
+    .status-msg {
+        font-size: 0.7rem;
+        letter-spacing: 5px;
+        color: var(--accent-silver);
+        text-transform: uppercase;
+    }
+
+    @keyframes smoothFade {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="brand-header">
+    <h1 class="brand-name">
+        Harvy 
+        <svg class="heart-svg" viewBox="0 0 50 50">
+            <path class="heart-path" d="M25 40 C15 30 5 25 5 15 C5 8 12 5 18 10 C22 13 25 18 25 18 C25 18 28 13 32 10 C38 5 45 8 45 15 C45 25 35 30 25 40" />
+        </svg>
+        Christine
+    </h1>
+</div>
+
+<div class="search-container">
+    <h2>Find Your Seat</h2>
+    <p>Please enter your full name as it appeared on your RSVP.</p>
+    
+    <input type="text" id="guest-name-input" placeholder="e.g. John Doe" autocomplete="off">
+    <br>
+    <button onclick="findSeat()">Search</button>
+
+    <div id="result-area">
+        </div>
+</div>
+
+<script>
+    // Logic remains identical to your base
+    const guestList = {
+        "harvy pidlaoan": "Table 01",
+        "christine frasco": "Table 01"
+    };
+
+    function findSeat() {
+        const input = document.getElementById('guest-name-input').value.toLowerCase().trim();
+        const resultArea = document.getElementById('result-area');
+        
+        if (input === "") {
+            resultArea.innerHTML = "<span class='status-msg' style='color:#cca7a7;'>Enter a name to search</span>";
+            return;
+        }
+
+        const table = guestList[input];
+
+        if (table) {
+            resultArea.innerHTML = `
+                <div>
+                    <span class="status-msg">Seat Located</span>
+                    <div class="table-number">${table}</div>
+                    <span class="status-msg">We are excited to see you</span>
+                </div>
+            `;
+        } else {
+            resultArea.innerHTML = "<span class='status-msg'>Name not found</span>";
+        }
+    }
+</script>
+
+<script>
+	const sheetId = '1ZSKHoNvsZ79jPjFXGF-9wdDO9cgJxs11148wNT7L4MY';
+	const csvURL = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=Sheet1`;
+
+  async function findSeat() {
+    const searchName = document.getElementById('guest-name-input').value.trim().toLowerCase();
+    const resultArea = document.getElementById('result-area');
+    
+    if (!searchName) {
+      resultArea.innerHTML = "Please enter a name.";
+      return;
+    }
+
+    try {
+      // 1. Fetch the data from the published Google Sheet
+      const response = await fetch(csvURL);
+      const data = await response.text();
+      
+      // 2. Convert CSV text into an Array
+      const rows = data.split('\n').map(row => row.split(','));
+      
+      // 3. Search for the guest (Assuming Name is Column B, Table is E, Seat is F)
+      // Note: Index starts at 0, so Col B = 1, Col E = 4, Col F = 5
+      const guestMatch = rows.find(row => row[1] && row[1].toLowerCase().trim() === searchName);
+
+      if (guestMatch) {
+        const tableNum = guestMatch[4] || "TBD";
+        const seatNum = guestMatch[5] || "TBD";
+        
+        resultArea.innerHTML = `
+          <div style="color: #2c3e50;">
+            Hello ${guestMatch[1]}!<br>
+            Table Number: <span style="color: #e67e22;">${tableNum}</span><br>
+            Seat Number: <span style="color: #e67e22;">${seatNum}</span>
+          </div>`;
+      } else {
+        resultArea.innerHTML = "Name not found. Please check your spelling or contact the coordinator.";
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      resultArea.innerHTML = "Unable to load the guest list. Please try again later.";
+    }
+  }
+</script>
