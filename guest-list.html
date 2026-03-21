@@ -20,10 +20,36 @@
             background-image: radial-gradient(circle at center, rgba(26, 42, 68, 0.8) 0%, var(--navy-deep) 100%);
             color: var(--white);
             margin: 0;
-            padding: 40px 10px;
+            padding: 20px 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
+        }
+
+        /* Header Navigation Styles */
+        .header-nav {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            color: var(--silver-bright);
+            text-decoration: none;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+            border: 1px solid rgba(226, 226, 226, 0.2);
+            padding: 8px 12px;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .header { 
@@ -78,7 +104,7 @@
 
         .table-circle {
             position: relative;
-            width: 320px; height: 320px; /* Slightly larger to prevent overlap */
+            width: 320px; height: 320px;
             display: flex; justify-content: center; align-items: center;
         }
 
@@ -89,7 +115,7 @@
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             color: var(--navy-deep); font-weight: 900;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            z-index: 20; /* Higher than seats */
+            z-index: 20;
             border: 2px solid var(--silver-bright);
         }
         .table-hub span { font-size: 0.6rem; text-transform: uppercase; }
@@ -103,7 +129,7 @@
             text-align: center;
             border-radius: 4px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-            transform: translate(-50%, -50%); /* Crucial for perfect alignment */
+            transform: translate(-50%, -50%);
             z-index: 10;
         }
         .seat-groom { background: var(--groom-color); color: white; border-bottom: 2px solid white; }
@@ -152,10 +178,17 @@
 
         @media (max-width: 480px) {
             .logo-text { font-size: 2.5rem; }
+            .header-nav { flex-direction: row; gap: 5px; }
+            .back-link { font-size: 0.55rem; padding: 6px 8px; }
         }
     </style>
 </head>
 <body>
+
+    <div class="header-nav">
+        <a href="index.html" class="back-link">← Website</a>
+        <a href="seat-finder.html" class="back-link">Seat Finder →</a>
+    </div>
 
     <div class="header">
         <h1 class="logo-text">Harvy & Christine</h1>
@@ -176,7 +209,13 @@
         <div class="waiting-list-grid" id="waiting-list-grid"></div>
     </div>
 
-    <footer>Designed by Harvy</footer>
+    <footer>
+        <p style="margin: 0; opacity: 0.8;">
+        &copy; 2026 H&C Wedding. Coded & Designed by 
+        <a href="https://instagram.com/hrvyngrs" style="color: inherit; text-decoration: none; border-bottom: 1px solid rgba(0,0,0,0.1);">HARVY</a>. 
+        All rights reserved.
+    </p>
+    </footer>
 
 <script>
     const sheetId = '1ZSKHoNvsZ79jPjFXGF-9wdDO9cgJxs11148wNT7L4MY';
@@ -225,13 +264,11 @@
             const radius = 115; 
 
             const seatHTML = guests.map((g, index) => {
-                // Calculate position relative to the center (50%, 50%)
                 const angle = (index / totalSeats) * (Math.PI * 2);
                 const x = Math.cos(angle) * radius;
                 const y = Math.sin(angle) * radius;
                 const sideClass = g.side.includes('groom') ? 'seat-groom' : 'seat-bride';
                 
-                // transform: translate(-50%, -50%) in CSS handles the centering
                 return `
                     <div class="seat ${sideClass}" style="left: calc(50% + ${x}px); top: calc(50% + ${y}px);">
                         <span class="seat-name">${g.name}</span>

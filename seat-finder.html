@@ -22,11 +22,37 @@
                 url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
             color: var(--white);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
             padding: 15px;
+        }
+
+        /* Top Navigation Header */
+        .top-nav {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+
+        .back-link {
+            color: var(--silver-bright);
+            text-decoration: none;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+            border: 1px solid rgba(226, 226, 226, 0.2);
+            padding: 8px 12px;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .container {
@@ -201,9 +227,17 @@
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         .error-text { color: #8b0000; font-size: 0.85rem; font-weight: bold; margin-top: 10px;}
         .no-attendance { font-size: 0.9rem; color: #ff7675; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-top: 10px; }
+        
+        @media (max-width: 480px) {
+            .top-nav { position: relative; top: 0; left: 0; margin-bottom: 20px; }
+        }
     </style>
 </head>
 <body>
+
+<div class="top-nav">
+    <a href="main.html" class="back-link">← Back to Site</a>
+</div>
 
 <div class="container">
     <div class="logo-area">
@@ -224,7 +258,11 @@
     <div id="result-area"></div>
 
     <footer>
-        Developed by Harvy
+    <p style="margin: 0; opacity: 0.8;">
+        &copy; 2026 H&C Wedding. Coded & Designed by 
+        <a href="https://instagram.com/hrvyngrs" style="color: inherit; text-decoration: none; border-bottom: 1px solid rgba(0,0,0,0.1);">HARVY</a>. 
+        All rights reserved.
+    </p>
     </footer>
 </div>
 
@@ -260,7 +298,6 @@
             if (guestMatch) {
                 const attendance = guestMatch[2] ? guestMatch[2].toLowerCase() : "";
                 
-                // Logic to handle guests who answered "No"
                 if (attendance === "no") {
                     resultArea.innerHTML = `
                         <div class="result-card">

@@ -1132,8 +1132,6 @@ body {
         <p>
             We are so excited to celebrate this beautiful milestone with you and create unforgettable memories together. Thank you for your love, understanding, and support as we begin this new chapter of our lives.
         </p>
-
-	
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Lato:wght@300;400&display=swap');
 
@@ -1197,6 +1195,26 @@ body {
         outline: none;
     }
 
+    /* Policy Styling */
+    .policy-group {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        text-align: left;
+        margin-bottom: 25px;
+        font-size: 0.9rem;
+    }
+
+    .policy-group input {
+        margin-top: 4px;
+    }
+
+    .policy-link {
+        color: #1a2a44;
+        text-decoration: underline;
+        font-weight: 400;
+    }
+
     #submit-btn {
         background: #1a2a44;
         color: #ffffff;
@@ -1213,6 +1231,32 @@ body {
 
     #submit-btn:hover {
         background: #2c3e50;
+    }
+
+    /* Navigation Buttons Styling */
+    .nav-links {
+        margin-top: 30px;
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .nav-btn {
+        flex: 1;
+        padding: 12px;
+        background: #f8f9f9;
+        color: #1a2a44;
+        border: 1px solid #d5d8dc;
+        text-decoration: none;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-radius: 4px;
+        transition: all 0.3s;
+    }
+
+    .nav-btn:hover {
+        background: #d5d8dc;
     }
 </style>
 
@@ -1241,8 +1285,21 @@ body {
                 <option value="Bride">Bride</option>
             </select>
         </div>
+
+        <div class="policy-group">
+            <input type="checkbox" id="policy-agreement" required>
+            <label for="policy-agreement" style="text-transform: none; letter-spacing: normal; font-size: 0.85rem;">
+                I agree to the <a href="#rsvp" class="policy-link">Wedding Guest Policies</a>.
+            </label>
+        </div>
+
         <button type="submit" id="submit-btn">Send RSVP</button>
     </form>
+
+    <div class="nav-links">
+        <a href="seat-finder.html" class="nav-btn">Seat Finder</a>
+        <a href="floor-plan.html" class="nav-btn">Floor Plan</a>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
