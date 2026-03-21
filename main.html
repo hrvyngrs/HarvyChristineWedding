@@ -958,7 +958,7 @@ body {
     <!-- Friends & Family End -->
 
 
-    <!-- RSVP Start -->
+    <!--DressCode/Gift Start -->
     <div class="container-fluid py-5" id="rsvp">
             <div class="section-title position-relative text-center">
                 <h6 class="text-uppercase text-primary mb-3" style="letter-spacing: 3px;">DRESS CODE & GIFT IDEAS</h6>
@@ -1029,7 +1029,7 @@ body {
 </div>
         </div>
     </div>
-    <!-- RSVP End -->
+    <!-- DressCode/Guide End -->
 
 
     <!-- Footer Start -->
@@ -1163,15 +1163,19 @@ body {
         </div>
         <div class="form-group">
             <label>Attendance</label>
-            <select name="Attendance" class="rsvp-input" required>
+            <select name="Attendance" id="attendance-select" class="rsvp-input" required>
                 <option value="" disabled selected>Will you attend?</option>
                 <option value="Yes">Joyfully Accepts</option>
                 <option value="No">Regretfully Declines</option>
             </select>
         </div>
         <div class="form-group">
-            <label>Total Guests</label>
-            <input type="number" name="Total Guests" class="rsvp-input" min="1" placeholder="0" required>
+            <label>Whose side are you?</label>
+            <select name="Guest Side" class="rsvp-input" required>
+                <option value="" disabled selected>Select an option</option>
+                <option value="Groom">Groom</option>
+                <option value="Bride">Bride</option>
+            </select>
         </div>
         <button type="submit" id="submit-btn">Send RSVP</button>
     </form>
@@ -1180,11 +1184,12 @@ body {
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbz-IvHfLrejG0qpvxxTbD7K0qlDP2ysrpaTWlR78sZBeLWNUikDkJLn4T-JzGAocgb2VQ/exec';
-	const rsvpForm = document.getElementById('rsvp-form');
+    const rsvpForm = document.getElementById('rsvp-form');
 
 rsvpForm.addEventListener('submit', e => {
     e.preventDefault();
     const btn = document.getElementById('submit-btn');
+    const attendance = document.getElementById('attendance-select').value;
     
     btn.disabled = true;
     btn.innerText = "SENDING...";
@@ -1192,29 +1197,40 @@ rsvpForm.addEventListener('submit', e => {
     fetch(scriptURL, { method: 'POST', body: new FormData(rsvpForm)})
     .then(res => {
         setTimeout(() => {
-            Swal.fire({
-                title: 'RESPONSE LOGGED!',
-                html: `
-                    <p style="color: #707b7c; margin-bottom: 20px;">
-                        Your seat is now reserved. Your table and seat number will be available <b>3 days before the wedding day</b>.
-                    </p>
-                    <a href="seat-finder.html" style="
-                        display: inline-block;
-                        padding: 10px 20px;
-                        background-color: #707b7c;
-                        color: white;
-                        text-decoration: none;
-                        border-radius: 4px;
-                        text-transform: uppercase;
-                        font-size: 0.8rem;
-                        letter-spacing: 1px;
-                    ">Go to Seat Finder</a>
-                `,
-                icon: 'success',
-                showConfirmButton: true,
-                confirmButtonText: 'CLOSE',
-                confirmButtonColor: '#1a2a44'
-            });
+            if (attendance === "Yes") {
+                Swal.fire({
+                    title: 'RESPONSE LOGGED!',
+                    html: `
+                        <p style="color: #707b7c; margin-bottom: 20px;">
+                            Your seat is now reserved. Your table and seat number will be available <b>3 days before the wedding day</b>.
+                        </p>
+                        <a href="seat-finder.html" style="
+                            display: inline-block;
+                            padding: 10px 20px;
+                            background-color: #707b7c;
+                            color: white;
+                            text-decoration: none;
+                            border-radius: 4px;
+                            text-transform: uppercase;
+                            font-size: 0.8rem;
+                            letter-spacing: 1px;
+                        ">Go to Seat Finder</a>
+                    `,
+                    icon: 'success',
+                    showConfirmButton: true,
+                    confirmButtonText: 'CLOSE',
+                    confirmButtonColor: '#1a2a44'
+                });
+            } else {
+                Swal.fire({
+                    title: 'THANK YOU',
+                    text: 'We are sorry you can\'t make it, but we appreciate you letting us know!',
+                    icon: 'info',
+                    showConfirmButton: true,
+                    confirmButtonText: 'CLOSE',
+                    confirmButtonColor: '#1a2a44'
+                });
+            }
             
             rsvpForm.reset();
             btn.disabled = false;
@@ -1235,11 +1251,6 @@ rsvpForm.addEventListener('submit', e => {
     });
 });
 </script>
-	
-    </div>
-
-</div>
-            </div>
 <footer style="text-align: center; padding: 20px 0; background-color: #0b1f4d; color: white; font-size: 0.95rem;">
     <p class="m-0">&copy; 2026 HARVY. All Rights Reserved.</p>
 </footer>
