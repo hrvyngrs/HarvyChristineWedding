@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guest Directory | Harvy & Christine</title>
+    <title>Seating Chart | Harvy & Christine</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --navy-deep: #0a192f;
             --navy-accent: #1a2a44;
             --silver-bright: #e2e2e2;
+            --silver-dark: #707b7c;
             --white: #ffffff;
-            --slate: #707b7c;
         }
 
         body {
@@ -20,7 +20,7 @@
             background-image: radial-gradient(circle at center, rgba(26, 42, 68, 0.8) 0%, var(--navy-deep) 100%);
             color: var(--white);
             margin: 0;
-            padding: 20px;
+            padding: 40px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -28,85 +28,85 @@
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
-            max-width: 600px;
+            margin-bottom: 50px;
         }
 
         .header h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             margin: 0;
             color: var(--silver-bright);
+            letter-spacing: 2px;
         }
 
         .header p {
             text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 0.8rem;
+            letter-spacing: 5px;
+            font-size: 0.9rem;
             color: var(--silver-bright);
-            opacity: 0.8;
+            opacity: 0.7;
+            margin-top: 10px;
         }
 
-        /* Search/Filter Bar for the list */
-        .filter-container {
-            width: 100%;
-            max-width: 500px;
-            margin-bottom: 30px;
-        }
-
-        #list-filter {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--silver-bright);
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border-radius: 4px;
-            text-align: center;
-            font-size: 1rem;
-        }
-
-        /* The Grid of Guest Cards */
-        .guest-grid {
+        /* Table Grid Layout */
+        .road-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
             width: 100%;
-            max-width: 1000px;
+            max-width: 1200px;
         }
 
-        .guest-card {
+        .table-group {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(226, 226, 226, 0.2);
+            padding: 25px;
+            position: relative;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .table-header {
             background: linear-gradient(135deg, #ffffff 0%, #dcdde1 100%);
-            padding: 20px 10px;
-            border-radius: 2px;
-            text-align: center;
             color: var(--navy-deep);
-            border: 1px solid var(--silver-bright);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            animation: fadeIn 0.5s ease forwards;
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .table-header span {
+            font-size: 0.7rem;
+            display: block;
+            opacity: 0.7;
+        }
+
+        .guest-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(226, 226, 226, 0.1);
+        }
+
+        .guest-row:last-child {
+            border-bottom: none;
         }
 
         .guest-name {
             font-family: 'Playfair Display', serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            display: block;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            padding-bottom: 5px;
+            font-size: 1.05rem;
+            font-style: italic;
         }
 
-        .seat-label {
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--slate);
-        }
-
-        .seat-value {
-            font-size: 1.2rem;
-            font-weight: 700;
-            display: block;
-            color: var(--navy-accent);
+        .seat-number {
+            font-size: 0.8rem;
+            color: var(--silver-bright);
+            background: rgba(255,255,255,0.1);
+            padding: 2px 8px;
+            border-radius: 10px;
         }
 
         .loader {
@@ -119,48 +119,41 @@
         }
 
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         footer {
-            margin-top: 50px;
+            margin-top: 60px;
             font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             opacity: 0.5;
-            letter-spacing: 1px;
-        }
-
-        @media (max-width: 480px) {
-            .guest-grid { grid-template-columns: 1fr 1fr; } /* 2 columns on mobile */
         }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h1>Guest Directory</h1>
+        <h1>Seating Map</h1>
         <p>Harvy & Christine</p>
-    </div>
-
-    <div class="filter-container">
-        <input type="text" id="list-filter" placeholder="Quick find your name..." onkeyup="filterList()">
     </div>
 
     <div id="loading">
         <div class="loader"></div>
     </div>
 
-    <div class="guest-grid" id="guest-list"></div>
+    <div class="road-container" id="road-table"></div>
 
-    <footer>Developed by Harvy</footer>
+    <footer>Designed by Harvy</footer>
 
 <script>
     const sheetId = '1ZSKHoNvsZ79jPjFXGF-9wdDO9cgJxs11148wNT7L4MY';
     const csvURL = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=Sheet1`;
 
-    async function loadAllGuests() {
+    async function loadRoadTable() {
         try {
             const response = await fetch(csvURL);
             const data = await response.text();
-            const rows = data.split('\n').slice(1); // Skip header row
+            const rows = data.split('\n').slice(1);
             
             const guests = rows.map(row => {
                 const cols = row.split(',').map(cell => cell.replace(/^"(.*)"$/, '$1').replace(/"/g, '').trim());
@@ -170,48 +163,45 @@
                     table: cols[4] || "TBD",
                     seat: cols[5] || "TBD"
                 };
-            }).filter(g => g.name && g.attendance === "Yes"); // Only show confirmed guests
+            }).filter(g => g.name && g.attendance === "Yes");
 
-            // Sort names alphabetically
-            guests.sort((a, b) => a.name.localeCompare(b.name));
+            // Grouping guests by Table
+            const groupedByTable = guests.reduce((acc, guest) => {
+                if (!acc[guest.table]) acc[guest.table] = [];
+                acc[guest.table].push(guest);
+                return acc;
+            }, {});
 
-            displayGuests(guests);
+            // Sort tables numerically
+            const sortedTables = Object.keys(groupedByTable).sort((a, b) => a - b);
+
+            displayRoadTable(sortedTables, groupedByTable);
             document.getElementById('loading').style.display = 'none';
         } catch (error) {
             console.error(error);
         }
     }
 
-    function displayGuests(guests) {
-        const container = document.getElementById('guest-list');
-        container.innerHTML = guests.map(g => `
-            <div class="guest-card">
-                <span class="guest-name">${g.name}</span>
-                <div style="display: flex; justify-content: space-around;">
-                    <div>
-                        <span class="seat-label">Table</span>
-                        <span class="seat-value">${g.table}</span>
-                    </div>
-                    <div>
-                        <span class="seat-label">Seat</span>
-                        <span class="seat-value">${g.seat}</span>
-                    </div>
+    function displayRoadTable(tables, groupedData) {
+        const container = document.getElementById('road-table');
+        
+        container.innerHTML = tables.map(table => `
+            <div class="table-group">
+                <div class="table-header">
+                    <span>Assigned to</span>
+                    Table ${table}
                 </div>
+                ${groupedData[table].sort((a, b) => a.name.localeCompare(b.name)).map(g => `
+                    <div class="guest-row">
+                        <span class="guest-name">${g.name}</span>
+                        <span class="seat-number">Seat ${g.seat}</span>
+                    </div>
+                `).join('')}
             </div>
         `).join('');
     }
 
-    function filterList() {
-        const input = document.getElementById('list-filter').value.toLowerCase();
-        const cards = document.getElementsByClassName('guest-card');
-        
-        Array.from(cards).forEach(card => {
-            const name = card.querySelector('.guest-name').innerText.toLowerCase();
-            card.style.display = name.includes(input) ? "block" : "none";
-        });
-    }
-
-    window.onload = loadAllGuests;
+    window.onload = loadRoadTable;
 </script>
 </body>
 </html>
