@@ -31,7 +31,7 @@
 
         .container {
             background: linear-gradient(135deg, #ffffff 0%, #dcdde1 100%);
-            padding: 45px 30px 20px 30px; /* Adjusted bottom padding for footer */
+            padding: 45px 30px 20px 30px; 
             border-radius: 2px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255,255,255,0.5);
             max-width: 400px;
@@ -171,6 +171,12 @@
             color: var(--white);
         }
 
+        .side-info {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(226, 226, 226, 0.1);
+        }
+
         footer {
             margin-top: 40px;
             font-size: 0.65rem;
@@ -194,6 +200,7 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         .error-text { color: #8b0000; font-size: 0.85rem; font-weight: bold; margin-top: 10px;}
+        .no-attendance { font-size: 0.9rem; color: #ff7675; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -251,6 +258,21 @@
             );
 
             if (guestMatch) {
+                const attendance = guestMatch[2] ? guestMatch[2].toLowerCase() : "";
+                
+                // Logic to handle guests who answered "No"
+                if (attendance === "no") {
+                    resultArea.innerHTML = `
+                        <div class="result-card">
+                            <div class="result-name">Hi, ${guestMatch[1]}</div>
+                            <div class="no-attendance">Our records show you are not attending.<br>No seat has been allocated.</div>
+                            <p style="font-size: 0.7rem; margin-top: 15px; opacity: 0.8;">If this is a mistake, please see the coordinator.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const guestSide = guestMatch[3] || "N/A";
                 const tableNum = guestMatch[4] || "TBD";
                 const seatNum = guestMatch[5] || "TBD";
 
@@ -265,6 +287,12 @@
                             <div class="info-item">
                                 <span class="label">SEAT</span>
                                 <span class="value">${seatNum}</span>
+                            </div>
+                        </div>
+                        <div class="side-info">
+                            <div class="info-item">
+                                <span class="label">TEAM SELECTION</span>
+                                <span class="value" style="font-size: 1rem; letter-spacing: 2px; text-transform: uppercase;">Team ${guestSide}</span>
                             </div>
                         </div>
                     </div>

@@ -191,11 +191,12 @@
                 const cols = row.split(',').map(cell => cell.replace(/^"(.*)"$/, '$1').replace(/"/g, '').trim());
                 return {
                     name: cols[1],
+                    attendance: cols[2] ? cols[2].toLowerCase() : "",
                     side: cols[3] ? cols[3].toLowerCase() : "bride",
                     table: cols[4],
                     seat: parseInt(cols[5]) || 0
                 };
-            }).filter(g => g.name);
+            }).filter(g => g.name && g.attendance !== 'no'); // Filtered out those who answered 'no'
 
             const assignedGuests = guests.filter(g => g.table && g.table.toLowerCase() !== 'tbd');
             const waitingGuests = guests.filter(g => !g.table || g.table.toLowerCase() === 'tbd');
