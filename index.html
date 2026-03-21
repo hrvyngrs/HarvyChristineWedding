@@ -328,10 +328,26 @@
         text-align: center; 
         z-index: 3000;
     }
-    .official-verify-text { text-transform: uppercase; font-size: 0.75rem; font-weight: 900; margin-bottom: 15px; color: var(--navy-dark); }
+    .official-verify-text { text-transform: uppercase; font-size: 0.75rem; font-weight: 900; margin-bottom: 15px; color: var(--navy-dark); letter-spacing: 2px; }
     .input-group { display: flex; justify-content: center; gap: 8px; padding: 0 20px; }
-    input { padding: 12px; border: 1px solid #888; border-radius: 4px; width: 60%; max-width: 220px; outline: none; }
-    .btn-verify { background: var(--navy); color: white; border: none; padding: 0 20px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+    .btn-verify { 
+        background: var(--navy); 
+        color: white; 
+        border: 2px solid var(--silver); 
+        padding: 12px 30px; 
+        cursor: pointer; 
+        border-radius: 4px; 
+        font-weight: bold; 
+        text-transform: uppercase;
+        font-family: 'Georgia', serif;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+    }
+    .btn-verify:hover {
+        background: var(--navy-dark);
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
     #message { margin-top: 10px; font-weight: bold; font-size: 0.8rem; height: 1.2rem; }
 
     @media (max-width: 500px) {
@@ -418,10 +434,9 @@
     </div>
 
     <div id="formContainer">
-        <div class="official-verify-text">Official Guest Verification</div>
+        <div class="official-verify-text">Welcome to our Journey</div>
         <div class="input-group">
-            <input type="text" id="guestName" placeholder="ENTER FULL NAME">
-            <button class="btn-verify" onclick="checkGuest()">Verify</button>
+            <button class="btn-verify" onclick="enterSite()">Enter Wedding Website</button>
         </div>
         <div id="message"></div>
     </div>
@@ -459,26 +474,12 @@
         if (!isExpanded) { card.classList.add('expanded'); }
     }
 
-    function checkGuest() {
-        const nameInput = document.getElementById('guestName').value.trim().toLowerCase();
+    function enterSite() {
         const msg = document.getElementById('message');
-        const validNames = ["harvy", "christine", "special guest"]; 
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('name')) {
-            validNames.push(decodeURIComponent(urlParams.get('name')).toLowerCase());
-        }
-
-        if (nameInput === "") {
-             msg.innerHTML = "<span style='color:orange;'>Please enter your name.</span>";
-             return;
-        }
-
-        if (validNames.includes(nameInput)) {
-            msg.innerHTML = "<span style='color:green;'>Verified! Redirecting...</span>";
-            setTimeout(() => { window.location.href = "main.html"; }, 1000);
-        } else {
-            msg.innerHTML = "<span style='color:red;'>Access Denied. Check spelling.</span>";
-        }
+        msg.innerHTML = "<span style='color:var(--navy);'>Opening Invitation...</span>";
+        setTimeout(() => { 
+            window.location.href = "main.html"; 
+        }, 800);
     }
 </script>
 </body>
