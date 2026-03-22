@@ -10,7 +10,8 @@
             --navy-deep: #0a192f;
             --silver-bright: #e2e2e2;
             --white: #ffffff;
-            --groom-color: #1a2a44;
+            /* Brightened groom color for visibility */
+            --groom-color: #2c4a7c; 
             --bride-color: #aeb2b7;
             --gold-vip: #d4af37;
             --platinum-entourage: #e5e4e2;
@@ -52,9 +53,9 @@
 
         .header { 
             text-align: center; 
-            margin-bottom: 30px; 
+            margin-bottom: 20px; 
             border-bottom: 1px solid rgba(226, 226, 226, 0.2);
-            padding-bottom: 30px;
+            padding-bottom: 20px;
             width: 90%;
             max-width: 600px;
         }
@@ -74,15 +75,28 @@
             letter-spacing: 6px;
             text-transform: uppercase;
             opacity: 0.8;
+            margin: 10px 0;
+        }
+
+        /* SEPARATED LEGEND STYLING */
+        .legend-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
         }
 
         .legend {
-            display: flex; gap: 15px; margin-bottom: 25px;
-            background: rgba(255,255,255,0.05); padding: 12px 25px;
-            border-radius: 30px; border: 1px solid rgba(226,226,226,0.1);
-            font-size: 0.8rem; text-transform: uppercase;
-            flex-wrap: wrap; justify-content: center;
+            display: flex; gap: 15px; 
+            background: rgba(255,255,255,0.05); padding: 8px 20px;
+            border-radius: 20px; border: 1px solid rgba(226,226,226,0.1);
+            font-size: 0.7rem; text-transform: uppercase;
+            justify-content: center;
         }
+        
+        .legend-title { font-size: 0.6rem; opacity: 0.6; letter-spacing: 1px; margin-bottom: -5px; }
+
         .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; }
         .groom-dot { background: var(--groom-color); border: 1px solid white; }
         .bride-dot { background: var(--bride-color); border: 1px solid var(--navy-deep); }
@@ -121,7 +135,6 @@
         }
         .couple-names { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.2rem; }
 
-        /* THE NEW ORGANIZED GRID */
         .map-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -139,10 +152,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 250px;
+            min-height: 200px;
         }
 
-        /* CHAIR/TABLE ICON */
         .chair-icon {
             width: 60px;
             height: 60px;
@@ -158,13 +170,12 @@
             border: 2px solid white;
         }
         .chair-icon span { font-size: 0.5rem; text-transform: uppercase; }
-        .chair-icon div { font-size: 1.2rem; }
+        .chair-icon div { font-size: 1.1rem; }
 
         .vip-chair { background: var(--gold-vip); }
         .ent-chair { background: var(--platinum-entourage); }
         .reg-chair { background: var(--white); }
 
-        /* NAME LISTING */
         .guest-list {
             width: 100%;
             display: flex;
@@ -175,16 +186,17 @@
         .guest-item {
             font-family: 'Playfair Display', serif;
             font-size: 0.85rem;
-            padding: 5px 10px;
+            padding: 6px 10px;
             border-radius: 4px;
             text-align: center;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        .guest-groom { background: var(--groom-color); color: white; border-left: 3px solid white; }
-        .guest-bride { background: var(--bride-color); color: var(--navy-deep); border-left: 3px solid var(--navy-deep); }
+        .guest-groom { background: var(--groom-color); color: white; }
+        .guest-bride { background: var(--bride-color); color: var(--navy-deep); }
 
         .waiting-list-section {
             width: 90%; max-width: 800px;
@@ -235,11 +247,17 @@
         <p>Seating Map</p>
     </div>
 
-    <div class="legend">
-        <div><span class="dot groom-dot"></span> Team Groom</div>
-        <div><span class="dot bride-dot"></span> Team Bride</div>
-        <div><span class="dot vip-dot"></span> VIP</div>
-        <div><span class="dot entourage-dot"></span> Entourage</div>
+    <div class="legend-container">
+        <div class="legend-title">TABLE TYPE</div>
+        <div class="legend">
+            <div><span class="dot vip-dot"></span> VIP</div>
+            <div><span class="dot entourage-dot"></span> Entourage</div>
+        </div>
+        <div class="legend-title">GUEST TEAM</div>
+        <div class="legend">
+            <div><span class="dot groom-dot"></span> Team Groom</div>
+            <div><span class="dot bride-dot"></span> Team Bride</div>
+        </div>
     </div>
 
     <div class="wedding-stage">
@@ -293,9 +311,19 @@
                 return acc;
             }, {});
 
+            // UPDATED SORTING: VIP -> ENTOURAGE -> REGULAR
             const sortedTables = Object.keys(groupedByTable).sort((a, b) => {
-                const aVal = parseInt(a) || 999;
-                const bVal = parseInt(b) || 999;
+                const isVIP = (val) => val >= 101 && val <= 103;
+                const isENT = (val) => val >= 201 && val <= 204;
+                
+                const aVal = parseInt(a);
+                const bVal = parseInt(b);
+
+                if (isVIP(aVal) && !isVIP(bVal)) return -1;
+                if (!isVIP(aVal) && isVIP(bVal)) return 1;
+                if (isENT(aVal) && !isENT(bVal)) return -1;
+                if (!isENT(aVal) && isENT(bVal)) return 1;
+                
                 return aVal - bVal;
             });
             
@@ -309,8 +337,9 @@
         const container = document.getElementById('map-container');
         container.innerHTML = tables.map(table => {
             const guests = groupedData[table].sort((a, b) => a.seat - b.seat);
-            const isVIP = (table >= 101 && table <= 103);
-            const isEnt = (table >= 201 && table <= 204);
+            const num = parseInt(table);
+            const isVIP = (num >= 101 && num <= 103);
+            const isEnt = (num >= 201 && num <= 204);
             
             let typeClass = "reg-chair";
             let label = table;
