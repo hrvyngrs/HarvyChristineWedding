@@ -13,7 +13,7 @@
             --groom-color: #2c4a7c; 
             --bride-color: #aeb2b7;
             --gold-vip: #d4af37;
-            --platinum-entourage: #e5e4e2;
+            --platinum-silver: #c0c0c0; /* Silver color for Silver tables */
         }
 
         body {
@@ -96,7 +96,7 @@
         .groom-dot { background: var(--groom-color); border: 1px solid white; }
         .bride-dot { background: var(--bride-color); border: 1px solid var(--navy-deep); }
         .vip-dot { background: var(--gold-vip); border: 1px solid white; }
-        .entourage-dot { background: var(--platinum-entourage); border: 1px solid var(--navy-deep); }
+        .silver-dot { background: var(--platinum-silver); border: 1px solid var(--navy-deep); }
 
         .wedding-stage {
             width: 100%;
@@ -132,10 +132,10 @@
 
         .map-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-            gap: 60px 20px;
+            grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+            gap: 70px 30px;
             width: 100%;
-            max-width: 1400px;
+            max-width: 1600px;
             padding: 10px;
         }
 
@@ -144,7 +144,7 @@
             flex-direction: row;
             justify-content: center;
             align-items: center;
-            min-height: 180px;
+            min-height: 220px;
         }
 
         .table-wrapper {
@@ -152,12 +152,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 0 10px;
+            margin: 0 15px;
         }
 
         .rectangular-table {
-            width: 70px;
-            height: 160px;
+            width: 80px;
+            height: 200px;
             border-radius: 4px;
             display: flex;
             flex-direction: column;
@@ -170,18 +170,18 @@
             z-index: 2;
         }
         .rectangular-table span { font-size: 0.4rem; text-transform: uppercase; }
-        .rectangular-table div { font-size: 0.85rem; }
+        .rectangular-table div { font-size: 0.85rem; text-align: center; }
 
         .vip-chair { background: var(--gold-vip); }
-        .ent-chair { background: var(--platinum-entourage); }
+        .silver-chair { background: var(--platinum-silver); }
         .reg-chair { background: var(--white); }
 
         .guest-col {
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 8px; /* Spacing to match chair height */
-            height: 160px;
+            gap: 6px;
+            height: 200px;
             justify-content: space-around;
         }
         .col-left { align-items: flex-end; }
@@ -190,21 +190,21 @@
         .guest-row {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
             width: 100%;
         }
         .col-left .guest-row { justify-content: flex-end; }
 
         .chair-seat {
-            width: 18px;
-            height: 18px;
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.5);
-            border-radius: 3px;
+            width: 20px;
+            height: 20px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 4px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 0.5rem;
+            font-size: 0.6rem;
             font-weight: 700;
             color: white;
             flex-shrink: 0;
@@ -212,18 +212,22 @@
 
         .guest-item {
             font-family: 'Playfair Display', serif;
-            font-size: 0.7rem;
-            padding: 3px 6px;
+            font-size: 0.75rem;
+            padding: 4px 8px;
             border-radius: 4px;
             font-weight: 600;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 140px;
+            max-width: 160px;
+            min-height: 20px;
+            display: flex;
+            align-items: center;
         }
 
         .guest-groom { background: var(--groom-color); color: white; }
         .guest-bride { background: var(--bride-color); color: var(--navy-deep); }
+        .empty-seat { opacity: 0; pointer-events: none; }
 
         .waiting-list-section {
             width: 100%; max-width: 800px;
@@ -257,10 +261,10 @@
         footer { margin-top: 50px; font-size: 0.6rem; opacity: 0.5; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
 
         @media (max-width: 600px) {
-            .map-container { grid-template-columns: 1fr; gap: 40px; }
-            .guest-item { max-width: 100px; font-size: 0.6rem; }
-            .rectangular-table { width: 60px; height: 140px; }
-            .guest-col { height: 140px; }
+            .map-container { grid-template-columns: 1fr; gap: 50px; }
+            .guest-item { max-width: 120px; font-size: 0.65rem; }
+            .rectangular-table { width: 70px; height: 180px; }
+            .guest-col { height: 180px; }
         }
     </style>
 </head>
@@ -280,7 +284,7 @@
         <div class="legend-title">TABLE TYPE</div>
         <div class="legend">
             <div><span class="dot vip-dot"></span> VIP</div>
-            <div><span class="dot entourage-dot"></span> Entourage</div>
+            <div><span class="dot silver-dot"></span> SILVER</div>
         </div>
         <div class="legend-title">GUEST TEAM</div>
         <div class="legend">
@@ -342,13 +346,13 @@
 
             const sortedTables = Object.keys(groupedByTable).sort((a, b) => {
                 const isVIP = (val) => val >= 101 && val <= 103;
-                const isENT = (val) => val >= 201 && val <= 204;
+                const isSilver = (val) => val >= 201 && val <= 204;
                 const aVal = parseInt(a);
                 const bVal = parseInt(b);
                 if (isVIP(aVal) && !isVIP(bVal)) return -1;
                 if (!isVIP(aVal) && isVIP(bVal)) return 1;
-                if (isENT(aVal) && !isENT(bVal)) return -1;
-                if (!isENT(aVal) && isENT(bVal)) return 1;
+                if (isSilver(aVal) && !isSilver(bVal)) return -1;
+                if (!isSilver(aVal) && isSilver(bVal)) return 1;
                 return aVal - bVal;
             });
             
@@ -363,22 +367,27 @@
         container.innerHTML = tables.map(table => {
             const allGuests = groupedData[table].sort((a, b) => a.seat - b.seat);
             
-            // Map guests to specific seat indexes (1-5 for left, 6-10 for right)
-            const leftSide = [1, 2, 3, 4, 5];
-            const rightSide = [6, 7, 8, 9, 10];
+            // 12 chairs: 1-6 left, 7-12 right
+            const leftSide = [1, 2, 3, 4, 5, 6];
+            const rightSide = [7, 8, 9, 10, 11, 12];
 
             const num = parseInt(table);
             const isVIP = (num >= 101 && num <= 103);
-            const isEnt = (num >= 201 && num <= 204);
+            const isSilver = (num >= 201 && num <= 204);
             let typeClass = "reg-chair";
             let label = table;
             if (isVIP) { typeClass = "vip-chair"; label = "VIP"; }
-            if (isEnt) { typeClass = "ent-chair"; label = "ENT"; }
+            if (isSilver) { typeClass = "silver-chair"; label = "SILVER"; }
             
             const getSeatHTML = (seatNum, align) => {
                 const guest = allGuests.find(g => g.seat === seatNum);
                 const chair = `<div class="chair-seat">${seatNum}</div>`;
-                if (!guest) return `<div class="guest-row">${align === 'left' ? '' : chair}</div>`;
+                
+                // Show chair even if no guest is assigned
+                if (!guest) {
+                    const spacer = `<div class="guest-item empty-seat">Empty Seat</div>`;
+                    return `<div class="guest-row">${align === 'left' ? spacer + chair : chair + spacer}</div>`;
+                }
                 
                 const sideClass = guest.side.includes('groom') ? 'guest-groom' : 'guest-bride';
                 const nameTag = `<div class="guest-item ${sideClass}">${guest.name}</div>`;
