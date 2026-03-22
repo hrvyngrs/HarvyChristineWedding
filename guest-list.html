@@ -54,7 +54,7 @@
 
         .header { 
             text-align: center; 
-            margin-bottom: 50px; 
+            margin-bottom: 30px; 
             border-bottom: 1px solid rgba(226, 226, 226, 0.2);
             padding-bottom: 30px;
             width: 90%;
@@ -83,6 +83,47 @@
             opacity: 0.8;
         }
 
+        /* STAGE STYLING */
+        .wedding-stage {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--silver-bright);
+            padding: 40px 20px;
+            margin-bottom: 60px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 0 30px rgba(255,255,255,0.05);
+        }
+        .stage-label {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--navy-deep);
+            padding: 0 15px;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--silver-bright);
+        }
+        .couple-table {
+            background: linear-gradient(135deg, #ffffff 0%, #e2e2e2 100%);
+            width: 220px;
+            height: 80px;
+            margin: 0 auto;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--navy-deep);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            border: 2px solid var(--gold-vip);
+        }
+        .couple-names { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.2rem; }
+        .couple-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; }
+
         .legend {
             display: flex; gap: 15px; margin-bottom: 40px;
             background: rgba(255,255,255,0.05); padding: 12px 25px;
@@ -103,10 +144,28 @@
             justify-items: center;
         }
 
+        /* CIRCULAR TABLE */
         .table-circle {
             position: relative;
             width: 350px; height: 350px;
             display: flex; justify-content: center; align-items: center;
+        }
+
+        /* RECTANGULAR VIP TABLE */
+        .table-rect {
+            position: relative;
+            width: 350px; height: 350px;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .rect-hub {
+            width: 180px; height: 90px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #f1c40f 0%, #d4af37 100%);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            color: var(--navy-deep); font-weight: 900;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            z-index: 20;
+            border: 2px solid white;
         }
 
         .table-hub {
@@ -119,13 +178,9 @@
             z-index: 20;
             border: 2px solid var(--silver-bright);
         }
-        .table-hub.vip-hub {
-            background: linear-gradient(135deg, #f1c40f 0%, #d4af37 100%);
-            border: 2px solid white;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-        }
-        .table-hub span { font-size: 0.6rem; text-transform: uppercase; }
-        .table-hub div { font-size: 1.6rem; }
+        
+        .table-hub span, .rect-hub span { font-size: 0.6rem; text-transform: uppercase; }
+        .table-hub div, .rect-hub div { font-size: 1.6rem; }
 
         .seat {
             position: absolute;
@@ -202,6 +257,14 @@
         <p>Seating Map</p>
     </div>
 
+    <div class="wedding-stage">
+        <div class="stage-label">Main Stage</div>
+        <div class="couple-table">
+            <span class="couple-label">The Newlyweds</span>
+            <div class="couple-names">Harvy & Christine</div>
+        </div>
+    </div>
+
     <div class="legend">
         <div><span class="dot groom-dot"></span> Team Groom</div>
         <div><span class="dot bride-dot"></span> Team Bride</div>
@@ -241,8 +304,8 @@
                     name: cols[1],
                     attendance: cols[2] ? cols[2].toLowerCase() : "",
                     side: cols[3] ? cols[3].toLowerCase() : "bride",
-                    table: cols[5], // Shifted to column F (index 5)
-                    seat: parseInt(cols[6]) || 0 // Shifted to column G (index 6)
+                    table: cols[5],
+                    seat: parseInt(cols[6]) || 0
                 };
             }).filter(g => g.name && g.attendance !== 'no');
 
@@ -268,31 +331,44 @@
         const container = document.getElementById('map-container');
         container.innerHTML = tables.map(table => {
             const guests = groupedData[table].sort((a, b) => a.seat - b.seat);
-            const maxSeats = 10; 
-            const radius = 125; 
-
-            // VIP Check
             const isVIP = (table == "101" || table == "102" || table == "103");
             const tableLabel = isVIP ? "VIP" : table;
-            const hubClass = isVIP ? "table-hub vip-hub" : "table-hub";
+            
+            let seatHTML = '';
+            
+            if (isVIP) {
+                // RECTANGULAR LAYOUT LOGIC (VIP)
+                // Positions 1-5 top, 6-10 bottom
+                seatHTML = guests.map((g) => {
+                    let topPos, leftPos;
+                    if (g.seat <= 5) {
+                        topPos = '25%';
+                        leftPos = (g.seat * 18) + 5 + '%';
+                    } else {
+                        topPos = '75%';
+                        leftPos = ((g.seat - 5) * 18) + 5 + '%';
+                    }
+                    const sideClass = g.side.includes('groom') ? 'seat-groom' : 'seat-bride';
+                    return `<div class="seat ${sideClass}" style="left: ${leftPos}; top: ${topPos};"><span class="seat-name">${g.name}</span><span class="seat-num">Seat ${g.seat}</span></div>`;
+                }).join('');
 
-            const seatHTML = guests.map((g) => {
-                const seatIndex = g.seat > 0 ? (g.seat - 1) : 0;
-                const angle = (seatIndex / maxSeats) * (Math.PI * 2) - (Math.PI / 2);
-                
-                const x = Math.cos(angle) * radius;
-                const y = Math.sin(angle) * radius;
-                const sideClass = g.side.includes('groom') ? 'seat-groom' : 'seat-bride';
-                
-                return `
-                    <div class="seat ${sideClass}" style="left: calc(50% + ${x}px); top: calc(50% + ${y}px);">
-                        <span class="seat-name">${g.name}</span>
-                        <span class="seat-num">Seat ${g.seat}</span>
-                    </div>
-                `;
-            }).join('');
+                return `<div class="table-rect"><div class="rect-hub"><span>Table</span><div>${tableLabel}</div></div>${seatHTML}</div>`;
+            } else {
+                // CIRCULAR LAYOUT LOGIC (Regular)
+                const maxSeats = 10; 
+                const radius = 125; 
 
-            return `<div class="table-circle"><div class="${hubClass}"><span>${isVIP ? 'Table' : 'Table'}</span><div>${tableLabel}</div></div>${seatHTML}</div>`;
+                seatHTML = guests.map((g) => {
+                    const seatIndex = g.seat > 0 ? (g.seat - 1) : 0;
+                    const angle = (seatIndex / maxSeats) * (Math.PI * 2) - (Math.PI / 2);
+                    const x = Math.cos(angle) * radius;
+                    const y = Math.sin(angle) * radius;
+                    const sideClass = g.side.includes('groom') ? 'seat-groom' : 'seat-bride';
+                    return `<div class="seat ${sideClass}" style="left: calc(50% + ${x}px); top: calc(50% + ${y}px);"><span class="seat-name">${g.name}</span><span class="seat-num">Seat ${g.seat}</span></div>`;
+                }).join('');
+
+                return `<div class="table-circle"><div class="table-hub"><span>Table</span><div>${tableLabel}</div></div>${seatHTML}</div>`;
+            }
         }).join('');
     }
 

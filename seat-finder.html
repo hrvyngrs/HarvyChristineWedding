@@ -311,7 +311,6 @@
                 row.split(',').map(cell => cell.replace(/^"(.*)"$/, '$1').replace(/"/g, '').trim())
             );
 
-            // Column Indexes: 0=Timestamp, 1=Name, 2=Attending, 3=Team, 4=GuestBy, 5=Table, 6=Seat
             const guestMatch = rows.find(row => 
                 row[1] && row[1].toLowerCase() === searchInput
             );
@@ -329,14 +328,30 @@
                     return;
                 }
 
-                // SIDE LOGIC
+                // DATA EXTRACTION
                 let teamRaw = guestMatch[3] ? guestMatch[3].toLowerCase() : "";
+                let broughtByRaw = guestMatch[4] ? guestMatch[4].toLowerCase() : "";
+                
+                // GUEST BY & SIDE LOGIC
+                let guestByDisplay = guestMatch[4] || "Self";
                 let sideDisplay = "N/A";
-                if(teamRaw.includes("groom")) sideDisplay = "Side of Groom";
-                else if(teamRaw.includes("bride")) sideDisplay = "Side of Bride";
-                else sideDisplay = guestMatch[3] || "N/A";
 
-                const guestBy = guestMatch[4] || "Self";
+                if (broughtByRaw === "self") {
+                    if (teamRaw.includes("groom")) {
+                        guestByDisplay = "The Groom";
+                        sideDisplay = "Team Groom";
+                    } else if (teamRaw.includes("bride")) {
+                        guestByDisplay = "The Bride";
+                        sideDisplay = "Team Bride";
+                    } else {
+                        sideDisplay = guestMatch[3] || "N/A";
+                    }
+                } else {
+                    if (teamRaw.includes("groom")) sideDisplay = "Side of Groom";
+                    else if (teamRaw.includes("bride")) sideDisplay = "Side of Bride";
+                    else sideDisplay = guestMatch[3] || "N/A";
+                }
+
                 let tableNum = guestMatch[5] || "TBD";
                 const seatNum = guestMatch[6] || "TBD";
 
@@ -350,7 +365,7 @@
                 resultArea.innerHTML = `
                     <div class="result-card ${isVIP ? 'vip-status' : ''}">
                         <div class="result-name">Welcome, ${guestMatch[1]}</div>
-                        <span class="guest-by">Guest by: ${guestBy}</span>
+                        <span class="guest-by">Guest by: ${guestByDisplay}</span>
                         <div class="seat-grid">
                             <div class="info-item">
                                 <span class="label">TABLE</span>
