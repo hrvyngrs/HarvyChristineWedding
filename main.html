@@ -467,57 +467,233 @@ body {
 
 
     <!-- About Start -->
-    <div class="container-fluid py-5" id="about">
-        <div class="container py-5">
-            <div class="section-title position-relative text-center">
-                <h6 class="text-uppercase text-primary mb-3" style="letter-spacing: 3px;">About</h6>
-                <h1 class="font-secondary display-4">Groom & Bride</h1>
-                <i class="far fa-heart text-dark"></i>
+<style>
+    /* Independent Flip Logic */
+    .scrapbook-flip-card {
+        background-color: transparent;
+        height: 580px; 
+        perspective: 1500px;
+        margin-bottom: 30px;
+    }
+
+    .scrapbook-flip-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        transform-style: preserve-3d;
+        cursor: pointer;
+    }
+
+    .scrapbook-flip-inner.is-flipped {
+        transform: rotateY(180deg);
+    }
+
+    .flip-front, .flip-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    /* Front: Colored Polaroid Styling */
+    .flip-front {
+        padding: 15px 15px 120px 15px;
+        display: flex;
+        flex-direction: column;
+        border: none;
+    }
+
+    /* Assigning Frame Colors */
+    .groom-frame { background-color: #001f3f; } /* Navy Blue */
+    .bride-frame { background-color: #708090; } /* Gray */
+
+    .flip-front img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 2px;
+    }
+
+    .flip-label-area {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 120px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #ffffff;
+    }
+
+    /* Clean Header Styling (Icons Removed) */
+    .label-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 5px;
+    }
+
+    /* Label Bars match the frame now */
+    .groom-label-bar { border-radius: 0 0 8px 8px; }
+    .bride-label-bar { border-radius: 0 0 8px 8px; }
+
+    .flip-label-area h3 {
+        font-family: 'Georgia', serif;
+        font-size: 1.4rem;
+        margin: 0;
+        letter-spacing: 2px;
+        color: #d4af37; 
+    }
+
+    .flip-label-area span {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        opacity: 0.9;
+        margin-bottom: 10px;
+    }
+
+    .tap-hint {
+        font-size: 0.7rem;
+        color: #ffffff;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        border-top: 1px solid rgba(255,255,255,0.2);
+        padding-top: 8px;
+        font-weight: bold;
+        opacity: 0.8;
+    }
+
+    /* Back Styling */
+    .flip-back {
+        transform: rotateY(180deg);
+        padding: 40px 30px;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto; 
+        color: #ffffff;
+    }
+
+    .groom-back { background-color: #001f3f; }
+    .bride-back { background-color: #708090; }
+
+    .flip-back h3 {
+        color: #d4af37; 
+        font-family: 'Secondary Font', serif;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .flip-back p {
+        font-size: 1rem;
+        line-height: 1.8;
+        margin-bottom: 15px;
+        color: rgba(255, 255, 255, 0.95);
+        text-align: justify;
+    }
+
+    .flip-back .name-footer {
+        text-align: center;
+        font-weight: bold;
+        color: #d4af37;
+        margin-top: auto;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* Scrollbar */
+    .flip-back::-webkit-scrollbar { width: 4px; }
+    .flip-back::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
+
+    @media (max-width: 768px) {
+        .scrapbook-flip-card { height: 520px; }
+    }
+</style>
+
+<div class="container-fluid py-5" id="about">
+    <div class="container py-5">
+        <div class="section-title position-relative text-center mb-5">
+            <h6 class="text-uppercase text-primary mb-3" style="letter-spacing: 3px;">About</h6>
+            <h1 class="font-secondary display-4">Groom & Bride</h1>
+            <i class="far fa-heart text-dark"></i>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 scrapbook-flip-card">
+                <div class="scrapbook-flip-inner" onclick="toggleFlip(this)">
+                    <div class="flip-front groom-frame">
+                        <img src="img/about-1.jpg" alt="Groom">
+                        <div class="flip-label-area groom-label-bar">
+                            <div class="label-header">
+                                <h3>The Groom</h3>
+                            </div>
+                            <span>Harvy Gozun Pidlaoan</span>
+                            <div class="tap-hint"><i class="fa fa-hand-pointer mr-2"></i>Tap to read story</div>
+                        </div>
+                    </div>
+                    <div class="flip-back groom-back">
+                        <h3>The Groom</h3>
+                        <p>
+                            The eldest of three brothers, he is a proud graduate with a Bachelor’s Degree in Industrial Engineering. Born on 16th of July, he is currently building his career at Xerox Philippines (formerly Lexmark Research and Development Corporation) in Cebu, where his dedication, reliability, and strong work ethic continue to stand out.
+                            <br/><br/>
+                            Naturally calm and known for his easygoing sense of humor, he enjoys traveling, playing computer games, and exploring new places whenever the opportunity arises. He embraces adventure, holds family close to his heart, and cherishes meaningful moments spent with the people he loves.
+                            <br/><br/>
+                            At his core, he believes that you don’t have to be the best in the room; you just have to make sure you aren’t the problem. Beyond that, he lives for laughter, curiosity, and the strength of genuine connections.
+                        </p>
+                        <div class="name-footer">Harvy Gozun Pidlaoan</div>
+                    </div>
+                </div>
             </div>
-  <div class="row m-0 mb-4 align-items-center">
-    <!-- Groom Text -->
-    <div class="col-md-6 order-2 order-md-1 text-center text-md-right p-4 p-md-5 bg-secondary d-flex flex-column justify-content-center">
-        <h3 class="mb-3">The Groom</h3>
-        <p>
-        The eldest of three brothers, he is a proud graduate with a Bachelor’s Degree in Industrial Engineering. Born on 16th of July, he is currently building his career at Xerox Philippines (formerly Lexmark Research and Development Corporation) in Cebu, where his dedication, reliability, and strong work ethic continue to stand out.
-        <br/><br/>
-        Naturally calm and known for his easygoing sense of humor, he enjoys traveling, playing computer games, and exploring new places whenever the opportunity arises. He embraces adventure, holds family close to his heart, and cherishes meaningful moments spent with the people he loves.
-        <br/><br/>
-        At his core, he believes that life is best enjoyed with laughter, curiosity, and genuine connections.
 
-        </p>
-        <h3 class="font-secondary font-weight-normal text-muted mb-3">
-            <i class="fa fa-male text-primary pr-3"></i>Harvy Gozun Pidlaoan
-        </h3>
-    </div>
-    <!-- Groom Image -->
-    <div class="col-md-6 order-1 order-md-2 p-0">
-        <img src="img/about-1.jpg" class="img-fluid w-100" style="height:100%; object-fit:cover;">
-    </div>
-</div>
-
-<div class="row m-0 align-items-center">
-    <!-- Bride Image -->
-    <div class="col-md-6 order-1 order-md-1 p-0">
-        <img src="img/about-2.jpg" class="img-fluid w-100" style="height:100%; object-fit:cover;">
-    </div>
-    <!-- Bride Text -->
-    <div class="col-md-6 order-2 order-md-2 text-center text-md-left p-4 p-md-5 bg-secondary d-flex flex-column justify-content-center">
-        <h3 class="mb-3">The Bride</h3>
-        <p>
-        The eldest among three siblings, with one sister and a younger brother, she is a proud graduate with a Bachelor’s Degree in Psychology. Born on 30th of July, she is currently building her career at QBE Insurance – Philippine Branch, where her dedication and people-centered approach beautifully reflect her academic background.
-        <br/><br/>
-        Warm-hearted and thoughtful by nature, she loves traveling and embracing new experiences that broaden her perspective and enrich her life. She deeply values time spent with family and finds joy in creating lasting memories with the people she holds closest to her heart.
-        <br/><br/>
-        At her core, she cherishes love, meaningful connections, and the simple yet precious moments shared with those she loves most.
-        </p>
-        <h3 class="font-secondary font-weight-normal text-muted mb-3">
-            <i class="fa fa-female text-primary pr-3"></i>Christine Mae Galario Corsino
-        </h3>
-    </div>
-</div>
+            <div class="col-md-6 scrapbook-flip-card">
+                <div class="scrapbook-flip-inner" onclick="toggleFlip(this)">
+                    <div class="flip-front bride-frame">
+                        <img src="img/about-2.jpg" alt="Bride">
+                        <div class="flip-label-area bride-label-bar">
+                            <div class="label-header">
+                                <h3>The Bride</h3>
+                            </div>
+                            <span>Christine Mae Galario Corsino</span>
+                            <div class="tap-hint"><i class="fa fa-hand-pointer mr-2"></i>Tap to read story</div>
+                        </div>
+                    </div>
+                    <div class="flip-back bride-back">
+                        <h3>The Bride</h3>
+                        <p>
+                            The eldest among three siblings, with one sister and a younger brother, she is a proud graduate with a Bachelor’s Degree in Psychology. Born on 30th of July, she is currently building her career at QBE Insurance – Philippine Branch, where her dedication and people-centered approach beautifully reflect her academic background.
+                            <br/><br/>
+                            Warm-hearted and thoughtful by nature, she loves traveling and embracing new experiences that broaden her perspective and enrich her life. She deeply values time spent with family and finds joy in creating lasting memories with the people she holds closest to her heart.
+                            <br/><br/>
+                            At her core, she cherishes love, meaningful connections, and the simple yet precious moments shared with those she loves most.
+                        </p>
+                        <div class="name-footer">Christine Mae Galario Corsino</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</div>
+
+<script>
+    function toggleFlip(cardInner) {
+        cardInner.classList.toggle('is-flipped');
+        
+        if (cardInner.classList.contains('is-flipped')) {
+            const backElement = cardInner.querySelector('.flip-back');
+            if (backElement) {
+                setTimeout(() => { backElement.scrollTop = 0; }, 100);
+            }
+        }
+    }
+</script>
     <!-- About End -->
 
 
@@ -814,12 +990,25 @@ body {
 
 <div class="container-fluid py-5" id="entourage">
 
-  <div class="container text-center pt-5 pb-3">
-    <div class="section-title position-relative">
-      <h1 class="font-secondary display-4">Pidlaoan-Corsino Nuptials</h1>
-      <i class="far fa-heart text-dark"></i>
+<div class="container text-center pt-5 pb-5">
+    <div style="letter-spacing: 5px; color: #a5a5a5; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 15px; font-weight: 300;">
+        Honoring Our Loved Ones
     </div>
-  </div>
+
+    <h1 class="font-secondary" style="font-size: 3.8rem; color: #333; margin-bottom: 0; letter-spacing: 1px;">
+        Pidlaoan <span style="font-family: 'Great Vibes', cursive; color: #c5a059; font-size: 4rem; margin: 0 10px;">&amp;</span> Corsino
+    </h1>
+
+    <div class="d-flex align-items-center justify-content-center mt-3">
+        <div style="width: 50px; height: 1px; background-color: #c5a059;"></div>
+        <i class="fas fa-heart mx-3" style="color: #c5a059; font-size: 0.8rem;"></i>
+        <div style="width: 50px; height: 1px; background-color: #c5a059;"></div>
+    </div>
+
+    <h2 class="mt-4" style="letter-spacing: 8px; font-size: 1.1rem; font-weight: 300; color: #555; text-transform: uppercase;">
+        The Entourage
+    </h2>
+</div>
 
   <div class="container py-5 text-center">
     <div class="row justify-content-center">
@@ -971,16 +1160,24 @@ body {
         <div class="line"></div>
       </div>
     </div>
+    
     <div class="row justify-content-center">
-      <div class="col-6 col-md-3 mb-4">
+      <div class="col-4 col-md-3 mb-4">
         <h6 class="text-uppercase text-primary mb-3 letter-spacing">Ring</h6>
         <p>Yugo Akio Quijano</p>
       </div>
-      <div class="col-6 col-md-3 mb-4">
+      <div class="col-4 col-md-3 mb-4">
         <h6 class="text-uppercase text-primary mb-3 letter-spacing">Bible</h6>
         <p>Jexyll Pidlaoan</p>
       </div>
-      <div class="col-6 col-md-3 mb-4">
+      <div class="col-4 col-md-3 mb-4">
+        <h6 class="text-uppercase text-primary mb-3 letter-spacing">Coin</h6>
+        <p>Placeholder Name</p> 
+      </div>
+    </div>
+
+    <div class="row justify-content-center mt-2">
+      <div class="col-md-6 mb-4">
         <h6 class="text-uppercase text-primary mb-3 letter-spacing">Flower Girls</h6>
         <p>Alison Reign Bariquit</p>
         <p>Nathalie Claire Gilig</p>
@@ -990,9 +1187,20 @@ body {
   </div>
 </div>
 
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+
 <style>
   .letter-spacing { letter-spacing: 3px; }
-  .script-title { font-family: 'Dancing Script', cursive; font-weight: 400; font-size: 1.8rem; margin-bottom: 0.2rem; color: #1a2a44; }
+  
+  /* Updated to Serif with Vintage/Calligraphic elements */
+  .script-title { 
+    font-family: 'Playfair Display', serif; 
+    font-style: italic; 
+    font-weight: 500; 
+    font-size: 2.2rem; 
+    margin-bottom: 0.2rem; 
+    color: #1a2a44; 
+  }
   
   /* Divider logic */
   .divider-heart { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 15px auto; width: 250px; }
@@ -1005,6 +1213,7 @@ body {
   @media (max-width: 576px) {
     .font-secondary.display-4 { font-size: 2.5rem; }
     .row p { font-size: 0.9rem; }
+    .script-title { font-size: 1.8rem; }
   }
 </style>
 
@@ -1025,23 +1234,54 @@ body {
         </p>
     </div>
 
-    <div class="table-responsive mb-5">
-        <table style="width: 100%; border-collapse: separate; border-spacing: 20px;">
-            <tr>
-                <td style="border: 2px solid #003366; border-radius: 10px; padding: 15px; vertical-align: top; text-align: center;">
-                    <h6 class="text-uppercase text-primary mb-3" style="letter-spacing: 1px;">Sponsors</h6>
-                    <img src="img/attire/sponsor.png" alt="Sponsors" style="max-width: 100%; max-height: 180px; object-fit: contain; display: block; margin: 0 auto 15px;">
-                    <p><strong>Gents</strong>: Full Suit & Tie or Tuxedo</p>
-                    <p><strong>Ladies</strong>: Formal Long Gown</p>
-                </td>
-                <td style="border: 2px solid #003366; border-radius: 10px; padding: 15px; vertical-align: top; text-align: center;">
-                    <h6 class="text-uppercase text-primary mb-3" style="letter-spacing: 1px;">Guests</h6>
-                    <img src="img/attire/guest.png" alt="Guests" style="max-width: 100%; max-height: 180px; object-fit: contain; display: block; margin: 0 auto 15px;">
-                    <p><strong>Gents</strong>: Button-down or Blazer with Slacks</p>
-                    <p><strong>Ladies</strong>: Cocktail or Long Formal Dress</p>
-                </td>
-            </tr>
-        </table>
+    <style>
+        .attire-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto 3rem;
+        }
+        .attire-card {
+            flex: 1;
+            min-width: 300px;
+            max-width: 450px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+        }
+        .attire-card:hover, .attire-card:active {
+            transform: translateY(-10px) scale(1.02);
+        }
+        .vertical-divider {
+            width: 1px;
+            background-color: #003366;
+            align-self: stretch;
+        }
+        @media (max-width: 768px) {
+            .vertical-divider { display: none; }
+            .attire-card { min-width: 100%; }
+        }
+    </style>
+
+    <div class="attire-container">
+        <div class="attire-card">
+            <h6 class="text-uppercase text-primary mb-3" style="letter-spacing: 1px;">Sponsors</h6>
+            <img src="img/attire/sponsor.png" alt="Sponsors" style="width: auto; height: 180px; object-fit: contain; display: block; margin: 0 auto 15px;">
+            <p><strong>Gents</strong>: Full Suit & Tie or Tuxedo</p>
+            <p><strong>Ladies</strong>: Formal Long Gown</p>
+        </div>
+        
+        <div class="vertical-divider"></div>
+
+        <div class="attire-card">
+            <h6 class="text-uppercase text-primary mb-3" style="letter-spacing: 1px;">Guests</h6>
+            <img src="img/attire/guest.png" alt="Guests" style="width: auto; height: 180px; object-fit: contain; display: block; margin: 0 auto 15px;">
+            <p><strong>Gents</strong>: Button-down or Blazer with Slacks</p>
+            <p><strong>Ladies</strong>: Cocktail or Long Formal Dress</p>
+        </div>
     </div>
 
     <div class="text-center mb-5">
@@ -1151,7 +1391,7 @@ body {
     <!-- RSVP Start -->
 <div class="container-fluid bg-dark text-white py-5" id="rsvp" style="margin-top: 90px;">
     <div class="container text-center py-5">
-        <div class="section-title position-relative text-center">
+        <div class="position-relative text-center">
             <h1 class="font-secondary display-3 text-white">You're Invited!</h1>
             <p class="mt-4">
                 We are truly honored to celebrate our wedding day with you, and your presence would mean so much to us. If you are receiving this invitation, it is because you are one of the special guests personally chosen by the bride and groom. A seat has been reserved especially for you, and we can’t wait to share this unforgettable moment surrounded by our closest family and friends.
