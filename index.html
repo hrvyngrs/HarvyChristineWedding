@@ -13,8 +13,7 @@
         --news-paper: #f4f1ea; 
         --ink: #1a1a1a;
         --bg-color: #f2efea; 
-        /* EXPLICIT Gray and Navy for the invite card */
-        --invite-bg: #BDBDBD; /* Deeper Light Gray for better visibility */
+        --invite-bg: #BDBDBD;
         --invite-text: #001f3f;
     }
 
@@ -262,13 +261,12 @@
         color: var(--ink);
     }
 
-    /* FORCED: Distinct Gray Background & Navy Text */
     #card-invite {
         position: absolute;
         width: 240px; 
         height: auto; 
         min-height: 110px;
-        background-color: #BDBDBD !important; /* Force a Deeper Light Gray */
+        background-color: #BDBDBD !important;
         bottom: -40px; 
         left: 50%;
         margin-left: -120px;
@@ -330,7 +328,6 @@
     }
     .official-verify-text { text-transform: uppercase; font-size: 0.75rem; font-weight: 900; margin-bottom: 15px; color: var(--navy-dark); letter-spacing: 2px; }
     
-    /* RECODED: Vertical Stack for Mobile-First Elegance */
     .input-group { 
         display: flex; 
         flex-direction: column;
@@ -342,7 +339,6 @@
         margin: 0 auto;
     }
 
-    /* RECODED: Elegant OR with fading lines */
     .elegant-or {
         display: flex;
         align-items: center;
@@ -380,7 +376,7 @@
         transition: all 0.3s ease;
         font-size: 0.8rem;
         width: 100%;
-        max-width: 250px; /* Forces both buttons to be same size */
+        max-width: 250px;
         box-sizing: border-box;
     }
     .btn-verify:hover {
@@ -493,12 +489,15 @@
 </div>
 
 <script>
+    // 1. URL Parameter Capture
+    const urlParams = new URLSearchParams(window.location.search);
+    const guestLimit = urlParams.get('g');
+    const nameParam = urlParams.get('name');
+
     window.onload = function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const nameParam = urlParams.get('name');
         if (nameParam) {
-            const cleanName = decodeURIComponent(nameParam);
-            document.getElementById('guest-display').innerText = cleanName;
+            const display = document.getElementById('guest-display');
+            if(display) display.innerText = decodeURIComponent(nameParam);
         }
     };
 
@@ -524,20 +523,24 @@
         if (!isExpanded) { card.classList.add('expanded'); }
     }
 
+    function buildURL(base, anchor = "") {
+        let params = new URLSearchParams();
+        if (guestLimit) params.append('g', guestLimit);
+        if (nameParam) params.append('name', nameParam);
+        let qs = params.toString();
+        return qs ? (base + "?" + qs + anchor) : (base + anchor);
+    }
+
     function enterSite() {
         const msg = document.getElementById('message');
         msg.innerHTML = "<span style='color:var(--navy);'>Opening Our Story...</span>";
-        setTimeout(() => { 
-            window.location.href = "main.html"; 
-        }, 800);
+        setTimeout(() => { window.location.href = buildURL("main.html"); }, 800);
     }
 
     function goToRSVP() {
         const msg = document.getElementById('message');
         msg.innerHTML = "<span style='color:var(--navy);'>Redirecting to RSVP...</span>";
-        setTimeout(() => { 
-            window.location.href = "main.html#event"; 
-        }, 800);
+        setTimeout(() => { window.location.href = buildURL("main.html", "#event"); }, 800);
     }
 </script>
 </body>

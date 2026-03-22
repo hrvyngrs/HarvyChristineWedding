@@ -1432,6 +1432,7 @@ body {
             .nav-links { margin-top: 30px; display: flex; gap: 10px; justify-content: center; }
             .nav-btn { flex: 1; padding: 12px; background: #f8f9f9; color: #1a2a44; border: 1px solid #d5d8dc; text-decoration: none; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; transition: all 0.3s; }
             .nav-btn:hover { background: #d5d8dc; color: #1a2a44; }
+            .allowance-text { font-size: 0.8rem; color: #707b7c; margin-top: -15px; margin-bottom: 20px; text-align: left; font-style: italic; }
         </style>
 
         <div class="rsvp-section">
@@ -1443,6 +1444,11 @@ body {
                     <label>Full Name</label>
                     <input type="text" name="Full Name" class="rsvp-input" placeholder="Enter name" required>
                 </div>
+
+                <div id="allowance-display" class="allowance-text" style="display: none;">
+                    You are allocated <span id="guest-count-val">0</span> additional seat(s).
+                </div>
+
                 <div class="form-group">
                     <label>Attendance</label>
                     <select name="Attendance" id="attendance-select" class="rsvp-input" required>
@@ -1451,6 +1457,9 @@ body {
                         <option value="No">Regretfully Declines</option>
                     </select>
                 </div>
+
+                <div id="dynamic-guest-fields"></div>
+
                 <div class="form-group">
                     <label>Whose side are you?</label>
                     <select name="Guest Side" class="rsvp-input" required>
@@ -1486,7 +1495,30 @@ body {
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbz-IvHfLrejG0qpvxxTbD7K0qlDP2ysrpaTWlR78sZBeLWNUikDkJLn4T-JzGAocgb2VQ/exec';
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const guestLimit = parseInt(urlParams.get('g')) || 0;
+        const dynamicContainer = document.getElementById('dynamic-guest-fields');
+        const allowanceDisplay = document.getElementById('allowance-display');
+        const countVal = document.getElementById('guest-count-val');
+
+        if (guestLimit > 0) {
+            allowanceDisplay.style.display = 'block';
+            countVal.innerText = guestLimit;
+
+            for (let i = 1; i <= guestLimit; i++) {
+                const group = document.createElement('div');
+                group.className = 'form-group';
+                group.innerHTML = `
+                    <label>Additional Guest ${i} Name</label>
+                    <input type="text" name="Guest_Name" class="rsvp-input" placeholder="Enter guest name" required>
+                `;
+                dynamicContainer.appendChild(group);
+            }
+        }
+    });
+
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwgA_s3GM6WApO4IeHvFEWKOBHzNwx1LoUOW7u4ynmSX6Xpbz5GSIDOMBnTtAxuIV0ryQ/exec';
     const rsvpForm = document.getElementById('rsvp-form');
 
     rsvpForm.addEventListener('submit', e => {
@@ -1498,8 +1530,9 @@ body {
         btn.innerText = "SENDING...";
 
         fetch(scriptURL, { method: 'POST', body: new FormData(rsvpForm)})
-        .then(res => {
-            setTimeout(() => {
+        .then(res => res.json())
+        .then(data => {
+            if (data.result === "success") {
                 if (attendance === "Yes") {
                     Swal.fire({
                         title: 'RESPONSE LOGGED!',
@@ -1519,9 +1552,18 @@ body {
                     });
                 }
                 rsvpForm.reset();
-                btn.disabled = false;
-                btn.innerText = "SEND RSVP";
-            }, 500);
+            } else if (data.error === "duplicate") {
+                Swal.fire({
+                    title: 'ALREADY REGISTERED',
+                    text: 'It looks like you have already submitted your RSVP. If you need to make changes, please contact us directly.',
+                    icon: 'warning',
+                    confirmButtonColor: '#1a2a44'
+                });
+            } else {
+                Swal.fire({ title: 'ERROR', text: 'Something went wrong. Please try again.', icon: 'error', confirmButtonColor: '#1a2a44' });
+            }
+            btn.disabled = false;
+            btn.innerText = "SEND RSVP";
         })
         .catch(err => {
             Swal.fire({ title: 'ERROR', text: 'Please try again or contact us directly.', icon: 'error', confirmButtonColor: '#1a2a44' });

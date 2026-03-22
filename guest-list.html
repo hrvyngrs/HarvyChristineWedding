@@ -12,6 +12,7 @@
             --white: #ffffff;
             --groom-color: #1a2a44;
             --bride-color: #aeb2b7;
+            --gold-vip: #d4af37;
         }
 
         body {
@@ -26,7 +27,6 @@
             align-items: center;
         }
 
-        /* Header Navigation Styles */
         .header-nav {
             display: flex;
             justify-content: space-between;
@@ -92,6 +92,7 @@
         .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; }
         .groom-dot { background: var(--groom-color); border: 1px solid white; }
         .bride-dot { background: var(--bride-color); border: 1px solid var(--navy-deep); }
+        .vip-dot { background: var(--gold-vip); border: 1px solid white; }
 
         .map-container {
             display: grid;
@@ -117,6 +118,11 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
             z-index: 20;
             border: 2px solid var(--silver-bright);
+        }
+        .table-hub.vip-hub {
+            background: linear-gradient(135deg, #f1c40f 0%, #d4af37 100%);
+            border: 2px solid white;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
         }
         .table-hub span { font-size: 0.6rem; text-transform: uppercase; }
         .table-hub div { font-size: 1.6rem; }
@@ -199,6 +205,7 @@
     <div class="legend">
         <div><span class="dot groom-dot"></span> Team Groom</div>
         <div><span class="dot bride-dot"></span> Team Bride</div>
+        <div><span class="dot vip-dot"></span> VIP</div>
     </div>
 
     <div id="loading"><div class="loader"></div></div>
@@ -212,10 +219,10 @@
 
     <footer>
         <p style="margin: 0; opacity: 0.8;">
-        &copy; 2026 H&C Wedding. Coded & Designed by 
-        <a href="https://instagram.com/hrvyngrs" style="color: inherit; text-decoration: none; border-bottom: 1px solid rgba(0,0,0,0.1);">HARVY</a>. 
-        All rights reserved.
-    </p>
+            &copy; 2026 H&C Wedding. Coded & Designed by 
+            <a href="https://instagram.com/hrvyngrs" style="color: inherit; text-decoration: none; border-bottom: 1px solid rgba(0,0,0,0.1);">HARVY</a>. 
+            All rights reserved.
+        </p>
     </footer>
 
 <script>
@@ -234,8 +241,8 @@
                     name: cols[1],
                     attendance: cols[2] ? cols[2].toLowerCase() : "",
                     side: cols[3] ? cols[3].toLowerCase() : "bride",
-                    table: cols[4],
-                    seat: parseInt(cols[5]) || 0
+                    table: cols[5], // Shifted to column F (index 5)
+                    seat: parseInt(cols[6]) || 0 // Shifted to column G (index 6)
                 };
             }).filter(g => g.name && g.attendance !== 'no');
 
@@ -264,10 +271,12 @@
             const maxSeats = 10; 
             const radius = 125; 
 
+            // VIP Check
+            const isVIP = (table == "101" || table == "102" || table == "103");
+            const tableLabel = isVIP ? "VIP" : table;
+            const hubClass = isVIP ? "table-hub vip-hub" : "table-hub";
+
             const seatHTML = guests.map((g) => {
-                // Modified Math: 
-                // 1. (g.seat - 1) makes Seat 1 start at index 0
-                // 2. Subtracting (Math.PI / 2) rotates the start point to the TOP of the circle
                 const seatIndex = g.seat > 0 ? (g.seat - 1) : 0;
                 const angle = (seatIndex / maxSeats) * (Math.PI * 2) - (Math.PI / 2);
                 
@@ -283,7 +292,7 @@
                 `;
             }).join('');
 
-            return `<div class="table-circle"><div class="table-hub"><span>Table</span><div>${table}</div></div>${seatHTML}</div>`;
+            return `<div class="table-circle"><div class="${hubClass}"><span>${isVIP ? 'Table' : 'Table'}</span><div>${tableLabel}</div></div>${seatHTML}</div>`;
         }).join('');
     }
 

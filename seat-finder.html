@@ -12,6 +12,7 @@
             --silver-bright: #e2e2e2;
             --silver-text: #aeb2b7;
             --white: #ffffff;
+            --gold-vip: #d4af37;
         }
 
         body {
@@ -30,7 +31,6 @@
             padding: 15px;
         }
 
-        /* Top Navigation Header */
         .top-nav {
             position: absolute;
             top: 20px;
@@ -112,7 +112,7 @@
 
         .rsvp-note {
             font-size: 0.7rem;
-            color: var(--slate-gray);
+            color: #636e72;
             line-height: 1.4;
             margin-bottom: 25px;
             text-transform: uppercase;
@@ -153,7 +153,10 @@
             cursor: pointer;
             width: 100%;
             margin-top: 15px;
+            transition: background 0.3s;
         }
+
+        button:hover { background-color: var(--navy-accent); }
 
         #result-area {
             margin-top: 25px;
@@ -166,14 +169,29 @@
             padding: 25px;
             border: 1px solid var(--silver-bright);
             animation: fadeIn 0.6s ease-out forwards;
+            position: relative;
+        }
+
+        .vip-status {
+            border-color: var(--gold-vip) !important;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
         }
 
         .result-name {
             font-family: 'Playfair Display', serif;
             font-size: 1.4rem;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             border-bottom: 1px solid rgba(226, 226, 226, 0.3);
             padding-bottom: 10px;
+        }
+
+        .guest-by {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--silver-text);
+            margin-bottom: 15px;
+            display: block;
         }
 
         .seat-grid {
@@ -197,6 +215,8 @@
             color: var(--white);
         }
 
+        .vip-text { color: var(--gold-vip) !important; text-shadow: 0 0 5px rgba(212, 175, 55, 0.5); }
+
         .side-info {
             margin-top: 15px;
             padding-top: 10px;
@@ -206,7 +226,7 @@
         footer {
             margin-top: 40px;
             font-size: 0.65rem;
-            color: var(--slate-gray);
+            color: #636e72;
             letter-spacing: 1px;
             text-transform: uppercase;
             opacity: 0.7;
@@ -291,6 +311,7 @@
                 row.split(',').map(cell => cell.replace(/^"(.*)"$/, '$1').replace(/"/g, '').trim())
             );
 
+            // Column Indexes: 0=Timestamp, 1=Name, 2=Attending, 3=Team, 4=GuestBy, 5=Table, 6=Seat
             const guestMatch = rows.find(row => 
                 row[1] && row[1].toLowerCase() === searchInput
             );
@@ -303,23 +324,37 @@
                         <div class="result-card">
                             <div class="result-name">Hi, ${guestMatch[1]}</div>
                             <div class="no-attendance">Our records show you are not attending.<br>No seat has been allocated.</div>
-                            <p style="font-size: 0.7rem; margin-top: 15px; opacity: 0.8;">If this is a mistake, please see the coordinator.</p>
                         </div>
                     `;
                     return;
                 }
 
-                const guestSide = guestMatch[3] || "N/A";
-                const tableNum = guestMatch[4] || "TBD";
-                const seatNum = guestMatch[5] || "TBD";
+                // SIDE LOGIC
+                let teamRaw = guestMatch[3] ? guestMatch[3].toLowerCase() : "";
+                let sideDisplay = "N/A";
+                if(teamRaw.includes("groom")) sideDisplay = "Side of Groom";
+                else if(teamRaw.includes("bride")) sideDisplay = "Side of Bride";
+                else sideDisplay = guestMatch[3] || "N/A";
+
+                const guestBy = guestMatch[4] || "Self";
+                let tableNum = guestMatch[5] || "TBD";
+                const seatNum = guestMatch[6] || "TBD";
+
+                // VIP LOGIC
+                let isVIP = false;
+                if (tableNum == "101" || tableNum == "102" || tableNum == "103") {
+                    tableNum = "VIP";
+                    isVIP = true;
+                }
 
                 resultArea.innerHTML = `
-                    <div class="result-card">
+                    <div class="result-card ${isVIP ? 'vip-status' : ''}">
                         <div class="result-name">Welcome, ${guestMatch[1]}</div>
+                        <span class="guest-by">Guest by: ${guestBy}</span>
                         <div class="seat-grid">
                             <div class="info-item">
                                 <span class="label">TABLE</span>
-                                <span class="value">${tableNum}</span>
+                                <span class="value ${isVIP ? 'vip-text' : ''}">${tableNum}</span>
                             </div>
                             <div class="info-item">
                                 <span class="label">SEAT</span>
@@ -328,14 +363,14 @@
                         </div>
                         <div class="side-info">
                             <div class="info-item">
-                                <span class="label">TEAM SELECTION</span>
-                                <span class="value" style="font-size: 1rem; letter-spacing: 2px; text-transform: uppercase;">Team ${guestSide}</span>
+                                <span class="label">PLACEMENT</span>
+                                <span class="value" style="font-size: 1rem; letter-spacing: 1px; text-transform: uppercase;">${sideDisplay}</span>
                             </div>
                         </div>
                     </div>
                 `;
             } else {
-                resultArea.innerHTML = `<p class='error-text'>NAME NOT FOUND<br><small style="font-weight:normal; color:#444;">Please check the spelling or visit the coordinator.</small></p>`;
+                resultArea.innerHTML = `<p class='error-text'>NAME NOT FOUND<br><small style="font-weight:normal; color:#444;">Check spelling or visit the coordinator.</small></p>`;
             }
         } catch (error) {
             resultArea.innerHTML = "<p class='error-text'>UNABLE TO LOAD LIST</p>";
