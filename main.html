@@ -190,13 +190,38 @@ body {
         justify-content: center;
         pointer-events: none;
         z-index: 15;
-        /* Added dark overlay here */
         background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
     }
 
     .names-overlay > div {
         pointer-events: auto;
         text-align: center;
+    }
+
+    /* SPARKLE EFFECT CSS */
+    .sparkle {
+        position: absolute;
+        background: white;
+        border-radius: 50%;
+        pointer-events: none;
+        box-shadow: 0 0 10px white, 0 0 20px white;
+        animation: flySparkle linear forwards;
+        z-index: 99;
+    }
+
+    @keyframes flySparkle {
+        0% {
+            transform: translate(0, 0) scale(0);
+            opacity: 0;
+        }
+        20% {
+            opacity: 1;
+            transform: translate(5px, -10px) scale(1);
+        }
+        100% {
+            transform: translate(var(--x-end), var(--y-end)) scale(0);
+            opacity: 0;
+        }
     }
 
     /* FLIPPING ANIMATION */
@@ -240,15 +265,14 @@ body {
         justify-content: center;
         flex-wrap: nowrap;
         font-size: calc(1.5rem + 4vw) !important;
-        /* Updated text shadow for maximum readability on complex backgrounds */
         text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8), 0px 0px 15px rgba(0, 0, 0, 0.5);
     }
 
-    /* MOBILE FIX: Increasing name size and stacking vertically */
+    /* MOBILE FIX */
     @media (max-width: 576px) {
         .name {
-            font-size: 3.5rem !important; /* Significant increase for mobile */
-            flex-direction: column;      /* Stacks names to allow for larger text */
+            font-size: 3.5rem !important;
+            flex-direction: column;
             white-space: normal;
             line-height: 1.1;
         }
@@ -259,7 +283,6 @@ body {
         }
     }
 
-    /* Added shadow to the announcement and wedding info for consistency */
     .announcement-text, .wedding-container {
         text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
         color: white;
@@ -282,12 +305,10 @@ body {
         object-fit: cover;
     }
 
-    /* Adjusted size and vertical alignment for centering */
     .heart-svg { width: 1.2em; height: 1.2em; margin: 0 15px; vertical-align: middle; }
 
-    /* HEART PATH with Shadow */
     .heart-path {
-        stroke: white; stroke-width: 2.5; fill: none; stroke-linecap: round;
+        stroke: white; stroke-width: 3.5; fill: none; stroke-linecap: round;
         stroke-dasharray: 160; stroke-dashoffset: 160;
         animation: drawHeartSynced 6s linear infinite;
         filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
@@ -300,9 +321,8 @@ body {
         40%, 100% { stroke-dashoffset: 0; opacity: 0; }
     }
 
-    /* NEW SYMMETRICAL INFINITY PATH with Shadow */
     .infinity-path {
-        stroke: white; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round;
+        stroke: white; stroke-width: 3.5; fill: none; stroke-linecap: round; stroke-linejoin: round;
         stroke-dasharray: 220; stroke-dashoffset: 220;
         opacity: 0;
         animation: drawInfinitySynced 6s linear infinite;
@@ -361,66 +381,81 @@ body {
                         <div class="side-text">FRIDAY</div>
                         <div class="bold-silver-line"></div>
                     </div>
-                    <div class="center-stack">
+                    
+                    <div class="center-stack" id="sparkle-container" style="position: relative; overflow: visible;">
                         <div class="month">JUNE</div>
                         <div class="day">12</div>
                         <div class="year">2026</div>
                     </div>
+
                     <div class="side-block">
                         <div class="bold-silver-line"></div>
                         <div class="side-text">AT 2:00 PM</div>
                         <div class="bold-silver-line"></div>
                     </div>
                 </div>
-                <button type="button" class="btn-play mx-auto reveal-item play-btn">
+                <button type="button" class="btn-play mx-auto reveal-item play-btn" id="playBtn">
                     <span></span>
                 </button>
             </div>
         </div>
 
         <div class="carousel-inner">
-            <div class="carousel-item active" style="height: 100vh;">
-                <img src="img/carousel/carousel-1.jpg">
-            </div>
-            <div class="carousel-item" style="height: 100vh;">
-                <img src="img/carousel/carousel-2.jpg">
-            </div>
+            <div class="carousel-item active" style="height: 100vh;"><img src="img/carousel/carousel-1.jpg"></div>
+            <div class="carousel-item" style="height: 100vh;"><img src="img/carousel/carousel-2.jpg"></div>
         </div>
-
-        <a class="carousel-control-prev justify-content-start" href="#header-carousel" data-slide="prev">
-            <div class="btn btn-primary px-0" style="width: 68px; height: 68px;">
-                <span class="carousel-control-prev-icon mt-3"></span>
-            </div>
-        </a>
-        <a class="carousel-control-next justify-content-end" href="#header-carousel" data-slide="next">
-            <div class="btn btn-primary px-0" style="width: 68px; height: 68px;">
-                <span class="carousel-control-next-icon mt-3"></span>
-            </div>
-        </a>
     </div>
 </div>
 
 <audio id="audioPlayer" src="play.mp3" loop></audio>
 
 <script>
+    // 1. SPARKLE GENERATOR (Restricted to Date Only)
+    function createSparkle() {
+        const container = document.getElementById('sparkle-container');
+        if (!container) return;
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        const size = Math.random() * 6 + 4 + 'px';
+        sparkle.style.width = size;
+        sparkle.style.height = size;
+        sparkle.style.left = Math.random() * 100 + '%';
+        sparkle.style.top = Math.random() * 100 + '%';
+        const xEnd = (Math.random() - 0.5) * 80 + 'px';
+        const yEnd = - (Math.random() * 50 + 30) + 'px';
+        sparkle.style.setProperty('--x-end', xEnd);
+        sparkle.style.setProperty('--y-end', yEnd);
+        sparkle.style.animationDuration = Math.random() * 1.5 + 1 + 's';
+        container.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 2500);
+    }
+    setInterval(createSparkle, 150);
+
+    // 2. AUDIO & BUTTON LOGIC
     const audioPlayer = document.getElementById('audioPlayer');
-    const playButtons = document.querySelectorAll('.btn-play');
+    const playBtn = document.getElementById('playBtn');
 
     function toggleAudio() {
         if (audioPlayer.paused) {
             audioPlayer.play();
-            playButtons.forEach(btn => btn.classList.add('playing'));
+            playBtn.classList.add('playing');
         } else {
             audioPlayer.pause();
-            playButtons.forEach(btn => btn.classList.remove('playing'));
+            playBtn.classList.remove('playing');
         }
     }
 
-    playButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
+    // Single specific listener for the play button
+    if(playBtn) {
+        playBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             toggleAudio();
         });
+    }
+
+    // 3. INITIAL LOAD & CAROUSEL
+    $(document).ready(function() {
+        $('#header-carousel').carousel({ interval: 5000, pause: false });
     });
 
     window.addEventListener('load', () => {
@@ -433,7 +468,7 @@ body {
     document.addEventListener('click', () => { 
         if(audioPlayer && audioPlayer.paused) {
             audioPlayer.play().then(() => {
-                playButtons.forEach(btn => btn.classList.add('playing'));
+                if(playBtn) playBtn.classList.add('playing');
             }).catch(() => {});
         }
     }, { once: true });
