@@ -1511,14 +1511,14 @@ body {
                 group.className = 'form-group';
                 group.innerHTML = `
                     <label>Additional Guest ${i} Name</label>
-                    <input type="text" name="Guest_Name" class="rsvp-input" placeholder="Enter guest name" required>
+                    <input type="text" name="Additional_Guest_${i}" class="rsvp-input" placeholder="Enter guest name" required>
                 `;
                 dynamicContainer.appendChild(group);
             }
         }
     });
 
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwgA_s3GM6WApO4IeHvFEWKOBHzNwx1LoUOW7u4ynmSX6Xpbz5GSIDOMBnTtAxuIV0ryQ/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbx7Dyhafui8v0fucXC0zXEcv2FAbL1dUu1WX6u1zRq1VHq7zRyfo8k-YboIpgqsHdc9OA/exec';
     const rsvpForm = document.getElementById('rsvp-form');
 
     rsvpForm.addEventListener('submit', e => {
@@ -1552,15 +1552,22 @@ body {
                     });
                 }
                 rsvpForm.reset();
-            } else if (data.error === "duplicate") {
+            } else if (data.result === "duplicate") {
+                // This specifically handles the duplicate result and shows the exact name
                 Swal.fire({
                     title: 'ALREADY REGISTERED',
-                    text: 'It looks like you have already submitted your RSVP. If you need to make changes, please contact us directly.',
+                    text: data.name ? `The name "${data.name.toUpperCase()}" is already registered on our list.` : 'One of the names submitted is already registered.',
                     icon: 'warning',
                     confirmButtonColor: '#1a2a44'
                 });
             } else {
-                Swal.fire({ title: 'ERROR', text: 'Something went wrong. Please try again.', icon: 'error', confirmButtonColor: '#1a2a44' });
+                // General error handler for other issues (like script errors)
+                Swal.fire({ 
+                    title: 'ERROR', 
+                    text: data.error || 'Something went wrong. Please try again.', 
+                    icon: 'error', 
+                    confirmButtonColor: '#1a2a44' 
+                });
             }
             btn.disabled = false;
             btn.innerText = "SEND RSVP";

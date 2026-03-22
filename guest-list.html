@@ -48,10 +48,7 @@
             padding: 8px 12px;
         }
 
-        .back-link:hover {
-            opacity: 1;
-            background: rgba(255, 255, 255, 0.05);
-        }
+        .back-link:hover { opacity: 1; background: rgba(255, 255, 255, 0.05); }
 
         .header { 
             text-align: center; 
@@ -69,22 +66,16 @@
             margin: 0;
             font-style: italic;
             line-height: 1;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5), 0 0 10px rgba(226, 226, 226, 0.3);
-            letter-spacing: -1px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
         .header p {
-            font-family: 'Lato', sans-serif;
             font-size: 0.9rem;
-            color: var(--silver-bright);
             letter-spacing: 6px;
             text-transform: uppercase;
-            font-weight: 300;
-            margin-top: 15px;
             opacity: 0.8;
         }
 
-        /* LEGEND STYLING */
         .legend {
             display: flex; gap: 15px; margin-bottom: 25px;
             background: rgba(255,255,255,0.05); padding: 12px 25px;
@@ -98,17 +89,15 @@
         .vip-dot { background: var(--gold-vip); border: 1px solid white; }
         .entourage-dot { background: var(--platinum-entourage); border: 1px solid var(--navy-deep); }
 
-        /* STAGE STYLING */
         .wedding-stage {
             width: 100%;
             max-width: 800px;
             background: rgba(255, 255, 255, 0.05);
             border: 2px solid var(--silver-bright);
             padding: 40px 20px;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
             text-align: center;
             position: relative;
-            box-shadow: 0 0 30px rgba(255,255,255,0.05);
         }
         .stage-label {
             position: absolute;
@@ -120,132 +109,116 @@
             font-size: 0.7rem;
             letter-spacing: 3px;
             text-transform: uppercase;
-            color: var(--silver-bright);
         }
         .couple-table {
             background: linear-gradient(135deg, #ffffff 0%, #e2e2e2 100%);
             width: 220px;
-            height: 80px;
+            padding: 15px;
             margin: 0 auto;
             border-radius: 5px;
+            color: var(--navy-deep);
+            border: 2px solid var(--gold-vip);
+        }
+        .couple-names { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.2rem; }
+
+        /* THE NEW ORGANIZED GRID */
+        .map-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1100px;
+            padding: 20px;
+        }
+
+        .table-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 250px;
+        }
+
+        /* CHAIR/TABLE ICON */
+        .chair-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            font-weight: 900;
             color: var(--navy-deep);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-            border: 2px solid var(--gold-vip);
-        }
-        .couple-names { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.2rem; }
-        .couple-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; }
-
-        .map-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 80px 40px;
-            width: 100%;
-            max-width: 1200px;
-            justify-items: center;
-        }
-
-        /* CIRCULAR TABLE */
-        .table-circle {
-            position: relative;
-            width: 350px; height: 350px;
-            display: flex; justify-content: center; align-items: center;
-        }
-
-        /* VERTICAL RECTANGULAR VIP/ENTOURAGE TABLE */
-        .table-rect {
-            position: relative;
-            width: 350px; height: 350px;
-            display: flex; justify-content: center; align-items: center;
-        }
-        .rect-hub {
-            width: 90px; height: 180px;
-            border-radius: 8px;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            color: var(--navy-deep); font-weight: 900;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-            z-index: 20;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             border: 2px solid white;
         }
-        .vip-hub { background: linear-gradient(135deg, #f1c40f 0%, #d4af37 100%); }
-        .entourage-hub { background: linear-gradient(135deg, #ffffff 0%, #e5e4e2 100%); }
+        .chair-icon span { font-size: 0.5rem; text-transform: uppercase; }
+        .chair-icon div { font-size: 1.2rem; }
 
-        .table-hub {
-            width: 85px; height: 85px;
-            background: linear-gradient(135deg, #ffffff 0%, #dcdde1 100%);
-            border-radius: 50%;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            color: var(--navy-deep); font-weight: 900;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            z-index: 20;
-            border: 2px solid var(--silver-bright);
+        .vip-chair { background: var(--gold-vip); }
+        .ent-chair { background: var(--platinum-entourage); }
+        .reg-chair { background: var(--white); }
+
+        /* NAME LISTING */
+        .guest-list {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
-        
-        .table-hub span, .rect-hub span { font-size: 0.6rem; text-transform: uppercase; }
-        .table-hub div, .rect-hub div { font-size: 1.6rem; }
 
-        .seat {
-            position: absolute;
-            width: 100px; 
-            padding: 6px;
-            font-size: 0.7rem; 
-            text-align: center;
+        .guest-item {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.85rem;
+            padding: 5px 10px;
             border-radius: 4px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-            transform: translate(-50%, -50%);
-            z-index: 10;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 600;
         }
-        .seat-groom { background: var(--groom-color); color: white; border-bottom: 2px solid white; }
-        .seat-bride { background: var(--bride-color); color: var(--navy-deep); border-bottom: 2px solid var(--navy-deep); }
-        .seat-name { font-family: 'Playfair Display', serif; font-weight: 700; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .seat-num { font-size: 0.55rem; opacity: 0.8; }
+        .guest-groom { background: var(--groom-color); color: white; border-left: 3px solid white; }
+        .guest-bride { background: var(--bride-color); color: var(--navy-deep); border-left: 3px solid var(--navy-deep); }
 
         .waiting-list-section {
             width: 90%; max-width: 800px;
-            margin-top: 80px;
+            margin-top: 50px;
             background: rgba(255, 255, 255, 0.03);
-            padding: 40px;
+            padding: 30px;
             border: 1px solid rgba(226, 226, 226, 0.1);
         }
         .waiting-list-header {
             font-family: 'Playfair Display', serif;
-            font-size: 2rem; text-align: center;
-            color: var(--silver-bright);
-            margin-bottom: 30px;
-            font-style: italic;
+            font-size: 1.8rem; text-align: center;
+            margin-bottom: 20px;
         }
         .waiting-list-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
         }
         .waiting-guest {
             background: var(--white);
-            padding: 15px;
+            padding: 10px;
             color: var(--navy-deep);
             font-family: 'Playfair Display', serif;
             font-weight: 700; text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-size: 0.8rem;
         }
 
         .loader { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--silver-bright); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        footer { 
-            margin-top: 60px; 
-            font-size: 0.7rem; 
-            opacity: 0.5; 
-            letter-spacing: 2px; 
-            text-transform: uppercase;
-        }
+        footer { margin-top: 40px; font-size: 0.7rem; opacity: 0.5; letter-spacing: 2px; text-transform: uppercase; }
 
         @media (max-width: 480px) {
-            .logo-text { font-size: 2.5rem; }
-            .header-nav { flex-direction: row; gap: 5px; }
-            .back-link { font-size: 0.55rem; padding: 6px 8px; }
+            .logo-text { font-size: 2.2rem; }
             .map-container { grid-template-columns: 1fr; }
         }
     </style>
@@ -272,7 +245,7 @@
     <div class="wedding-stage">
         <div class="stage-label">Main Stage</div>
         <div class="couple-table">
-            <span class="couple-label">The Newlyweds</span>
+            <span style="font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px;">The Newlyweds</span>
             <div class="couple-names">Harvy & Christine</div>
         </div>
     </div>
@@ -287,11 +260,7 @@
     </div>
 
     <footer>
-        <p style="margin: 0; opacity: 0.8;">
-            &copy; 2026 H&C Wedding. Coded & Designed by 
-            <a href="https://instagram.com/hrvyngrs" style="color: inherit; text-decoration: none; border-bottom: 1px solid rgba(0,0,0,0.1);">HARVY</a>. 
-            All rights reserved.
-        </p>
+        <p>&copy; 2026 H&C Wedding. Coded & Designed by HARVY.</p>
     </footer>
 
 <script>
@@ -324,24 +293,14 @@
                 return acc;
             }, {});
 
-            // SORT LOGIC: VIP (101-103) FIRST, THEN ENTOURAGE (201-204), THEN OTHERS
             const sortedTables = Object.keys(groupedByTable).sort((a, b) => {
-                const aIsVip = (a == "101" || a == "102" || a == "103");
-                const bIsVip = (b == "101" || b == "102" || b == "103");
-                const aIsEnt = (a == "201" || a == "202" || a == "203" || a == "204");
-                const bIsEnt = (b == "201" || b == "202" || b == "203" || b == "204");
-
-                if (aIsVip && !bIsVip) return -1;
-                if (!aIsVip && bIsVip) return 1;
-                if (aIsEnt && !bIsEnt && !bIsVip) return -1;
-                if (!aIsEnt && bIsEnt && !aIsVip) return 1;
-                
-                return a - b;
+                const aVal = parseInt(a) || 999;
+                const bVal = parseInt(b) || 999;
+                return aVal - bVal;
             });
             
             displayMap(sortedTables, groupedByTable);
             displayWaitingList(waitingGuests);
-            
             document.getElementById('loading').style.display = 'none';
         } catch (error) { console.error(error); }
     }
@@ -350,55 +309,35 @@
         const container = document.getElementById('map-container');
         container.innerHTML = tables.map(table => {
             const guests = groupedData[table].sort((a, b) => a.seat - b.seat);
-            const isVIP = (table == "101" || table == "102" || table == "103");
-            const isEntourage = (table == "201" || table == "202" || table == "203" || table == "204");
+            const isVIP = (table >= 101 && table <= 103);
+            const isEnt = (table >= 201 && table <= 204);
             
-            let tableLabel = table;
-            if (isVIP) tableLabel = "VIP";
-            if (isEntourage) tableLabel = "Entourage";
+            let typeClass = "reg-chair";
+            let label = table;
+            if (isVIP) { typeClass = "vip-chair"; label = "VIP"; }
+            if (isEnt) { typeClass = "ent-chair"; label = "ENT"; }
             
-            let seatHTML = '';
-            
-            if (isVIP || isEntourage) {
-                // RECTANGULAR LAYOUT LOGIC
-                seatHTML = guests.map((g) => {
-                    let topPos, leftPos;
-                    if (g.seat <= 5) {
-                        leftPos = '25%';
-                        topPos = (g.seat * 18) + 5 + '%';
-                    } else {
-                        leftPos = '75%';
-                        topPos = ((g.seat - 5) * 18) + 5 + '%';
-                    }
-                    const sideClass = g.side.includes('groom') ? 'seat-groom' : 'seat-bride';
-                    return `<div class="seat ${sideClass}" style="left: ${leftPos}; top: ${topPos};"><span class="seat-name">${g.name}</span><span class="seat-num">Seat ${g.seat}</span></div>`;
-                }).join('');
+            const guestHTML = guests.map(g => {
+                const sideClass = g.side.includes('groom') ? 'guest-groom' : 'guest-bride';
+                return `<div class="guest-item ${sideClass}">${g.name}</div>`;
+            }).join('');
 
-                const hubClass = isVIP ? "vip-hub" : "entourage-hub";
-                return `<div class="table-rect"><div class="rect-hub ${hubClass}"><span>Table</span><div>${tableLabel}</div></div>${seatHTML}</div>`;
-            } else {
-                // CIRCULAR LAYOUT LOGIC
-                const maxSeats = 10; 
-                const radius = 125; 
-
-                seatHTML = guests.map((g) => {
-                    const seatIndex = g.seat > 0 ? (g.seat - 1) : 0;
-                    const angle = (seatIndex / maxSeats) * (Math.PI * 2) - (Math.PI / 2);
-                    const x = Math.cos(angle) * radius;
-                    const y = Math.sin(angle) * radius;
-                    const sideClass = g.side.includes('groom') ? 'seat-groom' : 'seat-bride';
-                    return `<div class="seat ${sideClass}" style="left: calc(50% + ${x}px); top: calc(50% + ${y}px);"><span class="seat-name">${g.name}</span><span class="seat-num">Seat ${g.seat}</span></div>`;
-                }).join('');
-
-                return `<div class="table-circle"><div class="table-hub"><span>Table</span><div>${tableLabel}</div></div>${seatHTML}</div>`;
-            }
+            return `
+                <div class="table-box">
+                    <div class="chair-icon ${typeClass}">
+                        <span>Table</span>
+                        <div>${label}</div>
+                    </div>
+                    <div class="guest-list">${guestHTML}</div>
+                </div>
+            `;
         }).join('');
     }
 
     function displayWaitingList(waitingGuests) {
         const section = document.getElementById('waiting-list-section');
         const grid = document.getElementById('waiting-list-grid');
-        if (waitingGuests.length === 0) { section.style.display = 'none'; return; }
+        if (waitingGuests.length === 0) return;
         section.style.display = 'block';
         waitingGuests.sort((a, b) => a.name.localeCompare(b.name));
         grid.innerHTML = waitingGuests.map(g => `<div class="waiting-guest">${g.name}</div>`).join('');
