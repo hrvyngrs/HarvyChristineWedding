@@ -13,6 +13,7 @@
             --groom-color: #1a2a44;
             --bride-color: #aeb2b7;
             --gold-vip: #d4af37;
+            --platinum-entourage: #e5e4e2;
         }
 
         body {
@@ -83,6 +84,20 @@
             opacity: 0.8;
         }
 
+        /* LEGEND STYLING */
+        .legend {
+            display: flex; gap: 15px; margin-bottom: 25px;
+            background: rgba(255,255,255,0.05); padding: 12px 25px;
+            border-radius: 30px; border: 1px solid rgba(226,226,226,0.1);
+            font-size: 0.8rem; text-transform: uppercase;
+            flex-wrap: wrap; justify-content: center;
+        }
+        .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+        .groom-dot { background: var(--groom-color); border: 1px solid white; }
+        .bride-dot { background: var(--bride-color); border: 1px solid var(--navy-deep); }
+        .vip-dot { background: var(--gold-vip); border: 1px solid white; }
+        .entourage-dot { background: var(--platinum-entourage); border: 1px solid var(--navy-deep); }
+
         /* STAGE STYLING */
         .wedding-stage {
             width: 100%;
@@ -124,17 +139,6 @@
         .couple-names { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.2rem; }
         .couple-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; }
 
-        .legend {
-            display: flex; gap: 15px; margin-bottom: 40px;
-            background: rgba(255,255,255,0.05); padding: 12px 25px;
-            border-radius: 30px; border: 1px solid rgba(226,226,226,0.1);
-            font-size: 0.8rem; text-transform: uppercase;
-        }
-        .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; }
-        .groom-dot { background: var(--groom-color); border: 1px solid white; }
-        .bride-dot { background: var(--bride-color); border: 1px solid var(--navy-deep); }
-        .vip-dot { background: var(--gold-vip); border: 1px solid white; }
-
         .map-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -151,22 +155,23 @@
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* RECTANGULAR VIP TABLE */
+        /* VERTICAL RECTANGULAR VIP/ENTOURAGE TABLE */
         .table-rect {
             position: relative;
             width: 350px; height: 350px;
             display: flex; justify-content: center; align-items: center;
         }
         .rect-hub {
-            width: 180px; height: 90px;
+            width: 90px; height: 180px;
             border-radius: 8px;
-            background: linear-gradient(135deg, #f1c40f 0%, #d4af37 100%);
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             color: var(--navy-deep); font-weight: 900;
             box-shadow: 0 8px 25px rgba(0,0,0,0.5);
             z-index: 20;
             border: 2px solid white;
         }
+        .vip-hub { background: linear-gradient(135deg, #f1c40f 0%, #d4af37 100%); }
+        .entourage-hub { background: linear-gradient(135deg, #ffffff 0%, #e5e4e2 100%); }
 
         .table-hub {
             width: 85px; height: 85px;
@@ -257,18 +262,19 @@
         <p>Seating Map</p>
     </div>
 
+    <div class="legend">
+        <div><span class="dot groom-dot"></span> Team Groom</div>
+        <div><span class="dot bride-dot"></span> Team Bride</div>
+        <div><span class="dot vip-dot"></span> VIP</div>
+        <div><span class="dot entourage-dot"></span> Entourage</div>
+    </div>
+
     <div class="wedding-stage">
         <div class="stage-label">Main Stage</div>
         <div class="couple-table">
             <span class="couple-label">The Newlyweds</span>
             <div class="couple-names">Harvy & Christine</div>
         </div>
-    </div>
-
-    <div class="legend">
-        <div><span class="dot groom-dot"></span> Team Groom</div>
-        <div><span class="dot bride-dot"></span> Team Bride</div>
-        <div><span class="dot vip-dot"></span> VIP</div>
     </div>
 
     <div id="loading"><div class="loader"></div></div>
@@ -318,7 +324,20 @@
                 return acc;
             }, {});
 
-            const sortedTables = Object.keys(groupedByTable).sort((a, b) => a - b);
+            // SORT LOGIC: VIP (101-103) FIRST, THEN ENTOURAGE (201-204), THEN OTHERS
+            const sortedTables = Object.keys(groupedByTable).sort((a, b) => {
+                const aIsVip = (a == "101" || a == "102" || a == "103");
+                const bIsVip = (b == "101" || b == "102" || b == "103");
+                const aIsEnt = (a == "201" || a == "202" || a == "203" || a == "204");
+                const bIsEnt = (b == "201" || b == "202" || b == "203" || b == "204");
+
+                if (aIsVip && !bIsVip) return -1;
+                if (!aIsVip && bIsVip) return 1;
+                if (aIsEnt && !bIsEnt && !bIsVip) return -1;
+                if (!aIsEnt && bIsEnt && !aIsVip) return 1;
+                
+                return a - b;
+            });
             
             displayMap(sortedTables, groupedByTable);
             displayWaitingList(waitingGuests);
@@ -332,29 +351,33 @@
         container.innerHTML = tables.map(table => {
             const guests = groupedData[table].sort((a, b) => a.seat - b.seat);
             const isVIP = (table == "101" || table == "102" || table == "103");
-            const tableLabel = isVIP ? "VIP" : table;
+            const isEntourage = (table == "201" || table == "202" || table == "203" || table == "204");
+            
+            let tableLabel = table;
+            if (isVIP) tableLabel = "VIP";
+            if (isEntourage) tableLabel = "Entourage";
             
             let seatHTML = '';
             
-            if (isVIP) {
-                // RECTANGULAR LAYOUT LOGIC (VIP)
-                // Positions 1-5 top, 6-10 bottom
+            if (isVIP || isEntourage) {
+                // RECTANGULAR LAYOUT LOGIC
                 seatHTML = guests.map((g) => {
                     let topPos, leftPos;
                     if (g.seat <= 5) {
-                        topPos = '25%';
-                        leftPos = (g.seat * 18) + 5 + '%';
+                        leftPos = '25%';
+                        topPos = (g.seat * 18) + 5 + '%';
                     } else {
-                        topPos = '75%';
-                        leftPos = ((g.seat - 5) * 18) + 5 + '%';
+                        leftPos = '75%';
+                        topPos = ((g.seat - 5) * 18) + 5 + '%';
                     }
                     const sideClass = g.side.includes('groom') ? 'seat-groom' : 'seat-bride';
                     return `<div class="seat ${sideClass}" style="left: ${leftPos}; top: ${topPos};"><span class="seat-name">${g.name}</span><span class="seat-num">Seat ${g.seat}</span></div>`;
                 }).join('');
 
-                return `<div class="table-rect"><div class="rect-hub"><span>Table</span><div>${tableLabel}</div></div>${seatHTML}</div>`;
+                const hubClass = isVIP ? "vip-hub" : "entourage-hub";
+                return `<div class="table-rect"><div class="rect-hub ${hubClass}"><span>Table</span><div>${tableLabel}</div></div>${seatHTML}</div>`;
             } else {
-                // CIRCULAR LAYOUT LOGIC (Regular)
+                // CIRCULAR LAYOUT LOGIC
                 const maxSeats = 10; 
                 const radius = 125; 
 

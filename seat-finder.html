@@ -13,6 +13,7 @@
             --silver-text: #aeb2b7;
             --white: #ffffff;
             --gold-vip: #d4af37;
+            --platinum-accent: #e5e4e2; 
         }
 
         body {
@@ -177,6 +178,11 @@
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
         }
 
+        .entourage-status {
+            border-color: var(--platinum-accent) !important;
+            box-shadow: 0 0 15px rgba(229, 228, 226, 0.3);
+        }
+
         .result-name {
             font-family: 'Playfair Display', serif;
             font-size: 1.4rem;
@@ -216,6 +222,7 @@
         }
 
         .vip-text { color: var(--gold-vip) !important; text-shadow: 0 0 5px rgba(212, 175, 55, 0.5); }
+        .entourage-text { color: var(--platinum-accent) !important; text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
 
         .side-info {
             margin-top: 15px;
@@ -347,29 +354,34 @@
                         sideDisplay = guestMatch[3] || "N/A";
                     }
                 } else {
-                    if (teamRaw.includes("groom")) sideDisplay = "Side of Groom";
-                    else if (teamRaw.includes("bride")) sideDisplay = "Side of Bride";
+                    if (teamRaw.includes("groom")) sideDisplay = "Team Groom";
+                    else if (teamRaw.includes("bride")) sideDisplay = "Team Bride";
                     else sideDisplay = guestMatch[3] || "N/A";
                 }
 
                 let tableNum = guestMatch[5] || "TBD";
                 const seatNum = guestMatch[6] || "TBD";
 
-                // VIP LOGIC
+                // SPECIAL TIERS LOGIC
                 let isVIP = false;
+                let isEntourage = false;
+
                 if (tableNum == "101" || tableNum == "102" || tableNum == "103") {
                     tableNum = "VIP";
                     isVIP = true;
+                } else if (tableNum == "201" || tableNum == "202" || tableNum == "203" || tableNum == "204") {
+                    tableNum = "Entourage";
+                    isEntourage = true;
                 }
 
                 resultArea.innerHTML = `
-                    <div class="result-card ${isVIP ? 'vip-status' : ''}">
+                    <div class="result-card ${isVIP ? 'vip-status' : ''} ${isEntourage ? 'entourage-status' : ''}">
                         <div class="result-name">Welcome, ${guestMatch[1]}</div>
                         <span class="guest-by">Guest by: ${guestByDisplay}</span>
                         <div class="seat-grid">
                             <div class="info-item">
                                 <span class="label">TABLE</span>
-                                <span class="value ${isVIP ? 'vip-text' : ''}">${tableNum}</span>
+                                <span class="value ${isVIP ? 'vip-text' : ''} ${isEntourage ? 'entourage-text' : ''}">${tableNum}</span>
                             </div>
                             <div class="info-item">
                                 <span class="label">SEAT</span>
