@@ -10,7 +10,6 @@
             --navy-deep: #0a192f;
             --silver-bright: #e2e2e2;
             --white: #ffffff;
-            /* Brightened groom color for visibility */
             --groom-color: #2c4a7c; 
             --bride-color: #aeb2b7;
             --gold-vip: #d4af37;
@@ -78,7 +77,6 @@
             margin: 10px 0;
         }
 
-        /* SEPARATED LEGEND STYLING */
         .legend-container {
             display: flex;
             flex-direction: column;
@@ -188,15 +186,26 @@
             font-size: 0.85rem;
             padding: 6px 10px;
             border-radius: 4px;
-            text-align: center;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             font-weight: 600;
             border: 1px solid rgba(255,255,255,0.1);
         }
         .guest-groom { background: var(--groom-color); color: white; }
         .guest-bride { background: var(--bride-color); color: var(--navy-deep); }
+        
+        /* SEAT NUMBER STYLING */
+        .seat-badge {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.65rem;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .guest-bride .seat-badge { background: rgba(255, 255, 255, 0.3); }
 
         .waiting-list-section {
             width: 90%; max-width: 800px;
@@ -311,7 +320,6 @@
                 return acc;
             }, {});
 
-            // UPDATED SORTING: VIP -> ENTOURAGE -> REGULAR
             const sortedTables = Object.keys(groupedByTable).sort((a, b) => {
                 const isVIP = (val) => val >= 101 && val <= 103;
                 const isENT = (val) => val >= 201 && val <= 204;
@@ -348,7 +356,12 @@
             
             const guestHTML = guests.map(g => {
                 const sideClass = g.side.includes('groom') ? 'guest-groom' : 'guest-bride';
-                return `<div class="guest-item ${sideClass}">${g.name}</div>`;
+                // Added seat badge next to name
+                return `
+                    <div class="guest-item ${sideClass}">
+                        <span>${g.name}</span>
+                        <span class="seat-badge">S${g.seat}</span>
+                    </div>`;
             }).join('');
 
             return `
