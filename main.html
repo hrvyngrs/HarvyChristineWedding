@@ -27,21 +27,6 @@
 </head>
 
 <!-- SECURITY START HRVS -->
-<style>
-  body.blur {
-    filter: blur(10px);
-  }
-</style>
-
-<script>
-document.addEventListener("visibilitychange", function() {
-  if (document.hidden) {
-    document.body.classList.add("blur");
-  } else {
-    document.body.classList.remove("blur");
-  }
-});
-</script>
 <script>
 document.addEventListener("contextmenu", event => event.preventDefault());
 
@@ -56,27 +41,6 @@ document.onkeydown = function(e) {
 </script>
 
 
-<style>
-.watermark{
-  position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%) rotate(-30deg);
-  font-size:60px;
-  color:rgba(0,0,0,0.1);
-  pointer-events:none;
-}
-</style>
-
-<script>
-document.addEventListener("visibilitychange", function () {
-  if (document.hidden) {
-    document.body.classList.add("blur");
-  } else {
-    document.body.classList.remove("blur");
-  }
-});
-</script>
 <style>
 img {
   -webkit-touch-callout: none;
@@ -404,6 +368,13 @@ body {
             <div class="carousel-item active" style="height: 100vh;"><img src="img/carousel/carousel-1.jpg"></div>
             <div class="carousel-item" style="height: 100vh;"><img src="img/carousel/carousel-2.jpg"></div>
         </div>
+
+        <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#header-carousel" data-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </a>
     </div>
 </div>
 
@@ -841,11 +812,8 @@ body {
     <!-- Event End -->
 
 
-    <!-- Friends & Family Start -->
-<!-- ENTIRE WEDDING PARTY / HONORED ATTENDANTS SECTION -->
 <div class="container-fluid py-5" id="entourage">
 
-  <!-- Section Title: Entourage -->
   <div class="container text-center pt-5 pb-3">
     <div class="section-title position-relative">
       <h1 class="font-secondary display-4">Pidlaoan-Corsino Nuptials</h1>
@@ -853,92 +821,58 @@ body {
     </div>
   </div>
 
-  <!-- Parents (Centered) -->
-  <div class="container py-5 secondary-sponsors text-blue text-center">
+  <div class="container py-5 text-center">
     <div class="row justify-content-center">
-      <div class="col-md-4 mb-4">
+      <div class="col-md-5 mb-4">
         <h6 class="text-uppercase text-primary mb-3 letter-spacing">Parents of the Groom</h6>
-        <p>Engr. Ernesto Montellano Pidlaoan Jr.</p>
-        <p>Mrs. Juliet Gozun Pidlaoan</p>
+        <p class="mb-1"><strong>Engr. Ernesto Montellano Pidlaoan Jr.</strong></p>
+        <p><strong>Mrs. Juliet Gozun Pidlaoan</strong></p>
       </div>
-      <div class="col-md-4 mb-4">
+      <div class="col-md-5 mb-4">
         <h6 class="text-uppercase text-primary mb-3 letter-spacing">Parents of the Bride</h6>
-        <p>Mr. Pablo Diaz Corsino III</p>
-        <p>Mrs. Ammie Galario Corsino</p>
+        <p class="mb-1"><strong>Mr. Pablo Diaz Corsino III</strong></p>
+        <p><strong>Mrs. Ammie Galario Corsino</strong></p>
       </div>
     </div>
   </div>
 
- <!-- Principal Sponsors (Paired Left/Right) -->
-<div class="container py-5">
-  <div class="section-title text-center mb-5">
-    <h1 class="font-secondary display-4">Principal Sponsors</h1>
-    <div class="divider-heart">
-      <div class="line"></div>
-      <i class="far fa-heart"></i>
-      <div class="line"></div>
+  <div class="container py-5">
+    <div class="section-title text-center mb-5">
+      <h2 class="font-secondary display-4">Principal Sponsors</h2>
+      <div class="divider-heart">
+        <div class="line"></div>
+        <i class="far fa-heart"></i>
+        <div class="line"></div>
+      </div>
     </div>
-  </div>
 
-  <div class="container">
-
-    <div class="row">
+    <div class="row sponsor-pair">
       <div class="col-6 text-right"><p>Mr. Aldrin Galario</p></div>
       <div class="col-6 text-left"><p>Mrs. Ma. Flordelis Galario</p></div>
-    </div>
-
-    <div class="row">
       <div class="col-6 text-right"><p>Mr. Jason Quijano</p></div>
       <div class="col-6 text-left"><p>Mrs. Rolca Marie Quijano</p></div>
-    </div>
-
-    <div class="row">
       <div class="col-6 text-right"><p>Hon. Ranulfo "Kap Ranie" Emperio</p></div>
       <div class="col-6 text-left"><p>Mrs. Elisa Emperio</p></div>
-    </div>
-
-    <div class="row">
       <div class="col-6 text-right"><p>Mr. Rolando Seno</p></div>
       <div class="col-6 text-left"><p>Mrs. Luisa Seno</p></div>
-    </div>
-
-    <div class="row">
       <div class="col-6 text-right"><p>Mr. Richard Tura</p></div>
       <div class="col-6 text-left"><p>Mrs. Helen Tura</p></div>
-    </div>
-
-    <div class="row">
       <div class="col-6 text-right"><p>Mr. Albert Castañeda</p></div>
       <div class="col-6 text-left"><p>Mrs. Thea Jeanette Castañeda</p></div>
-    </div>
-
-    <div class="row">
       <div class="col-6 text-right"><p>Mr. Bonifacio Ybañez</p></div>
       <div class="col-6 text-left"><p>Mrs. Angelita Ybañez</p></div>
-    </div>
-
-    <div class="row">
       <div class="col-6 text-right"><p>Mr. Glemiro Dungog</p></div>
       <div class="col-6 text-left"><p>Mrs. Juliet Dungog</p></div>
-    </div>
-
-    <div class="row">
       <div class="col-6 text-right"><p>Mr. Niño Romero</p></div>
       <div class="col-6 text-left"><p>Mrs. Cherry Lou Romero</p></div>
-    </div>
-
-    <div class="row">
       <div class="col-6 text-right"><p>Mr. Godfrey Corsino</p></div>
       <div class="col-6 text-left"><p>Mrs. Marina Corsino</p></div>
     </div>
-
   </div>
-</div>
 
-  <!-- Secondary Sponsors (Centered) -->
-  <div class="container py-5 secondary-sponsors text-blue text-center">
+  <div class="container py-5 text-center">
     <div class="section-title mb-5">
-      <h1 class="font-secondary display-4">Secondary Sponsors</h1>
+      <h2 class="font-secondary display-4">Secondary Sponsors</h2>
       <div class="divider-heart">
         <div class="line"></div>
         <i class="far fa-heart"></i>
@@ -948,29 +882,28 @@ body {
     <div class="row justify-content-center">
       <div class="col-md-4 mb-4">
         <h3 class="script-title">Candle</h3>
-        <h6 class="text-uppercase text-primary mb-3 letter-spacing">TO LIGHT OUR PATH</h6>
+        <h6 class="text-uppercase text-primary mb-3 letter-spacing">To Light Our Path</h6>
         <p>Mr. Bryan May Arroyo</p>
         <p>Ms. Shenna Mie Cabahug</p>
       </div>
       <div class="col-md-4 mb-4">
         <h3 class="script-title">Cord</h3>
-        <h6 class="text-uppercase text-primary mb-3 letter-spacing">TO BIND US TOGETHER</h6>
+        <h6 class="text-uppercase text-primary mb-3 letter-spacing">To Bind Us Together</h6>
         <p>Mr. Jan Louise Casas</p>
         <p>Mrs. Angelica Mari Casas</p>
       </div>
       <div class="col-md-4 mb-4">
         <h3 class="script-title">Veil</h3>
-        <h6 class="text-uppercase text-primary mb-3 letter-spacing">TO CLOTHE US AS ONE</h6>
+        <h6 class="text-uppercase text-primary mb-3 letter-spacing">To Clothe Us As One</h6>
         <p>Mr. Vince Francis Razo</p>
         <p>Mrs. Jan Marini Razo</p>
       </div>
     </div>
   </div>
 
-  <!-- Groomsmen & Bridesmaids (Paired Left/Right) -->
   <div class="container py-5">
     <div class="section-title text-center mb-5">
-      <h1 class="font-secondary display-4">The Wedding Squad</h1>
+      <h2 class="font-secondary display-4">The Wedding Squad</h2>
       <div class="divider-heart">
         <div class="line"></div>
         <i class="far fa-heart"></i>
@@ -978,79 +911,47 @@ body {
       </div>
     </div>
 
-<div class="container">
-
-  <!-- Best Man / Maid of Honor -->
-  <div class="row">
-    <div class="col-6 text-right">
-      <h6 class="text-uppercase text-primary mb-3 letter-spacing">Best Man</h6>
-      <p>Mr. Rued Torres</p>
+    <div class="row mb-4">
+      <div class="col-6 text-right">
+        <h6 class="text-uppercase text-primary mb-2 letter-spacing">Best Man</h6>
+        <p><strong>Mr. Rued Torres</strong></p>
+      </div>
+      <div class="col-6 text-left">
+        <h6 class="text-uppercase text-primary mb-2 letter-spacing">Maid of Honor</h6>
+        <p><strong>Ms. Charlene Mae Corsino</strong></p>
+      </div>
     </div>
-    <div class="col-6 text-left">
-      <h6 class="text-uppercase text-primary mb-3 letter-spacing">Maid of Honor</h6>
-      <p>Ms. Charlene Mae Corsino</p>
+
+    <div class="row mt-3">
+      <div class="col-6 text-right">
+        <h6 class="text-uppercase text-primary mb-3 letter-spacing">Groomsmen</h6>
+      </div>
+      <div class="col-6 text-left">
+        <h6 class="text-uppercase text-primary mb-3 letter-spacing">Bridesmaids</h6>
+      </div>
     </div>
-  </div>
 
-  <!-- Section Titles -->
-  <div class="row mt-3">
-    <div class="col-6 text-right">
-      <h6 class="text-uppercase text-primary mb-3 letter-spacing">Groomsmen</h6>
+    <div class="row">
+      <div class="col-6 text-right"><p>Mr. Haxyl Pidlaoan</p></div>
+      <div class="col-6 text-left"><p>Ms. Jennifer Ybañez</p></div>
+      <div class="col-6 text-right"><p>Mr. Hargyl Pidlaoan</p></div>
+      <div class="col-6 text-left"><p>Ms. Marie Josephine Corsino</p></div>
+      <div class="col-6 text-right"><p>Engr. Paul Emmanuel Corsino</p></div>
+      <div class="col-6 text-left"><p>Ms. Angelika Joyce Apiag</p></div>
+      <div class="col-6 text-right"><p>Mr. Rey Anthony Baguio</p></div>
+      <div class="col-6 text-left"><p>Ms. Antonette Villapez</p></div>
+      <div class="col-6 text-right"><p>Mr. Jan Laurent Mata</p></div>
+      <div class="col-6 text-left"><p>Ms. Jennifer Lim</p></div>
+      <div class="col-6 text-right"><p>Mr. Kent Mariel Linao</p></div>
+      <div class="col-6 text-left"><p>Ms. Rosevel Odal</p></div>
+      <div class="col-6 text-right"><p>Engr. Edmir Fuentes</p></div>
+      <div class="col-6 text-left"><p>Ms. Christine Mae Cinco</p></div>
+      <div class="col-6 text-right"><p>Mr. Fenz Razel Apiag</p></div>
+      <div class="col-6 text-left"><p>Ms. Kaye Adolfo-Sia</p></div>
+      <div class="col-6 text-right"><p>Mr. Jell Mercader</p></div>
+      <div class="col-6 text-left"><p>Ms. Karla Mae Dungog-Getigan</p></div>
     </div>
-    <div class="col-6 text-left">
-      <h6 class="text-uppercase text-primary mb-3 letter-spacing">Bridesmaids</h6>
-    </div>
-  </div>
 
-  <!-- Paired Names -->
-  <div class="row">
-    <div class="col-6 text-right"><p>Mr. Haxyl Pidlaoan</p></div>
-    <div class="col-6 text-left"><p>Ms. Jennifer Ybañez</p></div>
-  </div>
-
-  <div class="row">
-    <div class="col-6 text-right"><p>Mr. Hargyl Pidlaoan</p></div>
-    <div class="col-6 text-left"><p>Ms. Marie Josephine Corsino</p></div>
-  </div>
-
-  <div class="row">
-    <div class="col-6 text-right"><p>Engr. Paul Emmanuel Corsino</p></div>
-    <div class="col-6 text-left"><p>Ms. Angelika Joyce Apiag</p></div>
-  </div>
-
-  <div class="row">
-    <div class="col-6 text-right"><p>Mr. Rey Anthony Baguio</p></div>
-    <div class="col-6 text-left"><p>Ms. Antonette Villapez</p></div>
-  </div>
-
-  <div class="row">
-    <div class="col-6 text-right"><p>Mr. Jan Laurent Mata</p></div>
-    <div class="col-6 text-left"><p>Ms. Jennifer Lim</p></div>
-  </div>
-
-  <div class="row">
-    <div class="col-6 text-right"><p>Mr. Kent Mariel Linao</p></div>
-    <div class="col-6 text-left"><p>Ms. Rosevel Odal</p></div>
-  </div>
-
-  <div class="row">
-    <div class="col-6 text-right"><p>Engr. Edmir Fuentes</p></div>
-    <div class="col-6 text-left"><p>Ms. Christine Mae Cinco</p></div>
-  </div>
-
-  <div class="row">
-    <div class="col-6 text-right"><p>Mr. Fenz Razel Apiag</p></div>
-    <div class="col-6 text-left"><p>Ms. Kaye Adolfo-Sia</p></div>
-  </div>
-
-  <div class="row">
-    <div class="col-6 text-right"><p>Mr. Jell Mercader</p></div>
-    <div class="col-6 text-left"><p>Ms. Karla Mae Dungog-Getigan</p></div>
-  </div>
-
-</div>
-
-    <!-- Bridesmen (Centered) -->
     <div class="row justify-content-center mt-4">
       <div class="col-md-4 text-center">
         <h6 class="text-uppercase text-primary mb-3 letter-spacing">Bridesmen</h6>
@@ -1061,10 +962,9 @@ body {
     </div>
   </div>
 
-  <!-- Bearers & Flower Girls (Centered) -->
-  <div class="container py-5 secondary-sponsors text-blue text-center">
+  <div class="container py-5 text-center">
     <div class="section-title mb-5">
-      <h1 class="font-secondary display-4">Our Bearers & Flower Girls</h1>
+      <h2 class="font-secondary display-4">Our Bearers & Flower Girls</h2>
       <div class="divider-heart">
         <div class="line"></div>
         <i class="far fa-heart"></i>
@@ -1072,454 +972,275 @@ body {
       </div>
     </div>
     <div class="row justify-content-center">
-      <div class="col-md-4 mb-4">
-        <h6 class="text-uppercase text-primary mb-3 letter-spacing">RING</h6>
+      <div class="col-6 col-md-3 mb-4">
+        <h6 class="text-uppercase text-primary mb-3 letter-spacing">Ring</h6>
         <p>Yugo Akio Quijano</p>
       </div>
-      <div class="col-md-4 mb-4">
-        <h6 class="text-uppercase text-primary mb-3 letter-spacing">BIBLE</h6>
+      <div class="col-6 col-md-3 mb-4">
+        <h6 class="text-uppercase text-primary mb-3 letter-spacing">Bible</h6>
         <p>Jexyll Pidlaoan</p>
       </div>
-      <div class="col-md-4 mb-4">
-        <h6 class="text-uppercase text-primary mb-3 letter-spacing">COIN</h6>
-        <p>-</p>
-      </div>
-      <div class="col-md-4 mb-4">
-        <h6 class="text-uppercase text-primary mb-3 letter-spacing">FLOWER GIRLS</h6>
+      <div class="col-6 col-md-3 mb-4">
+        <h6 class="text-uppercase text-primary mb-3 letter-spacing">Flower Girls</h6>
         <p>Alison Reign Bariquit</p>
         <p>Nathalie Claire Gilig</p>
         <p>Freya Elaine Pidlaoan</p>
       </div>
     </div>
   </div>
-
 </div>
 
-<!-- STYLES -->
 <style>
-/* Letter spacing for headings */
-.letter-spacing {
-  letter-spacing: 3px;
-}
+  .letter-spacing { letter-spacing: 3px; }
+  .script-title { font-family: 'Dancing Script', cursive; font-weight: 400; font-size: 1.8rem; margin-bottom: 0.2rem; color: #1a2a44; }
+  
+  /* Divider logic */
+  .divider-heart { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 15px auto; width: 250px; }
+  .divider-heart .line { flex: 1; border-top: 1px solid #b08d57; }
+  .divider-heart i { color: #b08d57; font-size: 12px; }
 
-/* Text color */
-.text-blue {
-  color: #007BFF;
-}
-
-/* Reduce spacing for p tags in sponsors */
-.secondary-sponsors p {
-  margin-bottom: 0.5rem;
-}
-
-/* Script font for Candle/Cord/Veil */
-.script-title {
-  font-family: 'Dancing Script', cursive;
-  font-weight: 400;
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-/* Divider heart */
-.divider-heart {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 15px;
-  width: 200px;
-  margin-left: auto;
-  margin-right: auto;
-}
-.divider-heart .line {
-  flex: 1;
-  border-top: 2px solid navy;
-}
-.divider-heart i {
-  color: navy;
-  margin: 0 10px;
-}
+  /* Ensure rows of names don't look cramped */
+  .row p { margin-bottom: 0.7rem; font-size: 1.05rem; }
+  
+  @media (max-width: 576px) {
+    .font-secondary.display-4 { font-size: 2.5rem; }
+    .row p { font-size: 0.9rem; }
+  }
 </style>
-
-<!-- Import Dancing Script font -->
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
-    <!-- Friends & Family End -->
 
 
     <!--DressCode/Gift Start -->
 <div class="container-fluid py-5" id="dressgift">
-    <div class="section-title position-relative text-center">
+    <div class="section-title position-relative text-center mb-5">
         <h6 class="text-uppercase text-primary mb-3" style="letter-spacing: 3px;">DRESS CODE & GIFT IDEAS</h6>
         <h1 class="font-secondary display-4">What to wear?</h1>
         <i class="far fa-heart text-dark"></i>
     </div>
-    <center>
-        <p class="text-primary mb-3" style="letter-spacing: 1px;">
-            <strong>Time to bring out your finest!</strong>
-            <br/><br/>
-            We kindly invite our guests to come dressed in formal attire, as shown in the photo. Think elegant, stylish, and camera‑ready. We want this celebration (and the photos!) to be truly unforgettable.
-            <br/><br/>
-            We have just one small favor: dress up with us for this very special day. It would mean so much to see everyone looking their best as we celebrate love, laughter, and beautiful new beginnings together.
-            <br/>
-        </p>
 
+    <div class="text-center mx-auto mb-5" style="max-width: 800px;">
+        <p class="text-primary mb-3" style="letter-spacing: 1px;">
+            <strong>Time to bring out your finest!</strong><br><br>
+            We kindly invite our guests to come dressed in formal attire, as shown in the photo. Think elegant, stylish, and camera‑ready. We want this celebration (and the photos!) to be truly unforgettable.<br><br>
+            We have just one small favor: dress up with us for this very special day. It would mean so much to see everyone looking their best as we celebrate love, laughter, and beautiful new beginnings together.
+        </p>
+    </div>
+
+    <div class="table-responsive mb-5">
         <table style="width: 100%; border-collapse: separate; border-spacing: 20px;">
             <tr>
                 <td style="border: 2px solid #003366; border-radius: 10px; padding: 15px; vertical-align: top; text-align: center;">
                     <h6 class="text-uppercase text-primary mb-3" style="letter-spacing: 1px;">Sponsors</h6>
-                    <img src="img/attire/sponsor.png" alt="Sponsors Dress Code" style="max-width: 100%; max-height: 180px; object-fit: contain; display: block; margin: 0 auto;">
-                    <p><strong>Gents</strong>: Full Suit & Tie or Tuxedo with Formal Slacks</p>
-                    <p><strong>Ladies</strong>: Formal Long Gown or Elegant Evening Gown</p>
+                    <img src="img/attire/sponsor.png" alt="Sponsors" style="max-width: 100%; max-height: 180px; object-fit: contain; display: block; margin: 0 auto 15px;">
+                    <p><strong>Gents</strong>: Full Suit & Tie or Tuxedo</p>
+                    <p><strong>Ladies</strong>: Formal Long Gown</p>
                 </td>
                 <td style="border: 2px solid #003366; border-radius: 10px; padding: 15px; vertical-align: top; text-align: center;">
                     <h6 class="text-uppercase text-primary mb-3" style="letter-spacing: 1px;">Guests</h6>
-                    <img src="img/attire/guest.png" alt="Guests Dress Code" style="max-width: 100%; max-height: 180px; object-fit: contain; display: block; margin: 0 auto;">
-                    <p><strong>Gents</strong>: Long-sleeve Button-down or Blazer with Slacks</p>
-                    <p><strong>Ladies</strong>: Cocktail Dress or Long Formal Dress</p>
+                    <img src="img/attire/guest.png" alt="Guests" style="max-width: 100%; max-height: 180px; object-fit: contain; display: block; margin: 0 auto 15px;">
+                    <p><strong>Gents</strong>: Button-down or Blazer with Slacks</p>
+                    <p><strong>Ladies</strong>: Cocktail or Long Formal Dress</p>
                 </td>
             </tr>
         </table>
+    </div>
 
-        <h6 class="text-uppercase text-primary mb-3" style="letter-spacing: 3px; text-align: center; margin-top: 30px;">Color Motif</h6>
+    <div class="text-center mb-5">
+        <h6 class="text-uppercase text-primary mb-3" style="letter-spacing: 3px;">Color Motif</h6>
         <div style="display: flex; justify-content: center; gap: 40px; margin-top: 10px;">
             <div style="text-align: center; font-family: Arial, sans-serif;">
-                <div style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 10px; border: 4px solid #ddd; background: #808080;"></div>
+                <div style="width: 80px; height: 80px; border-radius: 50%; border: 4px solid #ddd; background: #808080; margin-bottom: 10px;"></div>
                 <p style="font-size: 16px; font-weight: 500; margin: 0;">Gray</p>
             </div>
-
             <div style="text-align: center; font-family: Arial, sans-serif;">
-                <div style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 10px; border: 4px solid #ddd; background: #0b1f4d;"></div>
+                <div style="width: 80px; height: 80px; border-radius: 50%; border: 4px solid #ddd; background: #0b1f4d; margin-bottom: 10px;"></div>
                 <p style="font-size: 16px; font-weight: 500; margin: 0;">Navy Blue</p>
             </div>
         </div>
-
-        <hr style="border: 1px solid #003366; width: 50%; margin: 30px auto;">
-
-        <div style="background: linear-gradient(145deg, #0b1f4d, #1a3a8a); border: 2px solid #C0C0C0; border-radius: 30px; padding: 60px 40px; margin: 50px auto; max-width: 850px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4); position: relative; overflow: hidden;">
-            
-            <div style="position: absolute; top: 20px; left: 20px; width: 40px; height: 40px; border-top: 3px solid #C0C0C0; border-left: 3px solid #C0C0C0; opacity: 0.6;"></div>
-            <div style="position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; border-top: 3px solid #C0C0C0; border-right: 3px solid #C0C0C0; opacity: 0.6;"></div>
-            <div style="position: absolute; bottom: 20px; left: 20px; width: 40px; height: 40px; border-bottom: 3px solid #C0C0C0; border-left: 3px solid #C0C0C0; opacity: 0.6;"></div>
-            <div style="position: absolute; bottom: 20px; right: 20px; width: 40px; height: 40px; border-bottom: 3px solid #C0C0C0; border-right: 3px solid #C0C0C0; opacity: 0.6;"></div>
-
-            <div class="section-title position-relative text-center">
-<style>
-    /* 1. Pulse Glow for the Centered Circle */
-    @keyframes pulseGlow {
-        0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); transform: translate(-50%, -50%) scale(1); }
-        70% { box-shadow: 0 0 0 25px rgba(255, 255, 255, 0); transform: translate(-50%, -50%) scale(1.05); }
-        100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); transform: translate(-50%, -50%) scale(1); }
-    }
-
-    /* 2. Symmetrical Opening Lid */
-    @keyframes openingGift {
-        0%, 15% { transform: translateY(0) rotate(0deg); }
-        35%, 55% { transform: translateY(-22px) rotate(-8deg); } 
-        80%, 100% { transform: translateY(0) rotate(0deg); }
-    }
-
-    /* 3. Floating Sparkles */
-    @keyframes sparkleFloat {
-        0% { transform: scale(0) translateY(0); opacity: 0; }
-        50% { transform: scale(1.2) translateY(-40px); opacity: 1; }
-        100% { transform: scale(0) translateY(-70px); opacity: 0; }
-    }
-
-    /* 4. Silver Shimmer Text Animation */
-    @keyframes silverShimmer {
-        0% { background-position: -200% center; }
-        100% { background-position: 200% center; }
-    }
-</style>
-
-<div class="section-title position-relative text-center" style="padding-top: 40px;">
-    
-    <div style="position: relative; width: 120px; height: 120px; margin: 0 auto 30px auto; display: flex; align-items: center; justify-content: center;">
-        
-        <div style="position: absolute; top: 50%; left: 50%; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(2px); animation: pulseGlow 2.5s infinite; z-index: 1;"></div>
-
-        <div style="position: relative; z-index: 2; width: 120px; height: 120px; overflow: visible;">
-            <svg viewBox="0 0 100 100" style="width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 12px 20px rgba(0,0,0,0.4));">
-                
-                <circle cx="50" cy="40" r="3" fill="white" style="animation: sparkleFloat 2s infinite 0.1s;"/>
-                <circle cx="30" cy="45" r="2" fill="#C0C0C0" style="animation: sparkleFloat 2.5s infinite 0.5s;"/>
-                <circle cx="70" cy="45" r="2" fill="white" style="animation: sparkleFloat 2.2s infinite 0.3s;"/>
-
-                <rect x="22" y="50" width="56" height="42" rx="3" fill="white" />
-                <rect x="46" y="50" width="8" height="42" fill="#C0C0C0" />
-
-                <g style="animation: openingGift 4s ease-in-out infinite; transform-origin: 50% 50px;">
-                    <rect x="18" y="38" width="64" height="12" rx="3" fill="white" stroke="rgba(0,0,0,0.05)" stroke-width="1"/>
-                    <rect x="46" y="38" width="8" height="12" fill="#C0C0C0" />
-                    <path d="M50 38 Q65 15 75 38 Z" fill="#C0C0C0" />
-                    <path d="M50 38 Q35 15 25 38 Z" fill="#C0C0C0" />
-                    <circle cx="50" cy="38" r="4" fill="#E0E0E0" />
-                </g>
-            </svg>
-        </div>
     </div>
 
-    <h1 class="font-secondary display-4" style="
-        font-family: 'Dancing Script', 'Brush Script MT', cursive; 
-        font-size: 4.5rem; 
-        font-weight: 700; 
-        line-height: 1.1; 
-        padding: 10px 0; 
-        margin: 0;
-        background: linear-gradient(to right, #ffffff 20%, #C0C0C0 40%, #ffffff 60%, #C0C0C0 80%, #ffffff 100%);
-        background-size: 200% auto;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: silverShimmer 4s linear infinite;
-        text-shadow: 0px 10px 20px rgba(0,0,0,0.3);
-    ">
-        Note on Gifts
-    </h1>
+    <hr style="border: 1px solid #003366; width: 50%; margin: 30px auto;">
 
-    <div style="width: 150px; height: 2px; background: linear-gradient(to right, transparent, #C0C0C0, #ffffff, #C0C0C0, transparent); background-size: 200% auto; animation: silverShimmer 3s linear infinite; margin: 10px auto;"></div>
-</div>
+    <div style="background: linear-gradient(145deg, #0b1f4d, #1a3a8a); border: 2px solid #C0C0C0; border-radius: 30px; padding: 60px 40px; margin: 50px auto; max-width: 850px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4); position: relative; overflow: hidden; text-align: center;">
+        
+        <div style="position: absolute; top: 20px; left: 20px; width: 40px; height: 40px; border-top: 3px solid #C0C0C0; border-left: 3px solid #C0C0C0; opacity: 0.6;"></div>
+        <div style="position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; border-top: 3px solid #C0C0C0; border-right: 3px solid #C0C0C0; opacity: 0.6;"></div>
+        <div style="position: absolute; bottom: 20px; left: 20px; width: 40px; height: 40px; border-bottom: 3px solid #C0C0C0; border-left: 3px solid #C0C0C0; opacity: 0.6;"></div>
+        <div style="position: absolute; bottom: 20px; right: 20px; width: 40px; height: 40px; border-bottom: 3px solid #C0C0C0; border-right: 3px solid #C0C0C0; opacity: 0.6;"></div>
 
-            <center>
-                <h5 class="font-weight-normal mb-3 pb-3" style="color: #ffffff; line-height: 2; letter-spacing: 0.8px; opacity: 0.9; max-width: 650px; font-size: 1.1rem;">
-                    Having you celebrate with us is already the greatest gift we could ask for. However, if you wish to bless us with something more, 
-                    <span style="color: #ffffff; font-weight: bold; text-decoration: underline; text-underline-offset: 5px; letter-spacing: 2px;">MONETARY GIFTS</span> 
-                    would be truly appreciated as we begin our married life together.
-                    <br/><br/>
+        <style>
+            @keyframes pulseGlow {
+                0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); transform: translate(-50%, -50%) scale(1); }
+                70% { box-shadow: 0 0 0 25px rgba(255, 255, 255, 0); transform: translate(-50%, -50%) scale(1.05); }
+                100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); transform: translate(-50%, -50%) scale(1); }
+            }
+            @keyframes openingGift {
+                0%, 15% { transform: translateY(0) rotate(0deg); }
+                35%, 55% { transform: translateY(-22px) rotate(-8deg); } 
+                80%, 100% { transform: translateY(0) rotate(0deg); }
+            }
+            @keyframes sparkleFloat {
+                0% { transform: scale(0) translateY(0); opacity: 0; }
+                50% { transform: scale(1.2) translateY(-40px); opacity: 1; }
+                100% { transform: scale(0) translateY(-70px); opacity: 0; }
+            }
+            @keyframes silverShimmer {
+                0% { background-position: -200% center; }
+                100% { background-position: 200% center; }
+            }
+        </style>
 
-                        Our home is already filled with love, so we kindly request no more household appliances or kitchenware.
-                </h5>
-
-                <div style="margin-top: 30px; position: relative; display: inline-block; padding: 10px; background: #C0C0C0; border-radius: 20px;">
-                    <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: inset 0 0 10px rgba(0,0,0,0.1);">
-                        <div style="border: 1px dashed #0b1f4d; padding: 15px; border-radius: 10px;">
-                            <p style="color: #0b1f4d; margin-bottom: 12px; font-family: 'Arial', sans-serif; font-size: 0.75rem; font-weight: bold; letter-spacing: 3px; text-transform: uppercase;">Scan to Bless</p>
-                            <img src="img/gift/qr.png" alt="QR Code" style="max-width: 140px; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1));">
-                        </div>
-                    </div>
-                    <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: #162a5e; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.7rem; border: 2px solid #C0C0C0; white-space: nowrap; z-index: 2;">
-                        LOVE & GRATITUDE
-                    </div>
-                </div>
-
-                <div style="margin-top: 40px; display: flex; align-items: center; justify-content: center; gap: 15px; background: transparent;">
-                    <div style="flex: 1; max-width: 100px; height: 1px; background: linear-gradient(to left, #C0C0C0, transparent);"></div>
-                    <div style="display: flex; align-items: center; gap: 10px; white-space: nowrap;">
-                        <i class="far fa-heart" style="color: #C0C0C0; font-size: 0.8rem; opacity: 0.6;"></i>
-                        <i class="fas fa-heart" style="color: #ffffff; font-size: 1.3rem; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4));"></i>
-                        <i class="far fa-heart" style="color: #C0C0C0; font-size: 0.8rem; opacity: 0.6;"></i>
-                    </div>
-                    <div style="flex: 1; max-width: 100px; height: 1px; background: linear-gradient(to right, #C0C0C0, transparent);"></div>
-                </div>
-            </center>
+        <div style="position: relative; width: 120px; height: 120px; margin: 0 auto 30px auto; display: flex; align-items: center; justify-content: center;">
+            <div style="position: absolute; top: 50%; left: 50%; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(2px); animation: pulseGlow 2.5s infinite; z-index: 1;"></div>
+            <div style="position: relative; z-index: 2; width: 120px; height: 120px;">
+                <svg viewBox="0 0 100 100" style="width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 12px 20px rgba(0,0,0,0.4));">
+                    <circle cx="50" cy="40" r="3" fill="white" style="animation: sparkleFloat 2s infinite 0.1s;"/>
+                    <circle cx="30" cy="45" r="2" fill="#C0C0C0" style="animation: sparkleFloat 2.5s infinite 0.5s;"/>
+                    <circle cx="70" cy="45" r="2" fill="white" style="animation: sparkleFloat 2.2s infinite 0.3s;"/>
+                    <rect x="22" y="50" width="56" height="42" rx="3" fill="white" />
+                    <rect x="46" y="50" width="8" height="42" fill="#C0C0C0" />
+                    <g style="animation: openingGift 4s ease-in-out infinite; transform-origin: 50% 50px;">
+                        <rect x="18" y="38" width="64" height="12" rx="3" fill="white" stroke="rgba(0,0,0,0.05)" stroke-width="1"/>
+                        <rect x="46" y="38" width="8" height="12" fill="#C0C0C0" />
+                        <path d="M50 38 Q65 15 75 38 Z" fill="#C0C0C0" />
+                        <path d="M50 38 Q35 15 25 38 Z" fill="#C0C0C0" />
+                        <circle cx="50" cy="38" r="4" fill="#E0E0E0" />
+                    </g>
+                </svg>
+            </div>
         </div>
-    </center>
+
+        <h1 style="font-family: 'Dancing Script', 'Brush Script MT', cursive; font-size: 4.5rem; font-weight: 700; line-height: 1.1; margin: 0; background: linear-gradient(to right, #ffffff 20%, #C0C0C0 40%, #ffffff 60%, #C0C0C0 80%, #ffffff 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: silverShimmer 4s linear infinite; text-shadow: 0px 10px 20px rgba(0,0,0,0.3);">
+            Note on Gifts
+        </h1>
+
+        <div style="width: 150px; height: 2px; background: linear-gradient(to right, transparent, #C0C0C0, #ffffff, #C0C0C0, transparent); background-size: 200% auto; animation: silverShimmer 3s linear infinite; margin: 10px auto 30px;"></div>
+
+        <h5 class="font-weight-normal mb-4" style="color: #ffffff; line-height: 2; letter-spacing: 0.8px; opacity: 0.9; max-width: 650px; font-size: 1.1rem; margin: 0 auto;">
+            Having you celebrate with us is already the greatest gift we could ask for. However, if you wish to bless us with something more, 
+            <span style="font-weight: bold; text-decoration: underline; text-underline-offset: 5px; letter-spacing: 2px;">MONETARY GIFTS</span> 
+            would be truly appreciated as we begin our married life together.<br><br>
+            Our home is already filled with love, so we kindly request no more household appliances or kitchenware.
+        </h5>
+
+        <div style="margin-top: 30px; position: relative; display: inline-block; padding: 10px; background: #C0C0C0; border-radius: 20px;">
+            <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: inset 0 0 10px rgba(0,0,0,0.1);">
+                <div style="border: 1px dashed #0b1f4d; padding: 15px; border-radius: 10px;">
+                    <p style="color: #0b1f4d; margin-bottom: 12px; font-family: 'Arial', sans-serif; font-size: 0.75rem; font-weight: bold; letter-spacing: 3px; text-transform: uppercase;">Scan to Bless</p>
+                    <img src="img/gift/qr.jpeg" alt="QR Code" style="max-width: 140px; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1));">
+                </div>
+            </div>
+            <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: #162a5e; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.7rem; border: 2px solid #C0C0C0; white-space: nowrap; z-index: 2;">
+                LOVE & GRATITUDE
+            </div>
+        </div>
+
+        <div style="margin-top: 40px; display: flex; align-items: center; justify-content: center; gap: 15px;">
+            <div style="flex: 1; max-width: 100px; height: 1px; background: linear-gradient(to left, #C0C0C0, transparent);"></div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <i class="far fa-heart" style="color: #C0C0C0; font-size: 0.8rem; opacity: 0.6;"></i>
+                <i class="fas fa-heart" style="color: #ffffff; font-size: 1.3rem; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4));"></i>
+                <i class="far fa-heart" style="color: #C0C0C0; font-size: 0.8rem; opacity: 0.6;"></i>
+            </div>
+            <div style="flex: 1; max-width: 100px; height: 1px; background: linear-gradient(to right, #C0C0C0, transparent);"></div>
+        </div>
+    </div>
 </div>
     <!-- DressCode/Guide End -->
 
 
     <!-- RSVP Start -->
-    <div class="container-fluid bg-dark text-white py-5" id="rsvp" style="margin-top: 90px;">
-<div class="container text-center py-5">
+<div class="container-fluid bg-dark text-white py-5" id="rsvp" style="margin-top: 90px;">
+    <div class="container text-center py-5">
+        <div class="section-title position-relative text-center">
+            <h1 class="font-secondary display-3 text-white">You're Invited!</h1>
+            <p class="mt-4">
+                We are truly honored to celebrate our wedding day with you, and your presence would mean so much to us. If you are receiving this invitation, it is because you are one of the special guests personally chosen by the bride and groom. A seat has been reserved especially for you, and we can’t wait to share this unforgettable moment surrounded by our closest family and friends.
+            </p>
 
-    <div class="section-title position-relative text-center">
-        <h1 class="font-secondary display-3 text-white">You're Invited!</h1>
-        <br/>
+            <hr style="border: 1px solid rgba(255,255,255,0.3); margin: 30px 0;">
 
-        <p>
-            We are truly honored to celebrate our wedding day with you, and your presence would mean so much to us. If you are receiving this invitation, it is because you are one of the special guests personally chosen by the bride and groom. A seat has been reserved especially for you, and we can’t wait to share this unforgettable moment surrounded by our closest family and friends.
-        </p>
+            <p>
+                To help us create a smooth, intimate, and memorable celebration, we kindly ask for your understanding and cooperation with the following guest policies:
+            </p>
 
-        <hr style="border: 1px solid rgba(255,255,255,0.3); margin: 30px 0;">
+            <ul style="list-style: disc; text-align: left; display: inline-block; margin: 1rem auto 2rem; padding-left: 1.2rem; max-width: 800px;">
+                <li><b>NO CHILDREN ALLOWED:</b> <i>We love your little ones dearly; however, to maintain a calm, safe, and enjoyable atmosphere, we are unable to accommodate children at both the ceremony and reception.</i></li>
+                <li style="margin-top: 1rem;"><b>STRICTLY NO PLUS ONE:</b> <i>Due to limited seating, we can only accommodate guests who have received an invitation. We sincerely appreciate your understanding.</i></li>
+                <li style="margin-top: 1rem;"><b>RSVP IS REQUIRED:</b> <i>Please confirm your attendance through the RSVP link on or before May 31, 2026.</i></li>
+                <li style="margin-top: 1rem;"><b>RESERVED SEATING:</b> <i>To ensure a seamless program flow, seating will be assigned. We kindly ask guests to follow the arrangement prepared.</i></li>
+            </ul>
 
-        <p>
-            To help us create a smooth, intimate, and memorable celebration, we kindly ask for your understanding and cooperation with the following guest policies:
-        </p>
-
-        <ul style="list-style: disc; text-align: left; display: inline-block; margin: 1rem auto 2rem; padding-left: 1.2rem;">
-            <li>
-                <b>NO CHILDREN ALLOWED:</b> <i>We love your little ones dearly; however, to maintain a calm, safe, and enjoyable atmosphere for all our guests, we are unable to accommodate children at both the ceremony and reception. This allows everyone to relax and fully enjoy the celebration.</i>
-            </li>
-            <li style="margin-top: 1rem;">
-                <b>STRICTLY NO PLUS ONE:</b> <i>Due to limited seating and venue capacity, we can only accommodate guests who have received an invitation. We sincerely appreciate your understanding, as this helps us celebrate comfortably with everyone we have invited.</i>
-            </li>
-            <li style="margin-top: 1rem;">
-                <b>RSVP IS REQUIRED:</b> <i>Please confirm your attendance by responding through the RSVP link on or before May 31, 2026. Your timely response will help us finalize arrangements and ensure everything runs smoothly on our special day.</i>
-            </li>
-            <li style="margin-top: 1rem;">
-                <b>RESERVED SEATING:</b> <i>To ensure a seamless program flow, seating will be assigned. We kindly ask guests to follow the seating arrangement prepared for the event.</i>
-            </li>
-        </ul>
-
-        <p>
-            We are so excited to celebrate this beautiful milestone with you and create unforgettable memories together. Thank you for your love, understanding, and support as we begin this new chapter of our lives.
-        </p>
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Lato:wght@300;400&display=swap');
-
-    .rsvp-section {
-        max-width: 480px;
-        margin: 40px auto;
-        padding: 50px 40px;
-        background: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-        border-top: 6px solid #1a2a44; /* Navy Blue Accent */
-        text-align: center;
-        font-family: 'Lato', sans-serif;
-        color: #1a2a44; 
-    }
-
-    .rsvp-section h2 {
-        font-family: 'Playfair Display', serif;
-        font-size: 2.6rem;
-        margin-bottom: 8px;
-        color: #1a2a44;
-        letter-spacing: 1px;
-    }
-
-    .rsvp-section p.subtitle {
-        font-style: italic;
-        margin-bottom: 35px;
-        color: #707b7c; /* Gray */
-        font-weight: 300;
-    }
-
-    .form-group {
-        text-align: left;
-        margin-bottom: 25px;
-    }
-
-    .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 400;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        color: #1a2a44;
-    }
-
-    .rsvp-input {
-        width: 100%;
-        padding: 14px;
-        border: 1px solid #d5d8dc;
-        border-radius: 4px;
-        box-sizing: border-box;
-        font-size: 1rem;
-        background-color: #f8f9f9;
-        transition: all 0.3s ease;
-    }
-
-    .rsvp-input:focus {
-        border-color: #1a2a44;
-        background-color: #fff;
-        outline: none;
-    }
-
-    /* Policy Styling */
-    .policy-group {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-        text-align: left;
-        margin-bottom: 25px;
-        font-size: 0.9rem;
-    }
-
-    .policy-group input {
-        margin-top: 4px;
-    }
-
-    .policy-link {
-        color: #1a2a44;
-        text-decoration: underline;
-        font-weight: 400;
-    }
-
-    #submit-btn {
-        background: #1a2a44;
-        color: #ffffff;
-        border: none;
-        padding: 16px;
-        width: 100%;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        transition: background 0.3s;
-    }
-
-    #submit-btn:hover {
-        background: #2c3e50;
-    }
-
-    /* Navigation Buttons Styling */
-    .nav-links {
-        margin-top: 30px;
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-    }
-
-    .nav-btn {
-        flex: 1;
-        padding: 12px;
-        background: #f8f9f9;
-        color: #1a2a44;
-        border: 1px solid #d5d8dc;
-        text-decoration: none;
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        border-radius: 4px;
-        transition: all 0.3s;
-    }
-
-    .nav-btn:hover {
-        background: #d5d8dc;
-    }
-</style>
-
-<div class="rsvp-section">
-    <h2>RSVP</h2>
-    <p class="subtitle">Kindly respond by the deadline</p>
-    
-    <form id="rsvp-form">
-        <div class="form-group">
-            <label>Full Name</label>
-            <input type="text" name="Full Name" class="rsvp-input" placeholder="Enter name" required>
-        </div>
-        <div class="form-group">
-            <label>Attendance</label>
-            <select name="Attendance" id="attendance-select" class="rsvp-input" required>
-                <option value="" disabled selected>Will you attend?</option>
-                <option value="Yes">Joyfully Accepts</option>
-                <option value="No">Regretfully Declines</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Whose side are you?</label>
-            <select name="Guest Side" class="rsvp-input" required>
-                <option value="" disabled selected>Select an option</option>
-                <option value="Groom">Groom</option>
-                <option value="Bride">Bride</option>
-            </select>
+            <p>
+                We are so excited to celebrate this beautiful milestone with you. Thank you for your love, understanding, and support.
+            </p>
         </div>
 
-        <div class="policy-group">
-            <input type="checkbox" id="policy-agreement" required>
-            <label for="policy-agreement" style="text-transform: none; letter-spacing: normal; font-size: 0.85rem;">
-                I agree to the <a href="#rsvp" class="policy-link">Wedding Guest Policies</a>.
-            </label>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Lato:wght@300;400&display=swap');
+            .rsvp-section { max-width: 480px; margin: 40px auto; padding: 50px 40px; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); border-top: 6px solid #1a2a44; text-align: center; font-family: 'Lato', sans-serif; color: #1a2a44; }
+            .rsvp-section h2 { font-family: 'Playfair Display', serif; font-size: 2.6rem; margin-bottom: 8px; color: #1a2a44; letter-spacing: 1px; }
+            .rsvp-section p.subtitle { font-style: italic; margin-bottom: 35px; color: #707b7c; font-weight: 300; }
+            .form-group { text-align: left; margin-bottom: 25px; }
+            .form-group label { display: block; margin-bottom: 8px; font-weight: 400; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: #1a2a44; }
+            .rsvp-input { width: 100%; padding: 14px; border: 1px solid #d5d8dc; border-radius: 4px; box-sizing: border-box; font-size: 1rem; background-color: #f8f9f9; transition: all 0.3s ease; }
+            .rsvp-input:focus { border-color: #1a2a44; background-color: #fff; outline: none; }
+            .policy-group { display: flex; align-items: flex-start; gap: 10px; text-align: left; margin-bottom: 25px; font-size: 0.9rem; }
+            .policy-group input { margin-top: 4px; }
+            .policy-link { color: #1a2a44; text-decoration: underline; font-weight: 400; }
+            #submit-btn { background: #1a2a44; color: #ffffff; border: none; padding: 16px; width: 100%; border-radius: 4px; cursor: pointer; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; transition: background 0.3s; }
+            #submit-btn:hover { background: #2c3e50; }
+            .nav-links { margin-top: 30px; display: flex; gap: 10px; justify-content: center; }
+            .nav-btn { flex: 1; padding: 12px; background: #f8f9f9; color: #1a2a44; border: 1px solid #d5d8dc; text-decoration: none; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; transition: all 0.3s; }
+            .nav-btn:hover { background: #d5d8dc; color: #1a2a44; }
+        </style>
+
+        <div class="rsvp-section">
+            <h2>RSVP</h2>
+            <p class="subtitle">Kindly respond by the deadline</p>
+            
+            <form id="rsvp-form">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" name="Full Name" class="rsvp-input" placeholder="Enter name" required>
+                </div>
+                <div class="form-group">
+                    <label>Attendance</label>
+                    <select name="Attendance" id="attendance-select" class="rsvp-input" required>
+                        <option value="" disabled selected>Will you attend?</option>
+                        <option value="Yes">Joyfully Accepts</option>
+                        <option value="No">Regretfully Declines</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Whose side are you?</label>
+                    <select name="Guest Side" class="rsvp-input" required>
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="Groom">Groom</option>
+                        <option value="Bride">Bride</option>
+                    </select>
+                </div>
+                <div class="policy-group">
+                    <input type="checkbox" id="policy-agreement" required>
+                    <label for="policy-agreement" style="text-transform: none; letter-spacing: normal; font-size: 0.85rem;">
+                        I agree to the <a href="#rsvp" class="policy-link">Wedding Guest Policies</a>.
+                    </label>
+                </div>
+                <button type="submit" id="submit-btn">Send RSVP</button>
+            </form>
+
+            <div class="nav-links">
+                <a href="seat-finder.html" class="nav-btn">Seat Finder</a>
+                <a href="guest-list.html" class="nav-btn">Floor Plan</a>
+            </div>
         </div>
 
-        <button type="submit" id="submit-btn">Send RSVP</button>
-    </form>
-
-    <div class="nav-links">
-        <a href="seat-finder.html" class="nav-btn">Seat Finder</a>
-        <a href="guest-list.html" class="nav-btn">Floor Plan</a>
+        <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+            <p style="margin: 0; opacity: 0.8; font-size: 0.95rem;">
+                &copy; 2026 H&C Wedding. Coded & Designed by 
+                <a href="https://instagram.com/hrvyngrs" style="color: white; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.3);">HARVY</a>. 
+                All rights reserved.
+            </p>
+        </footer>
     </div>
 </div>
 
@@ -1528,89 +1249,50 @@ body {
     const scriptURL = 'https://script.google.com/macros/s/AKfycbz-IvHfLrejG0qpvxxTbD7K0qlDP2ysrpaTWlR78sZBeLWNUikDkJLn4T-JzGAocgb2VQ/exec';
     const rsvpForm = document.getElementById('rsvp-form');
 
-rsvpForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const btn = document.getElementById('submit-btn');
-    const attendance = document.getElementById('attendance-select').value;
-    
-    btn.disabled = true;
-    btn.innerText = "SENDING...";
+    rsvpForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const btn = document.getElementById('submit-btn');
+        const attendance = document.getElementById('attendance-select').value;
+        
+        btn.disabled = true;
+        btn.innerText = "SENDING...";
 
-    fetch(scriptURL, { method: 'POST', body: new FormData(rsvpForm)})
-    .then(res => {
-        setTimeout(() => {
-            if (attendance === "Yes") {
-                Swal.fire({
-                    title: 'RESPONSE LOGGED!',
-                    html: `
-                        <p style="color: #707b7c; margin-bottom: 20px;">
-                            Your seat is now reserved. Your table and seat number will be available <b>3 days before the wedding day</b>.
-                        </p>
-                        <a href="seat-finder.html" style="
-                            display: inline-block;
-                            padding: 10px 20px;
-                            background-color: #707b7c;
-                            color: white;
-                            text-decoration: none;
-                            border-radius: 4px;
-                            text-transform: uppercase;
-                            font-size: 0.8rem;
-                            letter-spacing: 1px;
-                        ">Go to Seat Finder</a>
-                    `,
-                    icon: 'success',
-                    showConfirmButton: true,
-                    confirmButtonText: 'CLOSE',
-                    confirmButtonColor: '#1a2a44'
-                });
-            } else {
-                Swal.fire({
-                    title: 'THANK YOU',
-                    text: 'We are sorry you can\'t make it, but we appreciate you letting us know!',
-                    icon: 'info',
-                    showConfirmButton: true,
-                    confirmButtonText: 'CLOSE',
-                    confirmButtonColor: '#1a2a44'
-                });
-            }
-            
-            rsvpForm.reset();
+        fetch(scriptURL, { method: 'POST', body: new FormData(rsvpForm)})
+        .then(res => {
+            setTimeout(() => {
+                if (attendance === "Yes") {
+                    Swal.fire({
+                        title: 'RESPONSE LOGGED!',
+                        html: `<p style="color: #707b7c; margin-bottom: 20px;">Your seat is now reserved. Your table and seat number will be available <b>3 days before the wedding day</b>.</p>
+                               <a href="seat-finder.html" style="display: inline-block; padding: 10px 20px; background-color: #707b7c; color: white; text-decoration: none; border-radius: 4px; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Go to Seat Finder</a>`,
+                        icon: 'success',
+                        confirmButtonText: 'CLOSE',
+                        confirmButtonColor: '#1a2a44'
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'THANK YOU',
+                        text: "We are sorry you can't make it, but we appreciate you letting us know!",
+                        icon: 'info',
+                        confirmButtonText: 'CLOSE',
+                        confirmButtonColor: '#1a2a44'
+                    });
+                }
+                rsvpForm.reset();
+                btn.disabled = false;
+                btn.innerText = "SEND RSVP";
+            }, 500);
+        })
+        .catch(err => {
+            Swal.fire({ title: 'ERROR', text: 'Please try again or contact us directly.', icon: 'error', confirmButtonColor: '#1a2a44' });
             btn.disabled = false;
             btn.innerText = "SEND RSVP";
-        }, 500);
-    })
-    .catch(err => {
-        setTimeout(() => {
-            Swal.fire({ 
-                title: 'ERROR', 
-                text: 'Please try again or contact us directly.', 
-                icon: 'error',
-                confirmButtonColor: '#1a2a44'
-            });
-            btn.disabled = false;
-            btn.innerText = "SEND RSVP";
-        }, 500);
+        });
     });
-});
 </script>
-<footer style="text-align: center; padding: 40px 0 20px 0; color: white; font-size: 0.95rem; width: 100%;">
-    <p style="margin: 0; opacity: 0.8;">
-        &copy; 2026 H&C Wedding. Coded & Designed by 
-        <a href="https://instagram.com/hrvyngrs" style="color: white; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.3); transition: 0.3s;">HARVY</a>. 
-        All rights reserved.
-    </p>
-</footer>
-        </div>
-    </div>
-    <!-- Footer End -->
 
-
-    <!-- Scroll to Bottom -->
-    <i class="fa fa-2x fa-angle-down text-white scroll-to-bottom"></i>
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-outline-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
-
+<i class="fa fa-2x fa-angle-down text-white scroll-to-bottom"></i>
+<a href="#" class="btn btn-lg btn-outline-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -1624,7 +1306,4 @@ rsvpForm.addEventListener('submit', e => {
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 </body>
-
-
-
 </html>

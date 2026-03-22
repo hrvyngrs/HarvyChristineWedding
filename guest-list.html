@@ -95,8 +95,8 @@
 
         .map-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 60px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 80px 40px;
             width: 100%;
             max-width: 1200px;
             justify-items: center;
@@ -104,7 +104,7 @@
 
         .table-circle {
             position: relative;
-            width: 320px; height: 320px;
+            width: 350px; height: 350px;
             display: flex; justify-content: center; align-items: center;
         }
 
@@ -123,9 +123,9 @@
 
         .seat {
             position: absolute;
-            width: 120px; 
-            padding: 8px;
-            font-size: 0.75rem; 
+            width: 100px; 
+            padding: 6px;
+            font-size: 0.7rem; 
             text-align: center;
             border-radius: 4px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.4);
@@ -135,7 +135,7 @@
         .seat-groom { background: var(--groom-color); color: white; border-bottom: 2px solid white; }
         .seat-bride { background: var(--bride-color); color: var(--navy-deep); border-bottom: 2px solid var(--navy-deep); }
         .seat-name { font-family: 'Playfair Display', serif; font-weight: 700; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .seat-num { font-size: 0.6rem; opacity: 0.8; }
+        .seat-num { font-size: 0.55rem; opacity: 0.8; }
 
         .waiting-list-section {
             width: 90%; max-width: 800px;
@@ -180,13 +180,14 @@
             .logo-text { font-size: 2.5rem; }
             .header-nav { flex-direction: row; gap: 5px; }
             .back-link { font-size: 0.55rem; padding: 6px 8px; }
+            .map-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
     <div class="header-nav">
-        <a href="index.html" class="back-link">← Website</a>
+        <a href="main.html#rsvp" class="back-link">← Website</a>
         <a href="seat-finder.html" class="back-link">Seat Finder →</a>
     </div>
 
@@ -260,11 +261,15 @@
         const container = document.getElementById('map-container');
         container.innerHTML = tables.map(table => {
             const guests = groupedData[table].sort((a, b) => a.seat - b.seat);
-            const totalSeats = guests.length;
-            const radius = 115; 
+            const maxSeats = 10; // Fixed at 10 seats per table
+            const radius = 125; 
 
-            const seatHTML = guests.map((g, index) => {
-                const angle = (index / totalSeats) * (Math.PI * 2);
+            const seatHTML = guests.map((g) => {
+                // Calculate position based on the guest's specific seat number (1-10)
+                // We subtract 1 so Seat 1 starts at index 0
+                const seatIndex = g.seat > 0 ? (g.seat - 1) % maxSeats : 0;
+                const angle = (seatIndex / maxSeats) * (Math.PI * 2);
+                
                 const x = Math.cos(angle) * radius;
                 const y = Math.sin(angle) * radius;
                 const sideClass = g.side.includes('groom') ? 'seat-groom' : 'seat-bride';

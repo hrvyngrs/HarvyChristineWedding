@@ -329,12 +329,48 @@
         z-index: 3000;
     }
     .official-verify-text { text-transform: uppercase; font-size: 0.75rem; font-weight: 900; margin-bottom: 15px; color: var(--navy-dark); letter-spacing: 2px; }
-    .input-group { display: flex; justify-content: center; gap: 8px; padding: 0 20px; }
+    
+    /* RECODED: Vertical Stack for Mobile-First Elegance */
+    .input-group { 
+        display: flex; 
+        flex-direction: column;
+        align-items: center;
+        gap: 5px; 
+        padding: 0 20px; 
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    /* RECODED: Elegant OR with fading lines */
+    .elegant-or {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        max-width: 250px;
+        gap: 12px;
+        margin: 5px 0;
+    }
+    .or-line {
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(to right, transparent, var(--navy), transparent);
+        opacity: 0.4;
+    }
+    .or-text {
+        font-family: 'Georgia', serif;
+        font-style: italic;
+        font-size: 0.85rem;
+        color: var(--navy-dark);
+        text-transform: lowercase;
+    }
+
     .btn-verify { 
         background: var(--navy); 
         color: white; 
         border: 2px solid var(--silver); 
-        padding: 12px 30px; 
+        padding: 12px 25px; 
         cursor: pointer; 
         border-radius: 4px; 
         font-weight: bold; 
@@ -342,6 +378,10 @@
         font-family: 'Georgia', serif;
         letter-spacing: 1px;
         transition: all 0.3s ease;
+        font-size: 0.8rem;
+        width: 100%;
+        max-width: 250px; /* Forces both buttons to be same size */
+        box-sizing: border-box;
     }
     .btn-verify:hover {
         background: var(--navy-dark);
@@ -357,6 +397,8 @@
         #card-invite { width: 200px; min-height: 80px; bottom: -30px; margin-left: -100px; }
         #card-invite.expanded { transform: translate(0, -140px) scale(1.6) !important; margin-left: -100px; }
         .card-container { bottom: 10px; } 
+        .btn-verify { padding: 10px 15px; font-size: 0.7rem; max-width: 220px; }
+        .elegant-or { max-width: 220px; }
     }
 </style>
 </head>
@@ -433,13 +475,21 @@
         </div>
     </div>
 
-    <div id="formContainer">
-        <div class="official-verify-text">Welcome to our Journey</div>
-        <div class="input-group">
-            <button class="btn-verify" onclick="enterSite()">Enter Wedding Website</button>
+<div id="formContainer">
+    <div class="official-verify-text">Welcome to our Journey</div>
+    <div class="input-group">
+        <button class="btn-verify" onclick="enterSite()">Read our Love Story</button>
+        
+        <div class="elegant-or">
+            <div class="or-line"></div>
+            <span class="or-text">or</span>
+            <div class="or-line"></div>
         </div>
-        <div id="message"></div>
+
+        <button class="btn-verify" onclick="goToRSVP()">Wedding Details & RSVP</button>
     </div>
+    <div id="message"></div>
+</div>
 </div>
 
 <script>
@@ -476,9 +526,17 @@
 
     function enterSite() {
         const msg = document.getElementById('message');
-        msg.innerHTML = "<span style='color:var(--navy);'>Opening Invitation...</span>";
+        msg.innerHTML = "<span style='color:var(--navy);'>Opening Our Story...</span>";
         setTimeout(() => { 
             window.location.href = "main.html"; 
+        }, 800);
+    }
+
+    function goToRSVP() {
+        const msg = document.getElementById('message');
+        msg.innerHTML = "<span style='color:var(--navy);'>Redirecting to RSVP...</span>";
+        setTimeout(() => { 
+            window.location.href = "main.html#event"; 
         }, 800);
     }
 </script>
