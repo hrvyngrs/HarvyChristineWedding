@@ -182,7 +182,7 @@
             flex-direction: column;
             gap: 6px;
             height: 200px;
-            justify-content: space-around;
+            justify-content: center;
         }
         .col-left { align-items: flex-end; }
         .col-right { align-items: flex-start; }
@@ -367,9 +367,10 @@
         container.innerHTML = tables.map(table => {
             const allGuests = groupedData[table].sort((a, b) => a.seat - b.seat);
             
-            // 12 chairs: 1-6 left, 7-12 right
-            const leftSide = [1, 2, 3, 4, 5, 6];
-            const rightSide = [7, 8, 9, 10, 11, 12];
+            // Logic: Split guests into two columns based on seat index
+            const half = Math.ceil(allGuests.length / 2);
+            const leftSideGuests = allGuests.slice(0, half);
+            const rightSideGuests = allGuests.slice(half);
 
             const num = parseInt(table);
             const isVIP = (num >= 101 && num <= 103);
@@ -379,26 +380,17 @@
             if (isVIP) { typeClass = "vip-chair"; label = "VIP"; }
             if (isSilver) { typeClass = "silver-chair"; label = "SILVER"; }
             
-            const getSeatHTML = (seatNum, align) => {
-                const guest = allGuests.find(g => g.seat === seatNum);
-                const chair = `<div class="chair-seat">${seatNum}</div>`;
-                
-                // Show chair even if no guest is assigned
-                if (!guest) {
-                    const spacer = `<div class="guest-item empty-seat">Empty Seat</div>`;
-                    return `<div class="guest-row">${align === 'left' ? spacer + chair : chair + spacer}</div>`;
-                }
-                
+            const getGuestHTML = (guest, align) => {
+                const chair = `<div class="chair-seat">${guest.seat}</div>`;
                 const sideClass = guest.side.includes('groom') ? 'guest-groom' : 'guest-bride';
                 const nameTag = `<div class="guest-item ${sideClass}">${guest.name}</div>`;
-                
                 return `<div class="guest-row">${align === 'left' ? nameTag + chair : chair + nameTag}</div>`;
             };
 
             return `
                 <div class="table-group">
                     <div class="guest-col col-left">
-                        ${leftSide.map(s => getSeatHTML(s, 'left')).join('')}
+                        ${leftSideGuests.map(g => getGuestHTML(g, 'left')).join('')}
                     </div>
                     <div class="table-wrapper">
                         <div class="rectangular-table ${typeClass}">
@@ -407,7 +399,7 @@
                         </div>
                     </div>
                     <div class="guest-col col-right">
-                        ${rightSide.map(s => getSeatHTML(s, 'right')).join('')}
+                        ${rightSideGuests.map(g => getGuestHTML(g, 'right')).join('')}
                     </div>
                 </div>
             `;
