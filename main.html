@@ -103,33 +103,120 @@ body {
 }
 </style>
 
-<body data-spy="scroll" data-target=".navbar" data-offset="51">
-    <!-- Navbar Start -->
-    <nav class="navbar fixed-top shadow-sm navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-lg-5">
-        <a href="index.html" class="navbar-brand d-block d-lg-none">
-            <h1 class="font-secondary text-white mb-n2">H & C</h1>
-        </a>
-        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-            <div class="navbar-nav ml-auto py-0">
-                <a href="#home" class="nav-item nav-link active">Home</a>
-                <a href="#about" class="nav-item nav-link">About Us</a>
-                <a href="#story" class="nav-item nav-link">Our Story</a>
-                <a href="#gallery" class="nav-item nav-link">Gallery</a>
-            </div>
-            <a href="index.html" class="navbar-brand mx-5 d-none d-lg-block">
-                <h1 class="font-secondary text-white mb-n2">H & C</h1>
-            </a>
-            <div class="navbar-nav mr-auto py-0">
-                <a href="#event" class="nav-item nav-link">Event Info</a>
-                <a href="#entourage" class="nav-item nav-link">Entourage</a>
-                <a href="#dressgift" class="nav-item nav-link">Dress & Gift Guide</a>
-                <a href="#rsvp" class="nav-item nav-link">RSVP</a>
-            </div>
+<nav class="navbar fixed-top shadow-sm navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-lg-5">
+    <a href="index.html" class="navbar-brand d-block d-lg-none">
+        <h1 class="font-secondary text-white mb-n2 glitter-container">
+            <span class="glitter-text">H & C</span>
+        </h1>
+    </a>
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+        <div class="navbar-nav ml-auto py-0">
+            <a href="#home" class="nav-item nav-link active">Home</a>
+            <a href="#about" class="nav-item nav-link">About Us</a>
+            <a href="#story" class="nav-item nav-link">Our Story</a>
+            <a href="#gallery" class="nav-item nav-link">Gallery</a>
         </div>
-    </nav>
+        <a href="index.html" class="navbar-brand mx-5 d-none d-lg-block">
+            <h1 class="font-secondary text-white mb-n2 glitter-container">
+                <span class="glitter-text">H & C</span>
+            </h1>
+        </a>
+        <div class="navbar-nav mr-auto py-0">
+            <a href="#event" class="nav-item nav-link">Event Info</a>
+            <a href="#entourage" class="nav-item nav-link">Entourage</a>
+            <a href="#dressgift" class="nav-item nav-link">Dress & Gift Guide</a>
+            <a href="#rsvp" class="nav-item nav-link">RSVP</a>
+        </div>
+    </div>
+</nav>
+
+<style>
+    .glitter-container {
+        position: relative !important;
+        display: inline-block !important;
+        overflow: visible !important;
+    }
+
+    .glitter-text {
+        position: relative;
+        z-index: 5; /* Keeps text in front of the hearts */
+    }
+
+    /* Updated Heart Styles to fly behind and sideward */
+    .heart-element {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        pointer-events: none;
+        z-index: 1; /* Positioned behind the text */
+        opacity: 0;
+        filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+        animation: heart-fly-out 4s infinite ease-out;
+    }
+
+    @keyframes heart-fly-out {
+        0% {
+            transform: translate(0, 0) scale(0) rotate(0deg);
+            opacity: 0;
+        }
+        15% {
+            opacity: 1;
+        }
+        100% {
+            /* Sideward movement via JS variables */
+            transform: translate(var(--drift-x), -80px) scale(1.5) rotate(var(--rot));
+            opacity: 0;
+        }
+    }
+</style>
+
+<script>
+    function createHearts() {
+        const containers = document.querySelectorAll('.glitter-container');
+        
+        const heartSVG = `
+            <svg viewBox="0 0 32 32">
+                <path d="M16 28.5L14.1 26.75C7.35 20.65 3 16.7 3 11.85 3 7.85 6.15 4.7 10.15 4.7c2.25 0 4.45 1.05 5.85 2.7 1.4-1.65 3.6-2.7 5.85-2.7 4 0 7.15 3.15 7.15 7.15 0 4.85-4.35 8.8-11.1 14.9L16 28.5z"/>
+            </svg>
+        `;
+
+        containers.forEach(container => {
+            if (container.querySelectorAll('.heart-element').length > 0) return;
+
+            // Creating 6 hearts for a more balanced spread
+            for (let i = 0; i < 6; i++) {
+                const heartWrap = document.createElement('div');
+                heartWrap.className = 'heart-element';
+                heartWrap.innerHTML = heartSVG;
+
+                // Navy/Silver/Pink palette to match your wedding theme
+                const colors = ['#C0C0C0', '#ffb3c1', '#ffffff', '#e0e0e0'];
+                heartWrap.style.fill = colors[i % colors.length];
+
+                // Centering start position behind the text
+                heartWrap.style.left = '45%';
+                heartWrap.style.top = '20%';
+
+                // Calculate random sideward drift and rotation
+                const driftX = (Math.random() * 100 - 50) + 'px'; // -50px to 50px
+                const rotation = (Math.random() * 120 - 60) + 'deg';
+
+                heartWrap.style.setProperty('--drift-x', driftX);
+                heartWrap.style.setProperty('--rot', rotation);
+
+                // Staggered appearance
+                heartWrap.style.animationDelay = (i * 0.7) + 's';
+
+                container.appendChild(heartWrap);
+            }
+        });
+    }
+
+    window.addEventListener('load', createHearts);
+</script>
     <!-- Navbar End -->
 
 
@@ -1477,10 +1564,33 @@ body {
                 <button type="submit" id="submit-btn">Send RSVP</button>
             </form>
 
-            <div class="nav-links">
-                <a href="seat-finder.html" class="nav-btn">Seat Finder</a>
-                <a href="guest-list.html" class="nav-btn">Floor Plan</a>
-            </div>
+<div class="nav-links">
+    <a href="seat-finder.html" class="nav-btn">Seat Finder</a>
+    <a href="floor-plan.html" class="nav-btn">Floor Plan</a>
+</div>
+
+<script>
+    // This script runs as soon as the page is ready
+    window.addEventListener('DOMContentLoaded', () => {
+        // 1. Get the current URL parameters (e.g., ?name=Guest&g=1)
+        const currentParams = window.location.search;
+
+        // 2. Only proceed if there are actually parameters to pass
+        if (currentParams) {
+            // 3. Find all your navigation buttons
+            const navButtons = document.querySelectorAll('.nav-btn');
+
+            navButtons.forEach(button => {
+                // 4. Get the original link (e.g., "seat-finder.html")
+                const originalHref = button.getAttribute('href');
+                
+                // 5. Update the link to include the parameters
+                // Result: "seat-finder.html?name=Guest&g=1"
+                button.setAttribute('href', originalHref + currentParams);
+            });
+        }
+    });
+</script>
         </div>
 
         <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">

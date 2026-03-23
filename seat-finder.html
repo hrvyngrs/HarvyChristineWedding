@@ -266,6 +266,26 @@
     <a href="main.html#rsvp" class="back-link">← Back to Site</a>
 </div>
 
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const currentParams = window.location.search; // Gets ?name=...&g=1
+        const backLink = document.querySelector('.back-link');
+
+        if (currentParams && backLink) {
+            // Get the original link: "main.html#rsvp"
+            const originalHref = backLink.getAttribute('href');
+            
+            // Split the link at the '#' to insert parameters in the middle
+            const parts = originalHref.split('#');
+            const basePage = parts[0]; // "main.html"
+            const anchor = parts[1] ? '#' + parts[1] : ''; // "#rsvp"
+            
+            // Reconstruct: "main.html" + "?name=..." + "#rsvp"
+            backLink.setAttribute('href', basePage + currentParams + anchor);
+        }
+    });
+</script>
+
 <div class="container">
     <div class="logo-area">
         <p class="logo-text">Harvy & Christine</p>
