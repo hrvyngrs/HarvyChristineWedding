@@ -515,25 +515,27 @@ window.onload = function() {
     const guestName = params.get('name');
     const guestLimit = params.get('g');
 
-    // Find your "Enter" or "Proceed" button/link
-    const enterBtn = document.getElementById('enter-wedding-btn'); 
-
-    if (guestId && enterBtn) {
-        // Option A: Update the link directly to include the ID
-        const nextUrl = `main.html?id=${guestId}&name=${guestName}&g=${guestLimit}`;
-        
-        // If it's a link (<a> tag)
-        enterBtn.href = nextUrl;
-        
-        // If it's a button that uses window.location
-        enterBtn.onclick = function() {
-            window.location.href = nextUrl;
-        };
-
-        // Option B: Store it in Session Storage (Safest method)
+    // 1. SAVE TO STORAGE (Backup safety net)
+    if (guestId) {
         sessionStorage.setItem('guestId', guestId);
-        sessionStorage.setItem('guestName', decodeURIComponent(guestName));
-        sessionStorage.setItem('guestLimit', guestLimit);
+        sessionStorage.setItem('guestName', decodeURIComponent(guestName || ""));
+        sessionStorage.setItem('guestLimit', guestLimit || "0");
+    }
+
+    // 2. UPDATE VISUALS ("Hi Name")
+    const display = document.getElementById('guest-display');
+    if (display) {
+        display.innerText = guestName ? "Hi " + decodeURIComponent(guestName) : "Hi SPECIAL GUEST";
+    }
+    
+    // 3. UPDATE ALLOCATION TEXT
+    const allocationBox = document.getElementById('allocation-box');
+    if (allocationBox) {
+        if (guestLimit !== null && guestLimit !== "0") {
+            allocationBox.innerHTML = 'You have (<span>' + guestLimit + '</span>) additional seat allocated by the Couple.';
+        } else {
+            allocationBox.innerText = "We can't wait to celebrate our special day with you!";
+        }
     }
 };
 </script>
@@ -611,13 +613,18 @@ window.onload = function() {
         if (!isExpanded) { card.classList.add('expanded'); }
     }
 
-    function buildURL(base, anchor = "") {
-        let params = new URLSearchParams();
-        if (guestLimit) params.append('g', guestLimit);
-        if (nameParam) params.append('name', nameParam);
-        let qs = params.toString();
-        return qs ? (base + "?" + qs + anchor) : (base + anchor);
-    }
+ function buildURL(base, anchor = "") {
+    let params = new URLSearchParams(window.location.search); // This grabs EVERYTHING currently in the URL
+    let newParams = new URLSearchParams();
+
+    // Explicitly carry over the 3 important values
+    if (params.get('id')) newParams.append('id', params.get('id'));
+    if (params.get('g')) newParams.append('g', params.get('g'));
+    if (params.get('name')) newParams.append('name', params.get('name'));
+
+    let qs = newParams.toString();
+    return qs ? (base + "?" + qs + anchor) : (base + anchor);
+}
 
     function enterSite() {
         const wrapper = document.getElementById('envelope-wrapper');
