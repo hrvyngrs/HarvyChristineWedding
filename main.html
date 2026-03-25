@@ -224,51 +224,55 @@ body {
 window.onload = function() {
     const params = new URLSearchParams(window.location.search);
     
-    // 1. Get data from URL OR Session Storage (Fallback)
-    const id = params.get('id') || sessionStorage.getItem('guestId');
-    const name = params.get('name') || sessionStorage.getItem('guestName');
-    const limit = params.get('g') || sessionStorage.getItem('guestLimit');
+    // 1. Extract data from URL
+    const urlId = params.get('id');
+    const urlName = params.get('name');
+    const urlLimit = params.get('g');
+
+    // 2. Fallback to SessionStorage if URL is empty (e.g. they refreshed the page)
+    const id = urlId || sessionStorage.getItem('guestId');
+    const rawName = urlName || sessionStorage.getItem('guestName');
+    const limit = urlLimit || sessionStorage.getItem('guestLimit');
 
     if (id) {
-        // 2. Save/Update Session Storage so data persists across refreshes
+        // Save to SessionStorage so it stays even if the ?id= part disappears
         sessionStorage.setItem('guestId', id);
-        if (name) sessionStorage.setItem('guestName', decodeURIComponent(name));
+        if (rawName) sessionStorage.setItem('guestName', decodeURIComponent(rawName));
         if (limit) sessionStorage.setItem('guestLimit', limit);
         
-        // 3. Auto-fill the Name input field
-        // Note: Check both your possible IDs to be safe
-        const nameField = document.getElementById('full-name-field') || document.getElementById('rsvp-name-input');
-        if(nameField) nameField.value = decodeURIComponent(sessionStorage.getItem('guestName'));
+        // 3. Find the input field and fill it
+        const nameField = document.getElementById('rsvp-name-input');
+        if (nameField) {
+            nameField.value = sessionStorage.getItem('guestName');
+        }
 
-        // 4. Show the guest limit info
+        // 4. Update the Pax/Limit text
         const limitDisplay = document.getElementById('pax-info'); 
-        if(limitDisplay) limitDisplay.innerText = `You may RSVP for up to ${sessionStorage.getItem('guestLimit')} person(s).`;
+        if (limitDisplay) {
+            limitDisplay.innerText = `You are invited for up to ${sessionStorage.getItem('guestLimit')} person(s).`;
+        }
 
-        // 5. Security Check: Talk to Google Sheets
+        // 5. Run the security check
         checkExistingRSVP(id); 
     } else {
-        console.error("Access Denied: No Unique ID found.");
-        // Optional: Redirect back if you want to force guests through the welcome page
-        // window.location.href = 'index.html';
+        console.warn("No ID found. RSVP features may be limited.");
     }
 };
 
 function checkExistingRSVP(id) {
-    // IMPORTANT: Ensure this is your WEB APP URL (ending in /exec), not the library URL
     const scriptUrl = "https://script.google.com/macros/s/AKfycbxrhwgZ9fRnuTYt2IPNC7ZDwchfvYA_586E_SyQga-5iAoZtXW-o8o8Fi1UAbwa3IPQJQ/exec"; 
     
     fetch(`${scriptUrl}?action=validate&id=${id}`)
         .then(res => res.json())
         .then(data => {
-            if (data.status === "Submitted") {
-                // Lock the form and show a "Thank You" message
+            if (data && data.status === "Submitted") {
                 const container = document.getElementById('rsvp-form-container');
-                if(container) {
+                if (container) {
                     container.innerHTML = `
-                        <div style="text-align:center; padding:20px; border:1px solid #d4af37; background: rgba(255,255,255,0.05); border-radius: 10px;">
-                            <h2 style="color:#d4af37;">RSVP Confirmed</h2>
-                            <p>Hi ${sessionStorage.getItem('guestName') || 'Guest'}, your response has already been recorded.</p>
-                            <p>We can't wait to celebrate with you on June 12, 2026!</p>
+                        <div style="text-align:center; padding:30px; border:2px solid #d4af37; background: rgba(0,31,63,0.8); border-radius: 15px;">
+                            <h2 class="font-secondary" style="color:#d4af37;">RSVP Already Received</h2>
+                            <p class="text-white">Hi ${sessionStorage.getItem('guestName')}, we already have your response!</p>
+                            <p class="text-white">See you on June 12, 2026.</p>
                         </div>`;
                 }
             }
