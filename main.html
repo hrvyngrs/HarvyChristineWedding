@@ -1563,7 +1563,7 @@ function checkExistingRSVP(id) {
             </p>
         </div>
 
-        <style>
+ <style>
             @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Lato:wght@300;400&display=swap');
             .rsvp-section { max-width: 480px; margin: 40px auto; padding: 50px 40px; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); border-top: 6px solid #1a2a44; text-align: center; font-family: 'Lato', sans-serif; color: #1a2a44; }
             .rsvp-section h2 { font-family: 'Playfair Display', serif; font-size: 2.6rem; margin-bottom: 8px; color: #1a2a44; letter-spacing: 1px; }
@@ -1588,6 +1588,8 @@ function checkExistingRSVP(id) {
             <p class="subtitle">Kindly respond by the deadline</p>
             
             <form id="rsvp-form">
+                <input type="hidden" name="id" id="guest-id-input">
+
                 <div class="form-group">
                     <label>Full Name</label>
                     <input type="text" name="Full Name" class="rsvp-input" placeholder="Enter name" required>
@@ -1625,10 +1627,10 @@ function checkExistingRSVP(id) {
                 <button type="submit" id="submit-btn">Send RSVP</button>
             </form>
 
-<div class="nav-links">
-    <a href="seat-finder.html" class="nav-btn">Seat Finder</a>
-    <a href="floor-plan.html" class="nav-btn">Floor Plan</a>
-</div>
+            <div class="nav-links">
+                <a href="seat-finder.html" class="nav-btn">Seat Finder</a>
+                <a href="floor-plan.html" class="nav-btn">Floor Plan</a>
+            </div>
         </div>
 
         <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
@@ -1638,13 +1640,18 @@ function checkExistingRSVP(id) {
                 All rights reserved.
             </p>
         </footer>
-    </div>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
+        
+        // NECESSARY UPDATE: Capture the ID from the URL and put it in the hidden form field
+        const guestId = urlParams.get('id');
+        if (guestId) {
+            document.getElementById('guest-id-input').value = guestId;
+        }
+
         const guestLimit = parseInt(urlParams.get('g')) || 0;
         const dynamicContainer = document.getElementById('dynamic-guest-fields');
         const allowanceDisplay = document.getElementById('allowance-display');
@@ -1701,7 +1708,6 @@ function checkExistingRSVP(id) {
                 }
                 rsvpForm.reset();
             } else if (data.result === "duplicate") {
-                // This specifically handles the duplicate result and shows the exact name
                 Swal.fire({
                     title: 'ALREADY REGISTERED',
                     text: data.name ? `The name "${data.name.toUpperCase()}" is already registered on our list.` : 'One of the names submitted is already registered.',
@@ -1709,7 +1715,6 @@ function checkExistingRSVP(id) {
                     confirmButtonColor: '#1a2a44'
                 });
             } else {
-                // General error handler for other issues (like script errors)
                 Swal.fire({ 
                     title: 'ERROR', 
                     text: data.error || 'Something went wrong. Please try again.', 
