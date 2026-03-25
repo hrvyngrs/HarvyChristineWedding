@@ -509,6 +509,23 @@
 </div>
 
 <script>
+window.onload = function() {
+    const params = new URLSearchParams(window.location.search);
+    const guestId = params.get('id');
+    const guestName = params.get('name');
+    const guestLimit = params.get('g');
+
+    if (guestId) {
+        // Save to Session Storage (stays active as long as the tab is open)
+        sessionStorage.setItem('guestId', guestId);
+        sessionStorage.setItem('guestName', decodeURIComponent(guestName));
+        sessionStorage.setItem('guestLimit', guestLimit);
+        
+        console.log("Guest authenticated:", guestName);
+    }
+};
+</script>
+<script>
     const urlParams = new URLSearchParams(window.location.search);
     const guestLimit = urlParams.get('g');
     const nameParam = urlParams.get('name');

@@ -219,7 +219,47 @@ body {
 </script>
     <!-- Navbar End -->
 
+    <!-- HTML START -->
+<script>
+    window.onload = function() {
+    // 1. Retrieve the saved data from the previous page
+    const id = sessionStorage.getItem('guestId');
+    const name = sessionStorage.getItem('guestName');
+    const limit = sessionStorage.getItem('guestLimit');
 
+    if (id) {
+        // 2. Auto-fill your Name input field
+        const nameInput = document.getElementById('full-name-field'); // Ensure this ID matches your input
+        if(nameInput) nameInput.value = name;
+
+        // 3. Show the guest limit (optional)
+        const limitDisplay = document.getElementById('pax-info'); 
+        if(limitDisplay) limitDisplay.innerText = `You may RSVP for up to ${limit} person(s).`;
+
+        // 4. Security Check: Talk to Google Sheets to see if they already submitted
+        checkExistingRSVP(id);
+    }
+};
+
+function checkExistingRSVP(id) {
+    const scriptUrl = "https://script.google.com/macros/library/d/1qocjl98XdtFPaanvspduYqiwyYu_RxPTlczDe0qM9cAotq3E-NejXe8-/33"; // Paste your .exec link here
+    
+    fetch(`${scriptUrl}?action=validate&id=${id}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === "Submitted") {
+                // Lock the form and show a "Thank You" message instead
+                document.getElementById('rsvp-form-container').innerHTML = `
+                    <div style="text-align:center; padding:20px; border:1px solid #d4af37;">
+                        <h2 style="color:#d4af37;">RSVP Confirmed</h2>
+                        <p>Hi ${sessionStorage.getItem('guestName')}, your response has already been recorded.</p>
+                        <p>We can't wait to celebrate with you on June 12!</p>
+                    </div>`;
+            }
+        });
+}
+</script>
+    <!-- HTML End -->
     <!-- Carousel Start -->
 <style>
     /* 1. INITIAL ENTRANCE (Only on First Visit) */
@@ -1568,29 +1608,6 @@ body {
     <a href="seat-finder.html" class="nav-btn">Seat Finder</a>
     <a href="floor-plan.html" class="nav-btn">Floor Plan</a>
 </div>
-
-<script>
-    // This script runs as soon as the page is ready
-    window.addEventListener('DOMContentLoaded', () => {
-        // 1. Get the current URL parameters (e.g., ?name=Guest&g=1)
-        const currentParams = window.location.search;
-
-        // 2. Only proceed if there are actually parameters to pass
-        if (currentParams) {
-            // 3. Find all your navigation buttons
-            const navButtons = document.querySelectorAll('.nav-btn');
-
-            navButtons.forEach(button => {
-                // 4. Get the original link (e.g., "seat-finder.html")
-                const originalHref = button.getAttribute('href');
-                
-                // 5. Update the link to include the parameters
-                // Result: "seat-finder.html?name=Guest&g=1"
-                button.setAttribute('href', originalHref + currentParams);
-            });
-        }
-    });
-</script>
         </div>
 
         <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
