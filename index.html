@@ -514,9 +514,13 @@
     const nameParam = urlParams.get('name');
 
     window.onload = function() {
-        if (nameParam) {
-            const display = document.getElementById('guest-display');
-            if(display) display.innerText = "Hi " + decodeURIComponent(nameParam);
+        const display = document.getElementById('guest-display');
+        if (display) {
+            if (nameParam) {
+                display.innerText = "Hi " + decodeURIComponent(nameParam);
+            } else {
+                display.innerText = "Hi SPECIAL GUEST";
+            }
         }
         
         const allocationBox = document.getElementById('allocation-box');
