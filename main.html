@@ -221,42 +221,59 @@ body {
 
     <!-- HTML START -->
 <script>
-    window.onload = function() {
-    // 1. Retrieve the saved data from the previous page
-    const id = sessionStorage.getItem('guestId');
-    const name = sessionStorage.getItem('guestName');
-    const limit = sessionStorage.getItem('guestLimit');
+window.onload = function() {
+    const params = new URLSearchParams(window.location.search);
+    
+    // 1. Get data from URL OR Session Storage (Fallback)
+    const id = params.get('id') || sessionStorage.getItem('guestId');
+    const name = params.get('name') || sessionStorage.getItem('guestName');
+    const limit = params.get('g') || sessionStorage.getItem('guestLimit');
 
     if (id) {
-        // 2. Auto-fill your Name input field
-        const nameInput = document.getElementById('full-name-field'); // Ensure this ID matches your input
-        if(nameInput) nameInput.value = name;
+        // 2. Save/Update Session Storage so data persists across refreshes
+        sessionStorage.setItem('guestId', id);
+        if (name) sessionStorage.setItem('guestName', decodeURIComponent(name));
+        if (limit) sessionStorage.setItem('guestLimit', limit);
+        
+        // 3. Auto-fill the Name input field
+        // Note: Check both your possible IDs to be safe
+        const nameField = document.getElementById('full-name-field') || document.getElementById('rsvp-name-input');
+        if(nameField) nameField.value = decodeURIComponent(sessionStorage.getItem('guestName'));
 
-        // 3. Show the guest limit (optional)
+        // 4. Show the guest limit info
         const limitDisplay = document.getElementById('pax-info'); 
-        if(limitDisplay) limitDisplay.innerText = `You may RSVP for up to ${limit} person(s).`;
+        if(limitDisplay) limitDisplay.innerText = `You may RSVP for up to ${sessionStorage.getItem('guestLimit')} person(s).`;
 
-        // 4. Security Check: Talk to Google Sheets to see if they already submitted
-        checkExistingRSVP(id);
+        // 5. Security Check: Talk to Google Sheets
+        checkExistingRSVP(id); 
+    } else {
+        console.error("Access Denied: No Unique ID found.");
+        // Optional: Redirect back if you want to force guests through the welcome page
+        // window.location.href = 'index.html';
     }
 };
 
 function checkExistingRSVP(id) {
-    const scriptUrl = "https://script.google.com/macros/library/d/1qocjl98XdtFPaanvspduYqiwyYu_RxPTlczDe0qM9cAotq3E-NejXe8-/33"; // Paste your .exec link here
+    // IMPORTANT: Ensure this is your WEB APP URL (ending in /exec), not the library URL
+    const scriptUrl = "https://script.google.com/macros/s/AKfycbxrhwgZ9fRnuTYt2IPNC7ZDwchfvYA_586E_SyQga-5iAoZtXW-o8o8Fi1UAbwa3IPQJQ/exec"; 
     
     fetch(`${scriptUrl}?action=validate&id=${id}`)
         .then(res => res.json())
         .then(data => {
             if (data.status === "Submitted") {
-                // Lock the form and show a "Thank You" message instead
-                document.getElementById('rsvp-form-container').innerHTML = `
-                    <div style="text-align:center; padding:20px; border:1px solid #d4af37;">
-                        <h2 style="color:#d4af37;">RSVP Confirmed</h2>
-                        <p>Hi ${sessionStorage.getItem('guestName')}, your response has already been recorded.</p>
-                        <p>We can't wait to celebrate with you on June 12!</p>
-                    </div>`;
+                // Lock the form and show a "Thank You" message
+                const container = document.getElementById('rsvp-form-container');
+                if(container) {
+                    container.innerHTML = `
+                        <div style="text-align:center; padding:20px; border:1px solid #d4af37; background: rgba(255,255,255,0.05); border-radius: 10px;">
+                            <h2 style="color:#d4af37;">RSVP Confirmed</h2>
+                            <p>Hi ${sessionStorage.getItem('guestName') || 'Guest'}, your response has already been recorded.</p>
+                            <p>We can't wait to celebrate with you on June 12, 2026!</p>
+                        </div>`;
+                }
             }
-        });
+        })
+        .catch(err => console.error("Validation Error:", err));
 }
 </script>
     <!-- HTML End -->
