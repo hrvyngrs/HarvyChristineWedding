@@ -508,37 +508,18 @@
 </div>
 </div>
 
+<input type="hidden" name="uid" id="hiddenUID">
+
 <script>
-window.onload = function() {
-    const params = new URLSearchParams(window.location.search);
-    const guestId = params.get('id');
-    const guestName = params.get('name');
-    const guestLimit = params.get('g');
-
-    // 1. SAVE TO STORAGE (Backup safety net)
-    if (guestId) {
-        sessionStorage.setItem('guestId', guestId);
-        sessionStorage.setItem('guestName', decodeURIComponent(guestName || ""));
-        sessionStorage.setItem('guestLimit', guestLimit || "0");
+  window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    if (id) {
+      document.getElementById('hiddenUID').value = id;
     }
-
-    // 2. UPDATE VISUALS ("Hi Name")
-    const display = document.getElementById('guest-display');
-    if (display) {
-        display.innerText = guestName ? "Hi " + decodeURIComponent(guestName) : "Hi SPECIAL GUEST";
-    }
-    
-    // 3. UPDATE ALLOCATION TEXT
-    const allocationBox = document.getElementById('allocation-box');
-    if (allocationBox) {
-        if (guestLimit !== null && guestLimit !== "0") {
-            allocationBox.innerHTML = 'You have (<span>' + guestLimit + '</span>) additional seat allocated by the Couple.';
-        } else {
-            allocationBox.innerText = "We can't wait to celebrate our special day with you!";
-        }
-    }
-};
+  }
 </script>
+
 <script>
     const urlParams = new URLSearchParams(window.location.search);
     const guestLimit = urlParams.get('g');

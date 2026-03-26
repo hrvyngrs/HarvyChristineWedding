@@ -219,68 +219,6 @@ body {
 </script>
     <!-- Navbar End -->
 
-    <!-- HTML START -->
-<script>
-window.onload = function() {
-    const params = new URLSearchParams(window.location.search);
-    
-    // 1. Extract data from URL
-    const urlId = params.get('id');
-    const urlName = params.get('name');
-    const urlLimit = params.get('g');
-
-    // 2. Fallback to SessionStorage if URL is empty (e.g. they refreshed the page)
-    const id = urlId || sessionStorage.getItem('guestId');
-    const rawName = urlName || sessionStorage.getItem('guestName');
-    const limit = urlLimit || sessionStorage.getItem('guestLimit');
-
-    if (id) {
-        // Save to SessionStorage so it stays even if the ?id= part disappears
-        sessionStorage.setItem('guestId', id);
-        if (rawName) sessionStorage.setItem('guestName', decodeURIComponent(rawName));
-        if (limit) sessionStorage.setItem('guestLimit', limit);
-        
-        // 3. Find the input field and fill it
-        const nameField = document.getElementById('rsvp-name-input');
-        if (nameField) {
-            nameField.value = sessionStorage.getItem('guestName');
-        }
-
-        // 4. Update the Pax/Limit text
-        const limitDisplay = document.getElementById('pax-info'); 
-        if (limitDisplay) {
-            limitDisplay.innerText = `You are invited for up to ${sessionStorage.getItem('guestLimit')} person(s).`;
-        }
-
-        // 5. Run the security check
-        checkExistingRSVP(id); 
-    } else {
-        console.warn("No ID found. RSVP features may be limited.");
-    }
-};
-
-function checkExistingRSVP(id) {
-    const scriptUrl = "https://script.google.com/macros/s/AKfycbxrhwgZ9fRnuTYt2IPNC7ZDwchfvYA_586E_SyQga-5iAoZtXW-o8o8Fi1UAbwa3IPQJQ/exec"; 
-    
-    fetch(`${scriptUrl}?action=validate&id=${id}`)
-        .then(res => res.json())
-        .then(data => {
-            if (data && data.status === "Submitted") {
-                const container = document.getElementById('rsvp-form-container');
-                if (container) {
-                    container.innerHTML = `
-                        <div style="text-align:center; padding:30px; border:2px solid #d4af37; background: rgba(0,31,63,0.8); border-radius: 15px;">
-                            <h2 class="font-secondary" style="color:#d4af37;">RSVP Already Received</h2>
-                            <p class="text-white">Hi ${sessionStorage.getItem('guestName')}, we already have your response!</p>
-                            <p class="text-white">See you on June 12, 2026.</p>
-                        </div>`;
-                }
-            }
-        })
-        .catch(err => console.error("Validation Error:", err));
-}
-</script>
-    <!-- HTML End -->
     <!-- Carousel Start -->
 <style>
     /* 1. INITIAL ENTRANCE (Only on First Visit) */
@@ -1563,102 +1501,140 @@ function checkExistingRSVP(id) {
             </p>
         </div>
 
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Lato:wght@300;400&display=swap');
-    .rsvp-section { max-width: 480px; margin: 40px auto; padding: 50px 40px; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); border-top: 6px solid #1a2a44; text-align: center; font-family: 'Lato', sans-serif; color: #1a2a44; }
-    .rsvp-section h2 { font-family: 'Playfair Display', serif; font-size: 2.6rem; margin-bottom: 8px; color: #1a2a44; letter-spacing: 1px; }
-    .rsvp-section p.subtitle { font-style: italic; margin-bottom: 35px; color: #707b7c; font-weight: 300; }
-    .form-group { text-align: left; margin-bottom: 25px; }
-    .form-group label { display: block; margin-bottom: 8px; font-weight: 400; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: #1a2a44; }
-    .rsvp-input { width: 100%; padding: 14px; border: 1px solid #d5d8dc; border-radius: 4px; box-sizing: border-box; font-size: 1rem; background-color: #f8f9f9; transition: all 0.3s ease; }
-    .rsvp-input:focus { border-color: #1a2a44; background-color: #fff; outline: none; }
-    .policy-group { display: flex; align-items: flex-start; gap: 10px; text-align: left; margin-bottom: 25px; font-size: 0.9rem; }
-    .policy-group input { margin-top: 4px; }
-    .policy-link { color: #1a2a44; text-decoration: underline; font-weight: 400; }
-    #submit-btn { background: #1a2a44; color: #ffffff; border: none; padding: 16px; width: 100%; border-radius: 4px; cursor: pointer; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; transition: background 0.3s; }
-    #submit-btn:hover { background: #2c3e50; }
-    .nav-links { margin-top: 30px; display: flex; gap: 10px; justify-content: center; }
-    .nav-btn { flex: 1; padding: 12px; background: #f8f9f9; color: #1a2a44; border: 1px solid #d5d8dc; text-decoration: none; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; transition: all 0.3s; }
-    .nav-btn:hover { background: #d5d8dc; color: #1a2a44; }
-    .allowance-text { font-size: 0.8rem; color: #707b7c; margin-top: -15px; margin-bottom: 20px; text-align: left; font-style: italic; }
-</style>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Lato:wght@300;400&display=swap');
+            .rsvp-section { max-width: 480px; margin: 40px auto; padding: 50px 40px; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); border-top: 6px solid #1a2a44; text-align: center; font-family: 'Lato', sans-serif; color: #1a2a44; }
+            .rsvp-section h2 { font-family: 'Playfair Display', serif; font-size: 2.6rem; margin-bottom: 8px; color: #1a2a44; letter-spacing: 1px; }
+            .rsvp-section p.subtitle { font-style: italic; margin-bottom: 35px; color: #707b7c; font-weight: 300; }
+            .form-group { text-align: left; margin-bottom: 25px; }
+            .form-group label { display: block; margin-bottom: 8px; font-weight: 400; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: #1a2a44; }
+            .rsvp-input { width: 100%; padding: 14px; border: 1px solid #d5d8dc; border-radius: 4px; box-sizing: border-box; font-size: 1rem; background-color: #f8f9f9; transition: all 0.3s ease; }
+            .rsvp-input:focus { border-color: #1a2a44; background-color: #fff; outline: none; }
+            .policy-group { display: flex; align-items: flex-start; gap: 10px; text-align: left; margin-bottom: 25px; font-size: 0.9rem; }
+            .policy-group input { margin-top: 4px; }
+            .policy-link { color: #1a2a44; text-decoration: underline; font-weight: 400; }
+            #submit-btn { background: #1a2a44; color: #ffffff; border: none; padding: 16px; width: 100%; border-radius: 4px; cursor: pointer; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; transition: background 0.3s; }
+            #submit-btn:hover { background: #2c3e50; }
+            .nav-links { margin-top: 30px; display: flex; gap: 10px; justify-content: center; }
+            .nav-btn { flex: 1; padding: 12px; background: #f8f9f9; color: #1a2a44; border: 1px solid #d5d8dc; text-decoration: none; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; transition: all 0.3s; }
+            .nav-btn:hover { background: #d5d8dc; color: #1a2a44; }
+            .allowance-text { font-size: 0.8rem; color: #707b7c; margin-top: -15px; margin-bottom: 20px; text-align: left; font-style: italic; }
+        </style>
 
-<div class="rsvp-section">
-    <h2>RSVP</h2>
-    <p class="subtitle">Kindly respond by the deadline</p>
-    
-    <form id="rsvp-form">
-        <input type="hidden" name="id" id="guest-id-input">
+        <div class="rsvp-section">
+            <h2>RSVP</h2>
+            <p class="subtitle">Kindly respond by the deadline</p>
+            
+            <form id="rsvp-form">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" name="Full Name" class="rsvp-input" placeholder="Enter name" required>
+                </div>
 
-        <div class="form-group">
-            <label>Full Name</label>
-            <input type="text" name="Full Name" class="rsvp-input" placeholder="Enter name" required>
-        </div>
+                <div id="allowance-display" class="allowance-text" style="display: none;">
+                    You are allocated <span id="guest-count-val">0</span> additional seat(s).
+                </div>
 
-        <div id="allowance-display" class="allowance-text" style="display: none;">
-            You are allocated <span id="guest-count-val">0</span> additional seat(s).
-        </div>
+                <div class="form-group">
+                    <label>Attendance</label>
+                    <select name="Attendance" id="attendance-select" class="rsvp-input" required>
+                        <option value="" disabled selected>Will you attend?</option>
+                        <option value="Yes">Joyfully Accepts</option>
+                        <option value="No">Regretfully Declines</option>
+                    </select>
+                </div>
 
-        <div class="form-group">
-            <label>Attendance</label>
-            <select name="Attendance" id="attendance-select" class="rsvp-input" required>
-                <option value="" disabled selected>Will you attend?</option>
-                <option value="Yes">Joyfully Accepts</option>
-                <option value="No">Regretfully Declines</option>
-            </select>
-        </div>
+                <div id="dynamic-guest-fields"></div>
 
-        <div id="dynamic-guest-fields"></div>
+                <div class="form-group">
+                    <label>Whose side are you?</label>
+                    <select name="Guest Side" class="rsvp-input" required>
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="Groom">Groom</option>
+                        <option value="Bride">Bride</option>
+                    </select>
+                </div>
+                <div class="policy-group">
+                    <input type="checkbox" id="policy-agreement" required>
+                    <label for="policy-agreement" style="text-transform: none; letter-spacing: normal; font-size: 0.85rem;">
+                        I agree to the <a href="#rsvp" class="policy-link">Wedding Guest Policies</a>.
+                    </label>
+                </div>
+                <button type="submit" id="submit-btn">Send RSVP</button>
+            </form>
 
-        <div class="form-group">
-            <label>Whose side are you?</label>
-            <select name="Guest Side" class="rsvp-input" required>
-                <option value="" disabled selected>Select an option</option>
-                <option value="Groom">Groom</option>
-                <option value="Bride">Bride</option>
-            </select>
-        </div>
-        <div class="policy-group">
-            <input type="checkbox" id="policy-agreement" required>
-            <label for="policy-agreement" style="text-transform: none; letter-spacing: normal; font-size: 0.85rem;">
-                I agree to the <a href="#rsvp" class="policy-link">Wedding Guest Policies</a>.
-            </label>
-        </div>
-        <button type="submit" id="submit-btn">Send RSVP</button>
-    </form>
+<div class="nav-links">
+    <a href="seat-finder.html" class="nav-btn">Seat Finder</a>
+    <a href="floor-plan.html" class="nav-btn">Floor Plan</a>
 </div>
 
 <script>
+    // This script runs as soon as the page is ready
+    window.addEventListener('DOMContentLoaded', () => {
+        // 1. Get the current URL parameters (e.g., ?name=Guest&g=1)
+        const currentParams = window.location.search;
+
+        // 2. Only proceed if there are actually parameters to pass
+        if (currentParams) {
+            // 3. Find all your navigation buttons
+            const navButtons = document.querySelectorAll('.nav-btn');
+
+            navButtons.forEach(button => {
+                // 4. Get the original link (e.g., "seat-finder.html")
+                const originalHref = button.getAttribute('href');
+                
+                // 5. Update the link to include the parameters
+                // Result: "seat-finder.html?name=Guest&g=1"
+                button.setAttribute('href', originalHref + currentParams);
+            });
+        }
+    });
+</script>
+        </div>
+
+        <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+            <p style="margin: 0; opacity: 0.8; font-size: 0.95rem;">
+                &copy; 2026 H&C Wedding. Coded & Designed by 
+                <a href="https://instagram.com/hrvyngrs" style="color: white; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.3);">HARVY</a>. 
+                All rights reserved.
+            </p>
+        </footer>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
     document.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
-        const guestId = urlParams.get('id');
-        
-        if (guestId) {
-            document.getElementById('guest-id-input').value = guestId;
-            console.log("ID FOUND AND LOADED:", guestId);
-        } else {
-            console.error("NO ID FOUND IN URL!");
-        }
-
         const guestLimit = parseInt(urlParams.get('g')) || 0;
+        const dynamicContainer = document.getElementById('dynamic-guest-fields');
+        const allowanceDisplay = document.getElementById('allowance-display');
+        const countVal = document.getElementById('guest-count-val');
+
         if (guestLimit > 0) {
-            document.getElementById('allowance-display').style.display = 'block';
-            document.getElementById('guest-count-val').innerText = guestLimit;
+            allowanceDisplay.style.display = 'block';
+            countVal.innerText = guestLimit;
+
             for (let i = 1; i <= guestLimit; i++) {
                 const group = document.createElement('div');
                 group.className = 'form-group';
-                group.innerHTML = `<label>Additional Guest ${i} Name</label><input type="text" name="Additional_Guest_${i}" class="rsvp-input" placeholder="Enter guest name" required>`;
-                document.getElementById('dynamic-guest-fields').appendChild(group);
+                group.innerHTML = `
+                    <label>Additional Guest ${i} Name</label>
+                    <input type="text" name="Additional_Guest_${i}" class="rsvp-input" placeholder="Enter guest name" required>
+                `;
+                dynamicContainer.appendChild(group);
             }
         }
     });
 
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxrhwgZ9fRnuTYt2IPNC7ZDwchfvYA_586E_SyQga-5iAoZtXW-o8o8Fi1UAbwa3IPQJQ/exec'; 
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbx7Dyhafui8v0fucXC0zXEcv2FAbL1dUu1WX6u1zRq1VHq7zRyfo8k-YboIpgqsHdc9OA/exec';
     const rsvpForm = document.getElementById('rsvp-form');
 
     rsvpForm.addEventListener('submit', e => {
         e.preventDefault();
         const btn = document.getElementById('submit-btn');
+        const attendance = document.getElementById('attendance-select').value;
+        
         btn.disabled = true;
         btn.innerText = "SENDING...";
 
@@ -1666,11 +1642,47 @@ function checkExistingRSVP(id) {
         .then(res => res.json())
         .then(data => {
             if (data.result === "success") {
-                Swal.fire({ title: 'SUCCESS!', icon: 'success', confirmButtonColor: '#1a2a44' });
+                if (attendance === "Yes") {
+                    Swal.fire({
+                        title: 'RESPONSE LOGGED!',
+                        html: `<p style="color: #707b7c; margin-bottom: 20px;">Your seat is now reserved. Your table and seat number will be available <b>3 days before the wedding day</b>.</p>
+                               <a href="seat-finder.html" style="display: inline-block; padding: 10px 20px; background-color: #707b7c; color: white; text-decoration: none; border-radius: 4px; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Go to Seat Finder</a>`,
+                        icon: 'success',
+                        confirmButtonText: 'CLOSE',
+                        confirmButtonColor: '#1a2a44'
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'THANK YOU',
+                        text: "We are sorry you can't make it, but we appreciate you letting us know!",
+                        icon: 'info',
+                        confirmButtonText: 'CLOSE',
+                        confirmButtonColor: '#1a2a44'
+                    });
+                }
                 rsvpForm.reset();
+            } else if (data.result === "duplicate") {
+                // This specifically handles the duplicate result and shows the exact name
+                Swal.fire({
+                    title: 'ALREADY REGISTERED',
+                    text: data.name ? `The name "${data.name.toUpperCase()}" is already registered on our list.` : 'One of the names submitted is already registered.',
+                    icon: 'warning',
+                    confirmButtonColor: '#1a2a44'
+                });
             } else {
-                Swal.fire({ title: 'ERROR', text: data.error, icon: 'error' });
+                // General error handler for other issues (like script errors)
+                Swal.fire({ 
+                    title: 'ERROR', 
+                    text: data.error || 'Something went wrong. Please try again.', 
+                    icon: 'error', 
+                    confirmButtonColor: '#1a2a44' 
+                });
             }
+            btn.disabled = false;
+            btn.innerText = "SEND RSVP";
+        })
+        .catch(err => {
+            Swal.fire({ title: 'ERROR', text: 'Please try again or contact us directly.', icon: 'error', confirmButtonColor: '#1a2a44' });
             btn.disabled = false;
             btn.innerText = "SEND RSVP";
         });
