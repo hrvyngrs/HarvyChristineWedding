@@ -784,66 +784,196 @@ body {
 
 
     <!-- Story Start -->
-    <div class="container-fluid py-5" id="story">
-        <div class="container pt-5 pb-3">
-            <div class="section-title position-relative text-center">
-                <h1 class="font-secondary display-4">The Story</h1>
-                <h6 class="text-uppercase text-primary mb-3" style="letter-spacing: 3px;">From USJ-R to Forever</h6>
-                <i class="far fa-heart text-dark"></i>
-            </div>
- <div class="container timeline p-0">
-    <!-- First Meet & Date -->
-    <div class="row align-items-center mb-4">
-        <div class="col-md-6 order-2 order-md-1 text-center text-md-right mb-3 mb-md-0">
-            <img src="img/story-1.jpg" class="img-fluid w-100" style="object-fit:cover;">
-        </div>
-        <div class="col-md-6 order-1 order-md-2 text-center text-md-left">
-            <div class="bg-secondary p-4 d-flex flex-column justify-content-center h-100">
-                <h4 class="mb-2">The Beginning of Us</h4>
-                <p>
-                <strong>Harvy</strong> and <strong>Christine</strong> attended the same college, and while they spent plenty of time chatting on Messenger, they never quite had the chance to meet in person. Harvy was extremely shy and usually preferred spending his time at the computer shop, which made face‑to‑face meet‑ups even harder to arrange.
-                <br/><br/>
-                November 2016 - marked the long‑awaited moment when, after countless attempts, they finally met at Jollibee in Gaisano Mactan. Christine took the initiative and made the plan happen, while Harvy arrived feeling a mix of excitement and obvious nervousness.
-                <br/><br/>
-                Christine came straight from school that day, carrying a large shoulder bag. Noticing it, Harvy couldn’t resist breaking the tension with a joke asking if she was already planning to move in since it looked like she had packed all her belongings with her. That playful remark sparked laughter, instantly easing their nerves and breaking the ice.
-                <br/><br/>
-                Even as they enjoyed each other’s company, Harvy kept asking if they would meet again. His nerves got the best of him and feels worried that their first meeting might also be their last, afraid the moment might never happen again.
-                <br/><br/>
-                Little did he know that day wasn’t an ending at all - it was only the beginning. What started as a simple meet‑up blossomed into a beautiful journey filled with laughter, adventures, and a shared love for travel. They now look forward to continuing that journey together as they step into a new chapter of their lives as husband and wife.
-                <br/><br/>
-                Since <strong>November 2016</strong>, Harvy patiently courted Christine, expressing his love through small gestures and heartfelt moments that made her feel truly special. 
-                <br/><br/>
-                At the <strong>USJR campus</strong> - the very place where their story began and where they first caught glimpses of each other. Harvy prepared a heartfelt surprise: 101 reasons why he loved her, carefully written and placed inside a jar.
-                <br/><br/>
-                That simple yet deeply meaningful gesture marked the start of a beautiful journey together. From that day forward, their bond only grew stronger, eventually leading them to the wedding day they now joyfully share with family and friends.
-                </p>
-            </div>
-        </div>
-    </div>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
-    <!-- She said 'Yes' -->
-    <div class="row align-items-center mb-4">
-        <div class="col-md-6 order-2 order-md-2 text-center text-md-left mb-3 mb-md-0">
-            <img src="img/story-2.jpg" class="img-fluid w-100" style="object-fit:cover;">
+<div class="container-fluid py-5" id="story" style="background: #ffffff; margin: 100px 0;">
+    <div class="container text-center">
+        <div class="section-title mb-4">
+            <h1 class="font-secondary display-4 mb-2" style="color: #1a2a44; font-size: 5.5rem;">Our Story</h1>
+            <h6 class="text-uppercase text-primary" style="letter-spacing: 3px; color: #d4af37 !important; font-size: 0.7rem;">Tap to see our journey</h6>
+        </div><br/>
+
+        <div class="compact-nav-wrapper">
+            <div class="nav-gold-line"></div>
+            <div class="nav-icons">
+                <div class="nav-node active" onclick="showStory(1, this)">
+                    <div class="icon-circle"><i class="fas fa-users"></i></div>
+                    <span class="node-year">2016</span>
+                </div>
+                <div class="nav-node" onclick="showStory(2, this)">
+                    <div class="icon-circle"><i class="fas fa-ring"></i></div>
+                    <span class="node-year">2024</span>
+                </div>
+                <div class="nav-node" onclick="showStory(3, this)">
+                    <div class="icon-circle heart-node"><i class="fas fa-heart"></i></div>
+                    <span class="node-year">2026</span>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6 order-1 order-md-1 text-center text-md-right">
-            <div class="bg-secondary p-4 d-flex flex-column justify-content-center h-100">
-                <h4 class="mb-2">The Proposal</h4>
-                <p>
-                Harvy had long been dreaming of the perfect moment to ask Christine to marry him. After careful thought and planning, he chose the breathtaking island of Boracay as the setting for this once‑in‑a‑lifetime question. To make everything even more meaningful, he sought the help of Christine’s sister to ask for their parents’ blessing and ensure that every detail went smoothly.
-                <br/><br/>
-                What appeared to be a simple family getaway was, in truth, a beautifully planned surprise. Harvy made sure that both families (including his own) were part of the trip, cleverly using it as the perfect cover for what was about to unfold.
-                <br/><br/>
-                On <strong>November 9, 2024</strong>, the magic came to life at Puka Beach, with the sun casting its warm glow over the white sand and gentle waves rolling in around them. Surrounded by their loved ones and the natural beauty of the moment, Harvy asked Christine to spend the rest of her life with him.
-                <br/><br/>
-                It was a moment filled with love, laughter, and unforgettable memories, the beginning of a brand‑new chapter in their story and the start of forever.
-                </p>
+
+        <div class="compact-story-container">
+            <div class="story-card" id="storyCard">
+                
+                <div class="story-pane active" id="pane-1">
+                    <div class="row no-gutters">
+                        <div class="col-lg-5">
+                            <img src="img/story-1.jpg" class="pane-img">
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="pane-content">
+                                <h3 class="pane-h">The Beginning of Us</h3>
+                                <p class="pane-p">
+                                    <strong>Harvy</strong> and <strong>Christine</strong> attended the same college, and while they spent plenty of time chatting on Messenger, they never quite had the chance to meet in person. Harvy was extremely shy and usually preferred spending his time at the computer shop, which made face‑to‑face meet‑ups even harder to arrange.
+                                    <br/><br/>
+                                    November 2016 - marked the long‑awaited moment when, after countless attempts, they finally met at Jollibee in Gaisano Mactan. Christine took the initiative and made the plan happen, while Harvy arrived feeling a mix of excitement and obvious nervousness.
+                                    <br/><br/>
+                                    Christine came straight from school that day, carrying a large shoulder bag. Noticing it, Harvy couldn’t resist breaking the tension with a joke asking if she was already planning to move in since it looked like she had packed all her belongings with her. That playful remark sparked laughter, instantly easing their nerves and breaking the ice.
+                                    <br/><br/>
+                                    Since November 2016, Harvy patiently courted Christine, expressing his love through small gestures and heartfelt moments that made her feel truly special. At the <strong>USJR campus</strong> - the very place where their story began and where they first caught glimpses of each other. Harvy prepared a heartfelt surprise: 101 reasons why he loved her, carefully written and placed inside a jar. That simple yet deeply meaningful gesture marked the start of a beautiful journey together. From that day forward, their bond only grew stronger, eventually leading them to the wedding day they now joyfully share with family and friends.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="story-pane" id="pane-2">
+                    <div class="row no-gutters">
+                        <div class="col-lg-5">
+                            <img src="img/story-2.jpg" class="pane-img">
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="pane-content">
+                                <h3 class="pane-h">The Proposal</h3>
+                                <p class="pane-p">
+                                    Harvy had long been dreaming of the perfect moment to ask Christine to marry him. After careful thought and planning, he chose the breathtaking island of Boracay as the setting for this once‑in‑a‑lifetime question. To make everything even more meaningful, he sought the help of Christine’s sister to ask for their parents’ blessing and ensure that every detail went smoothly.
+                                    <br/><br/>
+                                    On <strong>November 9, 2024</strong>, the magic came to life at Puka Beach, with the sun casting its warm glow over the white sand and gentle waves rolling in around them. Surrounded by loved ones and the natural beauty of the moment, Harvy asked Christine to spend the rest of her life with him.
+                                    <br/><br/>
+                                    It was a moment filled with love, laughter, and unforgettable memories—the beginning of a brand‑new chapter in their story and the start of forever.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="story-pane" id="pane-3">
+                    <div class="text-center py-4">
+                        <h2 class="pane-h text-center" style="font-size: 2.8rem; margin-top: 20px;">THE BIG DAY</h2>
+                        <div class="gold-line"></div>
+                        <p class="pane-p text-center" style="font-size: 1.4rem; color: #d4af37; font-weight: bold; letter-spacing: 2px;">
+                            JUNE 12, 2026
+                        </p>
+                        <p class="pane-p text-center mt-3">
+                            The culmination of a decade of love. <br> 
+                            We are counting down the days until we finally say "I Do."
+                        </p>
+                        <i class="fas fa-heart mt-4" style="color: #d4af37; font-size: 2rem; animation: heartBeat 1.5s infinite;"></i>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 </div>
-        </div>
-    </div>
+
+<style>
+    /* NAV STYLES */
+    .compact-nav-wrapper {
+        position: relative;
+        max-width: 450px;
+        margin: 0 auto 30px auto;
+    }
+    .nav-gold-line {
+        position: absolute;
+        top: 20px;
+        left: 0; right: 0;
+        height: 1px;
+        background: #d4af37;
+        z-index: 1;
+    }
+    .nav-icons {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        z-index: 2;
+    }
+    .nav-node { cursor: pointer; text-align: center; width: 60px; }
+    .icon-circle {
+        width: 40px;
+        height: 40px;
+        background: #fff;
+        border: 1px solid #d4af37;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #1a2a44;
+        transition: 0.3s;
+        margin: 0 auto 5px auto;
+    }
+    .nav-node.active .icon-circle {
+        background: #d4af37;
+        color: #fff;
+        transform: scale(1.1);
+        box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+    }
+    .node-year { font-size: 0.7rem; font-weight: 700; color: #bbb; }
+    .nav-node.active .node-year { color: #1a2a44; }
+
+    /* CARD STYLES */
+    .compact-story-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    .story-card {
+        background: #fff;
+        border-radius: 4px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        border: 1px solid #f0f0f0;
+        overflow: hidden;
+        min-height: 420px;
+        height: 420px; 
+    }
+    .story-pane { display: none; height: 100%; animation: fadeIn 0.4s ease forwards; }
+    .story-pane.active { display: block; }
+    
+    .pane-img { width: 100%; height: 420px; object-fit: cover; }
+    
+    .pane-content {
+        padding: 30px;
+        height: 420px;
+        overflow-y: auto;
+        text-align: left;
+    }
+    .pane-content::-webkit-scrollbar { width: 4px; }
+    .pane-content::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
+
+    .pane-h { font-family: 'Dancing Script', cursive; color: #1a2a44; font-size: 2rem; margin-bottom: 15px; }
+    .pane-p { font-size: 0.9rem; line-height: 1.7; color: #555; text-align: justify; }
+    
+    .gold-line { width: 40px; height: 2px; background: #d4af37; margin: 15px auto; }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes heartBeat { 0%, 70%, 100% { transform: scale(1); } 14% { transform: scale(1.1); } 28% { transform: scale(1); } 42% { transform: scale(1.1); } }
+
+    @media (max-width: 992px) {
+        .story-card { height: auto; min-height: 500px; }
+        .pane-img { height: 250px; }
+        .pane-content { height: auto; overflow: visible; padding: 20px; }
+    }
+</style>
+
+<script>
+function showStory(id, el) {
+    document.querySelectorAll('.nav-node').forEach(n => n.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.story-pane').forEach(p => p.classList.remove('active'));
+    document.getElementById('pane-' + id).classList.add('active');
+    
+    const content = document.querySelector('#pane-' + id + ' .pane-content');
+    if(content) content.scrollTop = 0;
+}
+</script>
     <!-- Story End -->
 
 
@@ -972,6 +1102,15 @@ body {
             <div class="countdown-item"><span class="countdown-value minutes">00</span><span class="countdown-label">Min</span></div>
             <div class="countdown-item"><span class="countdown-value seconds">00</span><span class="countdown-label">Sec</span></div>
         </div>
+        <div class="text-center mt-4">
+    <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Harvy+%26+Christine's+Wedding&dates=20260612T060000Z/20260612T140000Z&details=Ceremony+at+Redemptorist+Church+followed+by+Reception+at+Waterfront+Cebu+City+Hotel.&location=Waterfront+Cebu+City+Hotel+%26+Casino" 
+       target="_blank" 
+       class="btn btn-outline-dark rounded-pill py-2 px-4" 
+       style="border-color: #b08d57; color: #b08d57; font-family: 'Montserrat', sans-serif; letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem;">
+       <i class="far fa-calendar-alt mr-2"></i> Add to Calendar
+    </a>
+</div>
+
     </div>
 </div>
 
@@ -1521,6 +1660,54 @@ body {
     .nav-btn { flex: 1; padding: 12px; background: #f8f9f9; color: #1a2a44; border: 1px solid #d5d8dc; text-decoration: none; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; transition: all 0.3s; }
     .nav-btn:hover { background: #d5d8dc; color: #1a2a44; }
     .allowance-text { font-size: 0.8rem; color: #707b7c; margin-top: -15px; margin-bottom: 20px; text-align: left; font-style: italic; }
+/* --- VIP PASS: CLEAN & CONTAINED --- */
+    div.swal2-popup.vip-modal-custom {
+        padding: 0 !important; 
+        border-radius: 12px !important;
+        width: 90% !important;
+        max-width: 420px !important;
+        background: #ffffff !important; 
+        border: 2px solid #1a2a44 !important; /* Adds a classy navy border instead of circles */
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2) !important;
+    }
+    
+    div.swal2-popup.vip-modal-custom .swal2-html-container {
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important; 
+    }
+
+    /* Kill all scrollbars entirely */
+    div.swal2-popup.vip-modal-custom::-webkit-scrollbar,
+    div.swal2-popup.vip-modal-custom *::-webkit-scrollbar {
+        display: none !important;
+    }
+    div.swal2-popup.vip-modal-custom {
+        -ms-overflow-style: none !important; 
+        scrollbar-width: none !important; 
+    }
+
+    /* The "X" Button - Safely INSIDE the top right */
+    div.swal2-popup.vip-modal-custom .swal2-close {
+        position: absolute !important;
+        top: 5px !important;
+        right: 5px !important;
+        background: transparent !important; 
+        color: #a5a5a5 !important; 
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 28px !important;
+        font-weight: 300 !important;
+        box-shadow: none !important;
+        outline: none !important;
+        transition: color 0.2s ease !important;
+        z-index: 10 !important;
+    }
+    
+    div.swal2-popup.vip-modal-custom .swal2-close:hover {
+        color: #1a2a44 !important; 
+        background: transparent !important;
+    }
 </style>
 
 <div class="rsvp-section">
@@ -1578,53 +1765,72 @@ body {
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    // Global variable to store the limit from the Sheet
+    // Global variable to store the "Source of Truth" from your Sheet
     let officialAllowance = 0;
 
     window.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
         const inviteId = urlParams.get('id'); 
-        const currentParams = window.location.search;
+        const mask = urlParams.get('v'); // The obfuscated parameter (st, pl, ex, tr, qu, mx)
+
+        // 1. Translation Logic: Converts the code to a number 0-5
+        const maskMap = {
+            'st': 0, // Standard
+            'pl': 1, // Plus
+            'ex': 2, // Extended
+            'tr': 3, // Triple
+            'qu': 4, // Quad
+            'mx': 5  // Max
+        };
+        
+        let urlCount = maskMap[mask] || 0;
         const dynamicContainer = document.getElementById('dynamic-guest-fields');
         const submitBtn = document.getElementById('submit-btn');
 
-        // Logic to build the guest inputs
-        const generateFields = (count) => {
-            const num = parseInt(count) || 0;
-            if (num > 0 && dynamicContainer) {
-                document.getElementById('allowance-display').style.display = 'block';
-                document.getElementById('guest-count-val').textContent = num;
-                
-                let htmlFields = '';
-                for (let i = 1; i <= num; i++) {
-                    htmlFields += `
-                        <div class="form-group">
-                            <label>Additional Guest ${i} Name</label>
-                            <input type="text" name="Additional_Guest_${i}" class="rsvp-input" placeholder="Enter guest name" required>
-                        </div>`;
-                }
-                dynamicContainer.innerHTML = htmlFields;
-            } else if (dynamicContainer) {
-                document.getElementById('allowance-display').style.display = 'none';
-                dynamicContainer.innerHTML = '';
+        // 2. IMMEDIATE TRIGGER: Build fields based on the URL mask immediately
+        if (urlCount > 0 && dynamicContainer) {
+            document.getElementById('allowance-display').style.display = 'block';
+            document.getElementById('guest-count-val').textContent = urlCount;
+            
+            let html = '';
+            for (let i = 1; i <= urlCount; i++) {
+                html += `
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label>Additional Guest ${i} Name</label>
+                        <input type="text" name="Additional_Guest_${i}" class="rsvp-input" placeholder="Enter guest name" required>
+                    </div>`;
             }
-        };
+            dynamicContainer.innerHTML = html;
+        }
 
         if (inviteId) {
             document.getElementById('invite-code').value = inviteId;
             
-            // THE TRIGGER: The Invite Code fetches the allowance
+            // 3. SECURITY SYNC: Verify if the URL mask matches the Sheet data in background
             google.script.run.withSuccessHandler(function(data) {
                 if (data && data.valid) {
                     document.getElementById('full-name').value = data.name;
-                    
-                    // Fetch "Allowance" from the Sheet data
-                    // This is the specific value from Column C of your InviteCodes sheet
                     officialAllowance = parseInt(data.allowance) || 0;
-                    
-                    // AUTOMATIC TRIGGER: Generate fields immediately based on Sheet value
-                    generateFields(officialAllowance);
 
+                    // If URL was manipulated to a higher number than the Sheet allows, revert it
+                    if (urlCount > officialAllowance) {
+                        urlCount = officialAllowance; 
+                        if (urlCount === 0) {
+                            dynamicContainer.innerHTML = '';
+                            document.getElementById('allowance-display').style.display = 'none';
+                        } else {
+                            let secureHtml = '';
+                            for (let i = 1; i <= urlCount; i++) {
+                                secureHtml += `
+                                    <div class="form-group" style="margin-top: 15px;">
+                                        <label>Additional Guest ${i} Name</label>
+                                        <input type="text" name="Additional_Guest_${i}" class="rsvp-input" placeholder="Enter guest name" required>
+                                    </div>`;
+                            }
+                            dynamicContainer.innerHTML = secureHtml;
+                            document.getElementById('guest-count-val').textContent = urlCount;
+                        }
+                    }
                 } else {
                     Swal.fire({
                         title: 'INVALID INVITE',
@@ -1636,49 +1842,16 @@ body {
                     submitBtn.innerText = "INVALID ACCESS";
                 }
             }).getInviteDetails(inviteId);
-        } else {
-            submitBtn.disabled = true;
-            submitBtn.innerText = "LINK REQUIRED";
-            Swal.fire({
-                title: 'ACCESS DENIED',
-                text: 'Please use the official link provided in your invitation.',
-                icon: 'warning',
-                confirmButtonColor: '#1a2a44'
-            });
-        }
-
-        if (currentParams) {
-            const navButtons = document.querySelectorAll('.nav-btn');
-            navButtons.forEach(button => {
-                const originalHref = button.getAttribute('href');
-                button.setAttribute('href', originalHref + currentParams);
-            });
         }
     });
 
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxrhwgZ9fRnuTYt2IPNC7ZDwchfvYA_586E_SyQga-5iAoZtXW-o8o8Fi1UAbwa3IPQJQ/exec';
+    // --- RETRIEVED ORIGINAL SUBMISSION LOGIC ---
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyMqbc_a3xx0fwphkQ6JB5pD2sIc2A07GM9Nm31lB7nap99gQUrwDLgPcWAUxYXjgea6g/exec';
     const rsvpForm = document.getElementById('rsvp-form');
 
     rsvpForm.addEventListener('submit', e => {
         e.preventDefault();
         
-        // Final validation: Ensure submitted guests don't exceed Sheet allowance
-        const guestInputs = rsvpForm.querySelectorAll('input[name^="Additional_Guest_"]');
-        let filledGuestCount = 0;
-        guestInputs.forEach(input => {
-            if (input.value.trim() !== "") filledGuestCount++;
-        });
-
-        if (filledGuestCount > officialAllowance) {
-            Swal.fire({
-                title: 'UNAUTHORIZED GUESTS',
-                text: `This invitation only allows ${officialAllowance} additional guest(s).`,
-                icon: 'error',
-                confirmButtonColor: '#1a2a44'
-            });
-            return; 
-        }
-
         const btn = document.getElementById('submit-btn');
         const attendance = document.getElementById('attendance-select').value;
         btn.disabled = true;
@@ -1688,14 +1861,119 @@ body {
         .then(res => res.json())
         .then(data => {
             if (data.result === "success") {
-                if (attendance === "Yes") {
+if (attendance === "Yes") {
+                    // 1. Get the Primary Guest
+                    const mainGuest = document.getElementById('full-name').value || "Guest";
+                    
+                    // 2. Hunt for any Additional Guests they typed in
+                    let additionalGuestsHtml = '';
+                    let totalAdmit = 1;
+                    const additionalInputs = document.querySelectorAll('input[name^="Additional_Guest_"]');
+                    
+                    if (additionalInputs.length > 0) {
+                        let guestNames = [];
+                        additionalInputs.forEach(input => {
+                            if(input.value.trim() !== '') {
+                                guestNames.push(input.value.trim());
+                                totalAdmit++;
+                            }
+                        });
+                        
+                        // If they added people, build a sleek passenger list
+                        if (guestNames.length > 0) {
+                            additionalGuestsHtml = `
+                                <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e2e8f0;">
+                                    <span style="font-size: 0.55rem; color: #888; letter-spacing: 1px; text-transform: uppercase;">Plus Guests</span><br>
+                                    <strong style="font-size: 0.85rem; color: #1a2a44; line-height: 1.4; text-transform: uppercase;">
+                                        ${guestNames.join('<br>')}
+                                    </strong>
+                                </div>
+                            `;
+                        }
+                    }
+
+                    // 3. Generate the "Jeepney Journey" Ticket
                     Swal.fire({
-                        title: 'RESPONSE LOGGED!',
-                        html: `<p style="color: #707b7c; margin-bottom: 20px;">Your seat is now reserved. Your table and seat number will be available <b>3 days before the wedding day</b>.</p>
-                               <a href="seat-finder.html" style="display: inline-block; padding: 10px 20px; background-color: #707b7c; color: white; text-decoration: none; border-radius: 4px; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Go to Seat Finder</a>`,
-                        icon: 'success',
-                        confirmButtonText: 'CLOSE',
-                        confirmButtonColor: '#1a2a44'
+                        html: `
+                        <div style="padding: 0; text-align: left; font-family: 'Montserrat', sans-serif; position: relative;">
+                            
+                            <div style="padding: 40px 25px 20px 25px; background: #ffffff; border-radius: 12px 12px 0 0;">
+                                
+                                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #1a2a44; padding-bottom: 10px; margin-bottom: 20px;">
+                                    <h3 style="color: #1a2a44; font-family: 'Playfair Display', serif; font-weight: 900; letter-spacing: 1px; margin: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+                                        <i class="fas fa-ticket-alt" style="color: #d4af37;"></i> VIP GUEST PASS
+                                    </h3>
+                                    <div style="text-align: right; background: #1a2a44; color: #d4af37; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 0.7rem; letter-spacing: 2px;">
+                                        ADMIT: ${totalAdmit}
+                                    </div>
+                                </div>
+
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin: 25px 0;">
+                                    
+                                    <div style="text-align: center; width: 35%;">
+                                        <i class="fas fa-church" style="font-size: 1.4rem; color: #1a2a44; margin-bottom: 5px;"></i><br>
+                                        <span style="font-size: 0.75rem; font-weight: 900; color: #1a2a44; letter-spacing: 1px;">CEREMONY</span><br>
+                                        <span style="font-size: 0.55rem; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Redemptorist Church</span>
+                                    </div>
+                                    
+                                    <div style="width: 30%; text-align: center; color: #1a2a44; position: relative;">
+                                        <div style="position: absolute; top: 40%; left: -5px; right: -5px; border-top: 2px dashed #cbd5e1; z-index: 1;"></div>
+                                        <div style="background: #ffffff; padding: 0 8px; position: relative; z-index: 2; display: inline-block;">
+                                            <svg width="32" height="22" viewBox="0 0 50 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M2,12 L30,12 L33,18 L48,18 L48,25 L2,25 Z" fill="#1a2a44"/>
+                                                <rect x="2" y="8" width="28" height="3" fill="#d4af37"/>
+                                                <rect x="5" y="14" width="6" height="4" fill="#ffffff" rx="1"/>
+                                                <rect x="13" y="14" width="6" height="4" fill="#ffffff" rx="1"/>
+                                                <rect x="21" y="14" width="6" height="4" fill="#ffffff" rx="1"/>
+                                                <rect x="33" y="18" width="6" height="3" fill="#ffffff" rx="1"/>
+                                                <circle cx="12" cy="25" r="4" fill="#ffffff" stroke="#1a2a44" stroke-width="2"/>
+                                                <circle cx="38" cy="25" r="4" fill="#ffffff" stroke="#1a2a44" stroke-width="2"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+
+                                    <div style="text-align: center; width: 35%;">
+                                        <i class="fas fa-glass-cheers" style="font-size: 1.4rem; color: #1a2a44; margin-bottom: 5px;"></i><br>
+                                        <span style="font-size: 0.75rem; font-weight: 900; color: #1a2a44; letter-spacing: 1px;">RECEPTION</span><br>
+                                        <span style="font-size: 0.55rem; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Waterfront Hotel</span>
+                                    </div>
+                                </div>
+
+                                <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 5px;">
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <div style="flex: 1;">
+                                            <span style="font-size: 0.55rem; color: #888; letter-spacing: 1px; text-transform: uppercase;">Lead Guest</span><br>
+                                            <strong style="font-size: 1rem; color: #1a2a44; text-transform: uppercase;">${mainGuest}</strong>
+                                        </div>
+                                        <div style="text-align: right;">
+                                            <span style="font-size: 0.55rem; color: #888; letter-spacing: 1px; text-transform: uppercase;">Date & Time</span><br>
+                                            <strong style="font-size: 0.85rem; color: #d4af37;">JUN 12, 2026</strong><br>
+                                            <strong style="font-size: 0.85rem; color: #1a2a44;">02:00 PM</strong>
+                                        </div>
+                                    </div>
+                                    ${additionalGuestsHtml}
+                                </div>
+                            </div>
+
+                            <div style="position: relative; border-top: 2px dashed #cbd5e1; margin: 0 15px;"></div>
+
+                            <div style="padding: 20px 25px 25px 25px; background: #ffffff; text-align: center; border-radius: 0 0 12px 12px;">
+                                
+                                <div style="height: 40px; width: 100%; background: repeating-linear-gradient(90deg, #1a2a44 0, #1a2a44 2px, transparent 2px, transparent 4px, #1a2a44 4px, #1a2a44 5px, transparent 5px, transparent 8px, #1a2a44 8px, #1a2a44 12px, transparent 12px, transparent 14px); margin-bottom: 12px; opacity: 0.85; border-radius: 2px;"></div>
+                                
+                                <p style="font-size: 0.7rem; color: #888; font-style: italic; margin-bottom: 15px;">
+                                    Screenshot this pass to save your spot!
+                                </p>
+                                
+                                <a href="seat-finder.html" style="display: block; background: #1a2a44; color: white; padding: 14px; border-radius: 6px; text-decoration: none; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; transition: background 0.3s; border: 1px solid #1a2a44;">
+                                    Locate My Seat
+                                </a>
+                            </div>
+                        </div>
+                        `,
+                        showConfirmButton: false,
+                        showCloseButton: true,
+                        customClass: { popup: 'vip-modal-custom' }
                     });
                 } else {
                     Swal.fire({
@@ -1707,6 +1985,13 @@ body {
                     });
                 }
                 rsvpForm.reset();
+            } else if (data.result === "duplicate") {
+                Swal.fire({
+                    title: 'ALREADY REGISTERED',
+                    text: data.name ? `The name "${data.name.toUpperCase()}" is already registered on our list.` : 'One of the names submitted is already registered.',
+                    icon: 'warning',
+                    confirmButtonColor: '#1a2a44'
+                });
             } else {
                 Swal.fire({ title: 'ERROR', text: data.error || 'Something went wrong.', icon: 'error', confirmButtonColor: '#1a2a44' });
             }
@@ -1720,7 +2005,6 @@ body {
         });
     });
 </script>
-
     <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
         <p style="margin: 0; opacity: 0.8; font-size: 0.95rem;">
             &copy; 2026 H&C Wedding. Coded & Designed by 

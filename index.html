@@ -1,434 +1,403 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Wedding Times - Full Edition</title>
-<style>
-    :root {
-        --navy: #001f3f;
-        --navy-dark: #001226;
-        --silver: #C0C0C0; 
-        --silver-bright: #e0e0e0;
-        --news-paper: #f4f1ea; 
-        --ink: #1a1a1a;
-        --bg-color: #f2efea; 
-        --invite-bg: #BDBDBD;
-        --invite-text: #001f3f;
-    }
-
-    body {
-        font-family: 'Times New Roman', Times, serif;
-        margin: 0;
-        background-color: var(--bg-color);
-        background-image: 
-            radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(242,239,234,0.4) 100%),
-            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%23C0C0C0' stroke-width='1.5' stroke-opacity='0.3'%3E%3Ccircle cx='42' cy='50' r='12'/%3E%3Ccircle cx='58' cy='50' r='12'/%3E%3C/g%3E%3C/svg%3E");
-        background-size: 150px 150px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        overflow: hidden;
-        transition: opacity 3s cubic-bezier(0.4, 0, 0.2, 1), background-color 3s ease, filter 3s ease;
-    }
-
-    /* Updated Heart Effect Styles */
-    .heart {
-        position: absolute;
-        color: #d63031;
-        font-size: 18px;
-        pointer-events: none;
-        /* Positioned behind the cards (z-index 50) but above envelope back (z-index 1) */
-        z-index: 5; 
-        animation: flyOutSideward 3s ease-out forwards;
-        opacity: 0;
-    }
-
-    @keyframes flyOutSideward {
-        0% { 
-            transform: translate(0, 0) scale(0.5) rotate(0deg); 
-            opacity: 0; 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wedding Times - Full Edition</title>
+    <style>
+        :root {
+            --navy: #001f3f;
+            --navy-dark: #001226;
+            --silver: #C0C0C0; 
+            --silver-bright: #e0e0e0;
+            --news-paper: #f4f1ea; 
+            --ink: #1a1a1a;
+            --bg-color: #f2efea; 
+            --invite-bg: #BDBDBD;
+            --invite-text: #001f3f;
         }
-        20% { opacity: 1; }
-        100% { 
-            /* var(--drift) is set via JS for sideward movement */
-            transform: translate(var(--drift), -400px) scale(1.2) rotate(var(--rotation)); 
-            opacity: 0; 
+
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(242,239,234,0.4) 100%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%23C0C0C0' stroke-width='1.5' stroke-opacity='0.3'%3E%3Ccircle cx='42' cy='50' r='12'/%3E%3Ccircle cx='58' cy='50' r='12'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 150px 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            transition: opacity 3s cubic-bezier(0.4, 0, 0.2, 1), background-color 3s ease, filter 3s ease;
         }
-    }
 
-    @keyframes envelopeFlyOut {
-        0% { transform: scale(1) rotate(0deg) translate(0, 0); }
-        25% { transform: scale(1.05) rotate(-4deg) translate(-20px, 10px); }
-        100% { transform: scale(0.15) rotate(40deg) translate(180vw, -100vh); }
-    }
+        /* Heart Effect Styles */
+        .heart {
+            position: absolute;
+            color: #d63031;
+            font-size: 18px;
+            pointer-events: none;
+            z-index: 5; 
+            animation: flyOutSideward 3s ease-out forwards;
+            opacity: 0;
+        }
 
-    .envelope-thrown {
-        animation: envelopeFlyOut 2.5s forwards cubic-bezier(0.645, 0.045, 0.355, 1);
-        pointer-events: none !important;
-    }
+        @keyframes flyOutSideward {
+            0% { transform: translate(0, 0) scale(0.5) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translate(var(--drift), -400px) scale(1.2) rotate(var(--rotation)); opacity: 0; }
+        }
 
-    .tap-indicator {
-        position: absolute;
-        top: -70px;
-        left: 50%;
-        transform: translateX(-50%);
-        text-align: center;
-        z-index: 500;
-        transition: opacity 0.8s ease;
-        pointer-events: none;
-    }
-    .tap-text {
-        font-family: 'Georgia', serif;
-        font-style: italic;
-        font-size: 0.85rem;
-        color: var(--navy-dark);
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        animation: pulse 2.5s infinite ease-in-out;
-    }
-    @keyframes pulse {
-        0%, 100% { opacity: 0.3; transform: scale(0.98); }
-        50% { opacity: 0.8; transform: scale(1.02); }
-    }
+        @keyframes envelopeFlyOut {
+            0% { transform: scale(1) rotate(0deg) translate(0, 0); }
+            25% { transform: scale(1.05) rotate(-4deg) translate(-20px, 10px); }
+            100% { transform: scale(0.15) rotate(40deg) translate(180vw, -100vh); }
+        }
 
-    .tap-items-view {
-        position: absolute;
-        bottom: 30px; 
-        left: 50%;
-        transform: translate(-50%, 10px); 
-        border: 1px solid var(--silver);
-        border-radius: 20px;
-        padding: 5px 22px;
-        color: var(--silver-bright);
-        font-family: 'Georgia', serif;
-        font-style: italic;
-        font-size: 0.7rem;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        z-index: 450; 
-        pointer-events: none;
-        opacity: 0; 
-        transition: opacity 1.5s cubic-bezier(0.23, 1, 0.32, 1) 1.5s, 
-                    transform 1.5s cubic-bezier(0.23, 1, 0.32, 1) 1.5s;
-        white-space: nowrap;
-        background: rgba(0, 31, 63, 0.2);
-    }
+        .envelope-thrown {
+            animation: envelopeFlyOut 2.5s forwards cubic-bezier(0.645, 0.045, 0.355, 1);
+            pointer-events: none !important;
+        }
 
-    #landing { 
-        position: relative;
-        width: 100%;
-        max-width: 600px; 
-        margin: auto; 
-        height: 100vh; 
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
+        .tap-indicator {
+            position: absolute;
+            top: -70px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 500;
+            transition: opacity 0.8s ease;
+            pointer-events: none;
+        }
+        
+        .tap-text {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 0.85rem;
+            color: var(--navy-dark);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: pulse 2.5s infinite ease-in-out;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.98); }
+            50% { opacity: 0.8; transform: scale(1.02); }
+        }
 
-    .scene {
-        position: relative;
-        width: 100%;
-        height: 450px; 
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+        .tap-items-view {
+            position: absolute;
+            bottom: 30px; 
+            left: 50%;
+            transform: translate(-50%, 10px); 
+            border: 1px solid var(--silver);
+            border-radius: 20px;
+            padding: 5px 22px;
+            color: var(--silver-bright);
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            z-index: 450; 
+            pointer-events: none;
+            opacity: 0; 
+            transition: opacity 1.5s cubic-bezier(0.23, 1, 0.32, 1) 1.5s, transform 1.5s cubic-bezier(0.23, 1, 0.32, 1) 1.5s;
+            white-space: nowrap;
+            background: rgba(0, 31, 63, 0.2);
+        }
 
-    #envelope-wrapper {
-        position: relative;
-        width: 450px;
-        height: 280px; 
-        perspective: 2000px;
-        z-index: 200;
-        transform-origin: center top; 
-        margin: 0 auto; 
-        transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
+        #landing { 
+            position: relative;
+            width: 100%;
+            max-width: 600px; 
+            height: 100vh; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
 
-    .envelope-back {
-        position: absolute;
-        inset: 0;
-        background-color: var(--navy-dark);
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='30' height='30'%3E%3Cpath fill='white' opacity='0.08' d='M50 50 L10 10 L50 30 L90 10 L50 50 Z L10 90 L50 70 L90 90 L50 50 Z M50 30 L30 50 L50 70 L70 50 L50 30 Z'/%3E%3C/svg%3E");
-        background-size: 30px 30px; 
-        border-radius: 4px;
-        z-index: 1;
-        box-shadow: 0 30px 80px rgba(0,0,0,0.45);
-        border: 2px solid var(--silver);
-    }
+        .scene {
+            position: relative;
+            width: 100%;
+            height: 450px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    #flap {
-        position: absolute;
-        top: 0; left: 0;
-        width: 0; height: 0;
-        border-left: 225px solid transparent;
-        border-right: 225px solid transparent;
-        border-top: 150px solid var(--navy-dark);
-        z-index: 400; 
-        transform-origin: top;
-        transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.6s, z-index 0.1s 0.6s; 
-        cursor: pointer;
-        filter: drop-shadow(0 8px 10px rgba(0,0,0,0.4));
-    }
+        #envelope-wrapper {
+            position: relative;
+            width: 450px;
+            height: 280px; 
+            perspective: 2000px;
+            z-index: 200;
+            transform-origin: center top; 
+            transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
 
-    #flap::after {
-        content: "❈"; 
-        position: absolute;
-        top: -145px; 
-        left: -30px;
-        width: 60px;
-        height: 60px;
-        color: var(--silver);
-        font-size: 60px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-shadow: 0 0 15px rgba(192, 192, 192, 0.4);
-        pointer-events: none;
-    }
+        .envelope-back {
+            position: absolute;
+            inset: 0;
+            background-color: var(--navy-dark);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='30' height='30'%3E%3Cpath fill='white' opacity='0.08' d='M50 50 L10 10 L50 30 L90 10 L50 50 Z L10 90 L50 70 L90 90 L50 50 Z M50 30 L30 50 L50 70 L70 50 L50 30 Z'/%3E%3C/svg%3E");
+            background-size: 30px 30px; 
+            border-radius: 4px;
+            z-index: 1;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+            border: 2px solid var(--silver);
+        }
 
-    .envelope-front-v {
-        position: absolute;
-        bottom: 0; width: 100%; height: 100%;
-        background: var(--navy);
-        z-index: 300; 
-        clip-path: polygon(0% 25%, 50% 65%, 100% 25%, 100% 100%, 0% 100%);
-        pointer-events: none;
-        display: flex;
-        justify-content: center;
-        align-items: flex-end;
-        padding-bottom: 20px;
-        border: 2px solid var(--silver);
-        box-sizing: border-box;
-    }
+        #flap {
+            position: absolute;
+            top: 0; left: 0;
+            width: 0; height: 0;
+            border-left: 225px solid transparent;
+            border-right: 225px solid transparent;
+            border-top: 150px solid var(--navy-dark);
+            z-index: 400; 
+            transform-origin: top;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.6s, z-index 0.1s 0.6s; 
+            cursor: pointer;
+            filter: drop-shadow(0 8px 10px rgba(0,0,0,0.4));
+        }
 
-    .envelope-front-v::before {
-        content: "";
-        position: absolute;
-        inset: 10px;
-        border: 1px solid var(--silver);
-        clip-path: polygon(0% 25%, 50% 65%, 100% 25%, 100% 100%, 0% 100%); 
-        opacity: 0.5;
-    }
+        #flap::after {
+            content: "❈"; 
+            position: absolute;
+            top: -145px; 
+            left: -30px;
+            width: 60px; height: 60px;
+            color: var(--silver);
+            font-size: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-shadow: 0 0 15px rgba(192, 192, 192, 0.4);
+            pointer-events: none;
+        }
 
-    .card-container {
-        position: absolute;
-        width: 100%;
-        left: 0;
-        bottom: 10px;
-        display: flex;
-        justify-content: center; 
-        align-items: flex-end;
-        z-index: 50; 
-        opacity: 0;
-        transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0s, opacity 0.5s ease;
-        pointer-events: none;
-    }
+        .envelope-front-v {
+            position: absolute;
+            bottom: 0; width: 100%; height: 100%;
+            background: var(--navy);
+            z-index: 300; 
+            clip-path: polygon(0% 25%, 50% 65%, 100% 25%, 100% 100%, 0% 100%);
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            padding-bottom: 20px;
+            border: 2px solid var(--silver);
+            box-sizing: border-box;
+        }
 
-    #envelope-wrapper.open #flap { 
-        transform: rotateX(180deg); 
-        z-index: 10; 
-        transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0s, z-index 0.1s 0.4s;
-    }
-    #envelope-wrapper.open .card-container {
-        opacity: 1;
-        transform: translateY(-135px); 
-        pointer-events: all;
-        transition: transform 0.9s cubic-bezier(0.19, 1, 0.22, 1) 0.5s, opacity 0.5s ease 0.5s;
-    }
-    
-    #envelope-wrapper.open .tap-items-view {
-        opacity: 1;
-        transform: translate(-50%, 0px);
-    }
+        .envelope-front-v::before {
+            content: "";
+            position: absolute;
+            inset: 10px;
+            border: 1px solid var(--silver);
+            clip-path: polygon(0% 25%, 50% 65%, 100% 25%, 100% 100%, 0% 100%); 
+            opacity: 0.5;
+        }
 
-    .card { 
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
-        border-radius: 2px; 
-        background: white; 
-        position: relative;
-        transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), z-index 0.2s;
-        cursor: pointer;
-    }
+        .card-container {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            bottom: 10px;
+            display: flex;
+            justify-content: center; 
+            align-items: flex-end;
+            z-index: 50; 
+            opacity: 0;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0s, opacity 0.5s ease;
+            pointer-events: none;
+        }
 
-    #card-photo { 
-        width: 210px; height: 275px; 
-        background: var(--navy-dark);
-        transform: rotate(-4deg); 
-        padding: 15px; 
-        margin-right: -105px; 
-        z-index: 51; 
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid var(--silver);
-        box-sizing: border-box;
-        color: var(--silver);
-        overflow: hidden;
-        text-align: center;
-    }
+        #envelope-wrapper.open #flap { 
+            transform: rotateX(180deg); 
+            z-index: 10; 
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0s, z-index 0.1s 0.4s;
+        }
+        #envelope-wrapper.open .card-container {
+            opacity: 1;
+            transform: translateY(-135px); 
+            pointer-events: all;
+            transition: transform 0.9s cubic-bezier(0.19, 1, 0.22, 1) 0.5s, opacity 0.5s ease 0.5s;
+        }
+        
+        #envelope-wrapper.open .tap-items-view {
+            opacity: 1;
+            transform: translate(-50%, 0px);
+        }
 
-    .silver-border-inner {
-        position: absolute;
-        inset: 8px;
-        border: 1.5px solid var(--silver);
-        pointer-events: none;
-    }
+        .card { 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+            border-radius: 2px; 
+            background: white; 
+            position: relative;
+            transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), z-index 0.2s;
+            cursor: pointer;
+        }
 
-    .silver-ornament {
-        position: absolute;
-        font-size: 20px;
-        line-height: 1;
-        color: var(--silver);
-    }
-    .top-left { top: 12px; left: 12px; }
-    .top-right { top: 12px; right: 12px; transform: scaleX(-1); }
-    .bottom-left { bottom: 12px; left: 12px; transform: scaleY(-1); }
-    .bottom-right { bottom: 12px; right: 12px; transform: scale(-1); }
+        #card-photo { 
+            width: 210px; height: 275px; 
+            background: var(--navy-dark);
+            transform: rotate(-4deg); 
+            padding: 15px; 
+            margin-right: -105px; 
+            z-index: 51; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid var(--silver);
+            box-sizing: border-box;
+            color: var(--silver);
+            overflow: hidden;
+            text-align: center;
+        }
 
-    .display-1 { font-family: 'Cursive', 'Brush Script MT', serif; font-size: 1.6rem; margin: 10px 0; color: white; }
+        .silver-border-inner {
+            position: absolute;
+            inset: 8px;
+            border: 1.5px solid var(--silver);
+            pointer-events: none;
+        }
 
-    .announcement-wrapper { display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 5px; margin-top: -10px; }
-    .accent-line { height: 1px; width: 20px; background: var(--silver); }
-    .announcement-text { font-size: 0.55rem; letter-spacing: 1.5px; text-transform: uppercase; font-family: 'Georgia', serif;}
+        .silver-ornament { position: absolute; font-size: 20px; line-height: 1; color: var(--silver); }
+        .top-left { top: 12px; left: 12px; }
+        .top-right { top: 12px; right: 12px; transform: scaleX(-1); }
+        .bottom-left { bottom: 12px; left: 12px; transform: scaleY(-1); }
+        .bottom-right { bottom: 12px; right: 12px; transform: scale(-1); }
 
-    .wedding-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 5px; }
-    .side-block { display: flex; flex-direction: column; align-items: center; width: 50px; }
-    .bold-silver-line { height: 2px; width: 100%; background: var(--silver); }
-    .side-text { font-size: 0.5rem; padding: 2px 0; font-weight: bold; color: var(--silver-bright); }
-    
-    .center-stack { display: flex; flex-direction: column; align-items: center; padding: 0 5px; border-left: 1px solid var(--silver); border-right: 1px solid var(--silver); }
-    .month { font-size: 0.6rem; font-weight: bold; color: var(--silver-bright); }
-    .day { font-size: 1.2rem; font-weight: bold; line-height: 1; color: white; }
-    .year { font-size: 0.6rem; color: var(--silver-bright); }
+        .display-1 { font-family: 'Cursive', 'Brush Script MT', serif; font-size: 1.6rem; margin: 10px 0; color: white; }
+        .announcement-wrapper { display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 5px; margin-top: -10px; }
+        .accent-line { height: 1px; width: 20px; background: var(--silver); }
+        .announcement-text { font-size: 0.55rem; letter-spacing: 1.5px; text-transform: uppercase; font-family: 'Georgia', serif;}
 
-    #card-news {
-        width: 230px; height: 360px; 
-        background-color: var(--news-paper);
-        transform: rotate(2deg); 
-        padding: 15px;
-        z-index: 52;
-        box-sizing: border-box;
-        display: flex; flex-direction: column;
-        color: var(--ink);
-    }
+        .wedding-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 5px; }
+        .side-block { display: flex; flex-direction: column; align-items: center; width: 50px; }
+        .bold-silver-line { height: 2px; width: 100%; background: var(--silver); }
+        .side-text { font-size: 0.5rem; padding: 2px 0; font-weight: bold; color: var(--silver-bright); }
+        
+        .center-stack { display: flex; flex-direction: column; align-items: center; padding: 0 5px; border-left: 1px solid var(--silver); border-right: 1px solid var(--silver); }
+        .month { font-size: 0.6rem; font-weight: bold; color: var(--silver-bright); }
+        .day { font-size: 1.2rem; font-weight: bold; line-height: 1; color: white; }
+        .year { font-size: 0.6rem; color: var(--silver-bright); }
 
-    #card-invite {
-        position: absolute;
-        width: 240px; 
-        height: auto; 
-        min-height: 160px;
-        background-color: #BDBDBD !important;
-        bottom: -40px; 
-        left: 50%;
-        margin-left: -120px;
-        z-index: 55;
-        transform: rotate(-6deg); 
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        border: 2px solid var(--navy) !important;
-        padding: 15px;
-        box-sizing: border-box;
-        text-align: center;
-    }
+        #card-news {
+            width: 230px; height: 360px; 
+            background-color: var(--news-paper);
+            transform: rotate(2deg); 
+            padding: 15px;
+            z-index: 52;
+            box-sizing: border-box;
+            display: flex; flex-direction: column;
+            color: var(--ink);
+        }
 
-    #card-invite .invite-text { 
-        font-family: 'Times New Roman', serif; 
-        font-weight: bold; 
-        text-transform: uppercase; 
-        font-size: 1.2rem; 
-        letter-spacing: 1px; 
-        color: var(--navy) !important; 
-        width: 100%; 
-        line-height: 1.2;
-    }
+        #card-invite {
+            position: absolute;
+            width: 240px; 
+            min-height: 160px;
+            background-color: var(--invite-bg);
+            bottom: -40px; 
+            left: 50%;
+            margin-left: -120px;
+            z-index: 55;
+            transform: rotate(-6deg); 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid var(--navy);
+            padding: 15px;
+            box-sizing: border-box;
+            text-align: center;
+        }
 
-    #card-invite .seat-allocation {
-        font-size: 0.75rem;
-        margin-top: 10px;
-        color: var(--navy-dark);
-        font-family: 'Georgia', serif;
-        border-top: 1px solid var(--navy);
-        padding-top: 10px;
-    }
+        #card-invite .invite-text { 
+            font-family: 'Times New Roman', serif; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            font-size: 1.2rem; 
+            letter-spacing: 1px; 
+            color: var(--navy); 
+            width: 100%; 
+            line-height: 1.2;
+        }
 
-    .btn-enter-card {
-        position: relative;
-        margin-top: 18px;
-        background: var(--navy);
-        color: #fff;
-        border: 1px solid var(--silver);
-        padding: 12px 28px;
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        font-family: 'Georgia', serif;
-        font-weight: bold;
-        cursor: pointer;
-        letter-spacing: 2px;
-        transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-    }
+        #card-invite .seat-allocation {
+            font-size: 0.75rem;
+            margin-top: 10px;
+            color: var(--navy-dark);
+            font-family: 'Georgia', serif;
+            border-top: 1px solid var(--navy);
+            padding-top: 10px;
+        }
 
-    .btn-enter-card::before, .btn-enter-card::after {
-        content: "";
-        position: absolute;
-        width: 8px;
-        height: 8px;
-        border: 1px solid var(--silver-bright);
-        transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-    }
-    .btn-enter-card::before { top: 4px; left: 4px; border-right: none; border-bottom: none; }
-    .btn-enter-card::after { bottom: 4px; right: 4px; border-left: none; border-top: none; }
+        .btn-enter-card {
+            position: relative;
+            margin-top: 18px;
+            background: var(--navy);
+            color: #fff;
+            border: 1px solid var(--silver);
+            padding: 12px 28px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
 
-    .btn-enter-card:hover {
-        background: var(--navy-dark);
-        padding: 12px 35px;
-        color: var(--silver-bright);
-        box-shadow: 0 6px 15px rgba(0,0,0,0.35);
-    }
+        .btn-enter-card:hover {
+            background: var(--navy-dark);
+            padding: 12px 35px;
+            color: var(--silver-bright);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.35);
+        }
 
-    #card-photo.expanded, #card-news.expanded, #card-invite.expanded { z-index: 1000 !important; }
-    #card-photo.expanded { transform: translate(60px, -45px) rotate(0deg) scale(1.22) !important; }
-    #card-news.expanded { transform: translate(-60px, -35px) rotate(0deg) scale(1.18) !important; }
-    #card-invite.expanded { transform: translate(0, -210px) rotate(0deg) scale(1.55) !important; }
+        #card-photo.expanded, #card-news.expanded, #card-invite.expanded { z-index: 1000 !important; }
+        #card-photo.expanded { transform: translate(60px, -45px) rotate(0deg) scale(1.22); }
+        #card-news.expanded { transform: translate(-60px, -35px) rotate(0deg) scale(1.18); }
+        #card-invite.expanded { transform: translate(0, -210px) rotate(0deg) scale(1.55); }
 
-    .news-top-bar { display: flex; justify-content: space-between; font-size: 0.5rem; border-bottom: 1.5px solid #000; padding-bottom: 3px; text-transform: uppercase; }
-    .masthead-title { font-family: 'Old English Text MT', serif; font-size: 1.7rem; text-align: center; margin: 5px 0; }
-    .news-date-bar { display: flex; justify-content: space-between; font-size: 0.45rem; border-top: 1px solid #000; border-bottom: 2.5px double #000; padding: 2px 0; margin-bottom: 10px; }
-    .news-headline { font-size: 1.9rem; font-weight: 900; line-height: 0.9; margin: 0 0 10px 0; text-transform: uppercase; text-align: center; border-bottom: 1.5px solid #000; padding-bottom: 8px; color: var(--ink); }
-    .news-content { font-size: 0.65rem; line-height: 1.4; text-align: justify; color: var(--ink); }
-    .rsvp-note-box { margin-top: auto; border: 1px dashed #000; padding: 6px; font-size: 0.55rem; font-style: italic; text-align: center; font-weight: bold; text-transform: uppercase;}
-    .hashtag-box { border: 1.5px solid #000; padding: 4px; text-align: center; font-family: monospace; font-size: 0.55rem; font-weight: bold; margin-top: 8px; }
+        .news-top-bar { display: flex; justify-content: space-between; font-size: 0.5rem; border-bottom: 1.5px solid #000; padding-bottom: 3px; text-transform: uppercase; }
+        .masthead-title { font-family: 'Old English Text MT', serif; font-size: 1.7rem; text-align: center; margin: 5px 0; }
+        .news-date-bar { display: flex; justify-content: space-between; font-size: 0.45rem; border-top: 1px solid #000; border-bottom: 2.5px double #000; padding: 2px 0; margin-bottom: 10px; }
+        .news-headline { font-size: 1.9rem; font-weight: 900; line-height: 0.9; margin: 0 0 10px 0; text-transform: uppercase; text-align: center; border-bottom: 1.5px solid #000; padding-bottom: 8px; color: var(--ink); }
+        .news-content { font-size: 0.65rem; line-height: 1.4; text-align: justify; color: var(--ink); }
+        .rsvp-note-box { margin-top: auto; border: 1px dashed #000; padding: 6px; font-size: 0.55rem; font-style: italic; text-align: center; font-weight: bold; text-transform: uppercase;}
+        .hashtag-box { border: 1.5px solid #000; padding: 4px; text-align: center; font-family: monospace; font-size: 0.55rem; font-weight: bold; margin-top: 8px; }
 
-    #formContainer { 
-        position: absolute;
-        bottom: 5vh;
-        width: 100%; 
-        display: none; 
-        opacity: 0; 
-        transition: opacity 1.2s ease;
-        text-align: center; 
-        z-index: 3000;
-    }
+        #formContainer { 
+            position: absolute;
+            bottom: 5vh;
+            width: 100%; 
+            display: none; 
+            opacity: 0; 
+            transition: opacity 1.2s ease;
+            text-align: center; 
+            z-index: 3000;
+        }
 
-    #message { margin-top: 10px; font-weight: bold; font-size: 0.85rem; height: 1.2rem; letter-spacing: 0.5px; }
-
-    @media (max-width: 500px) {
-        #envelope-wrapper { width: 320px; height: 260px; } 
-        #flap { border-left: 160px solid transparent; border-right: 160px solid transparent; border-top: 110px solid var(--navy-dark); }
-        #flap::after { top: -105px; font-size: 40px; left: -20px; }
-        #card-photo { margin-right: -130px; }
-        #card-invite { width: 200px; min-height: 140px; bottom: -30px; margin-left: -100px; }
-        #card-invite.expanded { transform: translate(0, -150px) scale(1.65) !important; margin-left: -100px; }
-        .card-container { bottom: 10px; } 
-    }
-</style>
+        @media (max-width: 500px) {
+            #envelope-wrapper { width: 320px; height: 260px; } 
+            #flap { border-left: 160px solid transparent; border-right: 160px solid transparent; border-top: 110px solid var(--navy-dark); }
+            #flap::after { top: -105px; font-size: 40px; left: -20px; }
+            #card-photo { margin-right: -130px; }
+            #card-invite { width: 200px; min-height: 140px; bottom: -30px; margin-left: -100px; }
+            #card-invite.expanded { transform: translate(0, -150px) scale(1.65) !important; }
+        }
+    </style>
 </head>
 <body>
 <div id="landing">
@@ -439,7 +408,7 @@
                 <div style="font-size: 20px; color: var(--navy-dark); opacity: 0.6;">▼</div>
             </div>
 
-            <div id="flap" onclick="toggleEnvelope()"></div>
+            <div id="flap" onclick="toggleEnvelope()" role="button" aria-label="Open Envelope"></div>
             <div class="envelope-back"></div>
             
             <div class="card-container">
@@ -464,13 +433,11 @@
                             <div class="side-text">FRIDAY</div>
                             <div class="bold-silver-line"></div>
                         </div>
-
                         <div class="center-stack">
                             <div class="month">JUNE</div>
                             <div class="day">12</div>
                             <div class="year">2026</div>
                         </div>
-
                         <div class="side-block">
                             <div class="bold-silver-line"></div>
                             <div class="side-text">AT 2:00 PM</div>
@@ -503,69 +470,50 @@
         </div>
     </div>
 
-<div id="formContainer">
-    <div id="message"></div>
+    <div id="formContainer">
+        <div id="message"></div>
+    </div>
 </div>
-</div>
-
-<input type="hidden" name="uid" id="hiddenUID">
-
-<script>
-  window.onload = function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
-    if (id) {
-      document.getElementById('hiddenUID').value = id;
-    }
-  }
-</script>
 
 <script>
     const urlParams = new URLSearchParams(window.location.search);
     const guestLimit = urlParams.get('g');
     const nameParam = urlParams.get('name');
 
-    window.onload = function() {
+    document.addEventListener("DOMContentLoaded", () => {
         const display = document.getElementById('guest-display');
+        const allocationBox = document.getElementById('allocation-box');
+
         if (display) {
-            if (nameParam) {
-                display.innerText = "Hi " + decodeURIComponent(nameParam);
-            } else {
-                display.innerText = "Hi SPECIAL GUEST";
-            }
+            display.innerText = nameParam ? "Hi " + decodeURIComponent(nameParam) : "Hi SPECIAL GUEST";
         }
         
-        const allocationBox = document.getElementById('allocation-box');
-        if (guestLimit !== null && guestLimit !== "0") {
-            allocationBox.innerHTML = 'You have (<span>' + guestLimit + '</span>) additional seat allocated by the Couple.';
-        } else {
-            allocationBox.innerText = "We can't wait to celebrate our special day with you!";
+        if (allocationBox) {
+            if (guestLimit && guestLimit !== "0") {
+                allocationBox.innerHTML = `You have (<span>${guestLimit}</span>) additional seat allocated by the Couple.`;
+            } else {
+                allocationBox.innerText = "We can't wait to celebrate our special day with you!";
+            }
         }
-    };
+    });
 
     function createHearts() {
         const scene = document.querySelector('.scene');
-        // Increase count for a more lush "background" effect
         for (let i = 0; i < 20; i++) {
             const heart = document.createElement('div');
             heart.classList.add('heart');
             heart.innerText = '❤';
             
-            // Random horizontal drift between -150px and 150px
             const drift = (Math.random() * 300 - 150) + 'px';
-            // Random rotation for variety
             const rotation = (Math.random() * 90 - 45) + 'deg';
             
             heart.style.setProperty('--drift', drift);
             heart.style.setProperty('--rotation', rotation);
-            
-            // Spawn point near the center of the envelope
             heart.style.left = (Math.random() * 40 + 30) + '%';
             heart.style.top = '50%';
-            
             heart.style.animationDelay = (Math.random() * 1.2) + 's';
-            scene.appendChild(heart);
             
+            scene.appendChild(heart);
             setTimeout(() => heart.remove(), 3500);
         }
     }
@@ -577,7 +525,6 @@
         
         if (!wrapper.classList.contains('open')) {
             wrapper.classList.add('open');
-            // Small delay to let the flap start opening before hearts fly out
             setTimeout(createHearts, 300); 
             if(indicator) indicator.style.opacity = '0';
             setTimeout(() => {
@@ -594,26 +541,22 @@
         if (!isExpanded) { card.classList.add('expanded'); }
     }
 
- function buildURL(base, anchor = "") {
-    let params = new URLSearchParams(window.location.search); // This grabs EVERYTHING currently in the URL
-    let newParams = new URLSearchParams();
-
-    // Explicitly carry over the 3 important values
-    if (params.get('id')) newParams.append('id', params.get('id'));
-    if (params.get('g')) newParams.append('g', params.get('g'));
-    if (params.get('name')) newParams.append('name', params.get('name'));
-
-    let qs = newParams.toString();
-    return qs ? (base + "?" + qs + anchor) : (base + anchor);
-}
+    function buildURL(base, anchor = "") {
+        let params = new URLSearchParams(window.location.search);
+        let newParams = new URLSearchParams();
+        ['id', 'g', 'name'].forEach(key => {
+            if (params.get(key)) newParams.append(key, params.get(key));
+        });
+        let qs = newParams.toString();
+        return qs ? (base + "?" + qs + anchor) : (base + anchor);
+    }
 
     function enterSite() {
         const wrapper = document.getElementById('envelope-wrapper');
         const itemsView = document.querySelector('.tap-items-view');
         const form = document.getElementById('formContainer');
-        const allCards = document.querySelectorAll('.card');
         
-        allCards.forEach(c => c.classList.remove('expanded'));
+        document.querySelectorAll('.card').forEach(c => c.classList.remove('expanded'));
 
         if(itemsView) itemsView.style.opacity = '0';
         if(form) form.style.opacity = '0';
