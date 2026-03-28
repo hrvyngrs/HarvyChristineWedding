@@ -8,60 +8,20 @@
     <meta content="Harvy & Christine's Wedding" name="keywords">
     <meta content="Harvy & Christine's Wedding" name="description">
 
-    <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
 
-    <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Dancing+Script:wght@700&family=Great+Vibes&family=Lato:wght@300;400&family=Montserrat:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet"> 
 
-    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
-    <!-- Libraries Stylesheet -->
+    
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
 
-    <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
 </head>
 
-<!-- SECURITY START HRVS -->
-<script>
-document.addEventListener("contextmenu", event => event.preventDefault());
-
-document.onkeydown = function(e) {
-  if (e.keyCode == 123) { // F12
-    return false;
-  }
-  if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
-    return false;
-  }
-}
-</script>
-
-
-<style>
-img {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  user-select: none;
-  pointer-events: none;
-}
-</style>
-<style>
-body {
-  -webkit-user-select: none;
-  user-select: none;
-}
-</style>
-
-<!-- SECURITY END HRVS -->
-<!-- MAIN CONTENT -->
-<div id="main-content" style="display:none;">
-  <!-- Your wedding page HTML here -->
-</div>
-
+<body>
 <style>
 .typing-text {
   font-family: 'Courier New', Courier, monospace;
@@ -217,10 +177,7 @@ body {
 
     window.addEventListener('load', createHearts);
 </script>
-    <!-- Navbar End -->
-
-    <!-- Carousel Start -->
-<style>
+    <style>
     /* 1. INITIAL ENTRANCE (Only on First Visit) */
     .reveal-item {
         opacity: 0;
@@ -413,12 +370,12 @@ body {
         <div class="names-overlay">
             <div class="p-3" style="max-width: 900px;">
                 <h1 class="display-1 font-secondary text-white mt-n3 mb-md-4 reveal-item name">
-                    <span class="name-swap" data-first="Harvy" data-last="Pidlaoan&nbsp;"></span>
+                    <span class="name-swap" data-first="Harvy" data-last="Pidlaoan "></span>
                     <svg class="heart-svg" viewBox="0 0 60 60">
                         <path class="heart-path" d="M30,45 C20,35 10,30 10,20 C10,13 17,11 23,15 C27,18 30,23 30,23 C30,23 33,18 37,15 C43,11 50,13 50,20 C50,30 40,35 30,45" />
                         <path class="infinity-path" d="M30,30 C20,15 5,20 5,30 C5,40 20,45 30,30 C40,15 55,20 55,30 C55,40 40,45 30,30" />
                     </svg>
-                    <span class="name-swap" data-first="&nbsp;Christine" data-last="Corsino"></span>
+                    <span class="name-swap" data-first=" Christine" data-last="Corsino"></span>
                 </h1>
                 <div class="announcement-wrapper reveal-item announcement">
                     <div class="accent-line"></div>
@@ -451,8 +408,8 @@ body {
         </div>
 
         <div class="carousel-inner">
-            <div class="carousel-item active" style="height: 100vh;"><img src="img/carousel/carousel-1.jpg"></div>
-            <div class="carousel-item" style="height: 100vh;"><img src="img/carousel/carousel-2.jpg"></div>
+            <div class="carousel-item active" style="height: 100vh;"><img src="img/carousel/carousel-1.jpg" alt=""></div>
+            <div class="carousel-item" style="height: 100vh;"><img src="img/carousel/carousel-2.jpg" alt=""></div>
         </div>
 
         <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
@@ -471,6 +428,10 @@ body {
     function createSparkle() {
         const container = document.getElementById('sparkle-container');
         if (!container) return;
+        
+        // LIMITER: Prevent DOM bloat if tab is left open
+        if (container.getElementsByClassName('sparkle').length > 25) return;
+
         const sparkle = document.createElement('div');
         sparkle.className = 'sparkle';
         const size = Math.random() * 6 + 4 + 'px';
@@ -530,18 +491,13 @@ body {
         }
     }, { once: true });
 </script>
-    <!-- Carousel End -->
-
-
-    <!-- Video Modal Start -->
     <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">×</span>
                     </button>        
-                    <!-- 16:9 aspect ratio -->
                     <div class="embed-responsive embed-responsive-16by9">
                         <iframe class="embed-responsive-item" src="" id="video"  allowscriptaccess="always" allow="autoplay"></iframe>
                     </div>
@@ -549,11 +505,7 @@ body {
             </div>
         </div>
     </div>
-    <!-- Video Modal End -->
-
-
-    <!-- About Start -->
-<style>
+    <style>
     /* Independent Flip Logic */
     .scrapbook-flip-card {
         background-color: transparent;
@@ -734,7 +686,7 @@ body {
                             <br/><br/>
                             At his core, he believes that you don’t have to be the best in the room; you just have to make sure you aren’t the problem. Beyond that, he lives for laughter, curiosity, and the strength of genuine connections.
                         </p>
-                        <div class="name-footer">Harvy Gozun Pidlaoan</div>
+                        <div class="name-footer">Engr. Harvy Gozun Pidlaoan</div>
                     </div>
                 </div>
             </div>
@@ -780,13 +732,7 @@ body {
         }
     }
 </script>
-    <!-- About End -->
-
-
-    <!-- Story Start -->
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-
-<div class="container-fluid py-5" id="story" style="background: #ffffff; margin: 100px 0;">
+    <div class="container-fluid py-5" id="story" style="background: #ffffff; margin: 100px 0;">
     <div class="container text-center">
         <div class="section-title mb-4">
             <h1 class="font-secondary display-4 mb-2" style="color: #1a2a44; font-size: 5.5rem;">Our Story</h1>
@@ -817,7 +763,7 @@ body {
                 <div class="story-pane active" id="pane-1">
                     <div class="row no-gutters">
                         <div class="col-lg-5">
-                            <img src="img/story-1.jpg" class="pane-img">
+                            <img src="img/story-1.jpg" class="pane-img" alt="">
                         </div>
                         <div class="col-lg-7">
                             <div class="pane-content">
@@ -839,7 +785,7 @@ body {
                 <div class="story-pane" id="pane-2">
                     <div class="row no-gutters">
                         <div class="col-lg-5">
-                            <img src="img/story-2.jpg" class="pane-img">
+                            <img src="img/story-2.jpg" class="pane-img" alt="">
                         </div>
                         <div class="col-lg-7">
                             <div class="pane-content">
@@ -974,10 +920,6 @@ function showStory(id, el) {
     if(content) content.scrollTop = 0;
 }
 </script>
-    <!-- Story End -->
-
-
-    <!-- Gallery Start -->
     <div class="container-fluid bg-gallery" id="gallery" style="padding: 120px 0; margin: 90px 0;">
         <div class="section-title position-relative text-center" style="margin-bottom: 120px;">
             <h6 class="text-uppercase text-primary mb-3" style="letter-spacing: 3px;">Gallery</h6>
@@ -1023,21 +965,15 @@ function showStory(id, el) {
             </div>
         </div>
     </div>
-    <!-- Gallery End -->
-
-
-    <!-- Event Start -->
-<div class="container-fluid py-5" id="event">
+    <div class="container-fluid py-5" id="event">
     <div class="container py-5">
-        <!-- Section Title -->
         <div class="section-title position-relative text-center">
             <h6 class="text-uppercase text-primary mb-3" style="letter-spacing: 3px;">Event Details</h6>
             <h1 class="font-secondary display-4">The Wedding Day</h1>
             <i class="far fa-heart text-dark"></i>
         </div>
 
-        <!-- Intro Text -->
-<div class="row justify-content-center mb-5">
+        <div class="row justify-content-center mb-5">
     <div class="col-md-8 text-center">
         <p class="font-weight-normal text-muted mb-3 pb-3">
             We’re so excited to celebrate this special day with our family and friends!
@@ -1050,8 +986,6 @@ function showStory(id, el) {
         </p>
 
         <style>
-            @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
-            
             .countdown-timer-bottom {
                 display: inline-flex;
                 justify-content: center;
@@ -1104,7 +1038,7 @@ function showStory(id, el) {
         </div>
         <div class="text-center mt-4">
     <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Harvy+%26+Christine's+Wedding&dates=20260612T060000Z/20260612T140000Z&details=Ceremony+at+Redemptorist+Church+followed+by+Reception+at+Waterfront+Cebu+City+Hotel.&location=Waterfront+Cebu+City+Hotel+%26+Casino" 
-       target="_blank" 
+       target="_blank" rel="noopener noreferrer"
        class="btn btn-outline-dark rounded-pill py-2 px-4" 
        style="border-color: #b08d57; color: #b08d57; font-family: 'Montserrat', sans-serif; letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem;">
        <i class="far fa-calendar-alt mr-2"></i> Add to Calendar
@@ -1141,9 +1075,7 @@ function showStory(id, el) {
     updateCountdown();
 </script>
 
-<!-- Event Details -->
 <div class="row">
-    <!-- Ceremony -->
     <div class="col-md-6 mb-4 mb-md-0" style="border-right: 2px solid #007bff;">
         <div class="text-center text-md-right p-3 p-md-4">
             <img class="img-fluid mb-4" src="img/event-1.jpg" alt="Ceremony" style="object-fit:cover; max-height:300px; width:100%;">
@@ -1165,7 +1097,6 @@ function showStory(id, el) {
         </div>
     </div>
 
-    <!-- Reception -->
     <div class="col-md-6 mb-4 mb-md-0">
         <div class="text-center text-md-left p-3 p-md-4">
             <img class="img-fluid mb-4" src="img/event-2.jpg" alt="Reception" style="object-fit:cover; max-height:300px; width:100%;">
@@ -1176,7 +1107,7 @@ function showStory(id, el) {
             <div class="map-wrapper">
                 <div class="map-container" style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
                     <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3925.2134341472797!2                                       d123.90192937583528!3d10.324797067360088!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a9993ccf8d81f1%3A0xc975b10a18d14aa8!2sWaterfront%20Cebu%20City%20Hotel%20%26%20Casino!5e0!3m2!1sen!2sph!4v1772976520668!5m2!1sen!2sph"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3925.2134341472797!2       d123.90192937583528!3d10.324797067360088!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a9993ccf8d81f1%3A0xc975b10a18d14aa8!2sWaterfront%20Cebu%20City%20Hotel%20%26%20Casino!5e0!3m2!1sen!2sph!4v1772976520668!5m2!1sen!2sph"
                         loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade"
                         allowfullscreen
@@ -1190,7 +1121,6 @@ function showStory(id, el) {
     </div>
 </div>
 
-<!-- Shared Map Styles -->
 <style>
 .map-wrapper {
     width: 100%;
@@ -1210,10 +1140,7 @@ function showStory(id, el) {
     border: 0;
 }
 </style>
-    <!-- Event End -->
-
-
-<div class="container-fluid py-5" id="entourage">
+    <div class="container-fluid py-5" id="entourage">
 
 <div class="container text-center pt-5 pb-5">
     <div style="letter-spacing: 5px; color: #a5a5a5; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 15px; font-weight: 300;">
@@ -1221,7 +1148,7 @@ function showStory(id, el) {
     </div>
 
     <h1 class="font-secondary" style="font-size: 3.8rem; color: #333; margin-bottom: 0; letter-spacing: 1px;">
-        Pidlaoan <span style="font-family: 'Great Vibes', cursive; color: #c5a059; font-size: 4rem; margin: 0 10px;">&amp;</span> Corsino
+        Pidlaoan <span style="font-family: 'Great Vibes', cursive; color: #c5a059; font-size: 4rem; margin: 0 10px;">&</span> Corsino
     </h1>
 
     <div class="d-flex align-items-center justify-content-center mt-3">
@@ -1397,7 +1324,7 @@ function showStory(id, el) {
       </div>
       <div class="col-4 col-md-3 mb-4">
         <h6 class="text-uppercase text-primary mb-3 letter-spacing">Coin</h6>
-        <p>Placeholder Name</p> 
+        <p>Adrian Kiel Berdin</p> 
       </div>
     </div>
 
@@ -1411,8 +1338,6 @@ function showStory(id, el) {
     </div>
   </div>
 </div>
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
 
 <style>
   .letter-spacing { letter-spacing: 3px; }
@@ -1443,8 +1368,7 @@ function showStory(id, el) {
 </style>
 
 
-    <!--DressCode/Gift Start -->
-<div class="container-fluid py-5" id="dressgift">
+    <div class="container-fluid py-5" id="dressgift">
     <div class="section-title position-relative text-center mb-5">
         <h6 class="text-uppercase text-primary mb-3" style="letter-spacing: 3px;">DRESS CODE & GIFT IDEAS</h6>
         <h1 class="font-secondary display-4">What to wear?</h1>
@@ -1610,11 +1534,7 @@ function showStory(id, el) {
         </div>
     </div>
 </div>
-    <!-- DressCode/Guide End -->
-
-
-    <!-- RSVP Start -->
-<div class="container-fluid bg-dark text-white py-5" id="rsvp" style="margin-top: 90px;">
+    <div class="container-fluid bg-dark text-white py-5" id="rsvp" style="margin-top: 90px;">
     <div class="container text-center py-5">
         <div class="position-relative text-center">
             <h1 class="font-secondary display-3 text-white">You're Invited!</h1>
@@ -1641,7 +1561,6 @@ function showStory(id, el) {
         </div>
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Lato:wght@300;400&display=swap');
     .rsvp-section { max-width: 480px; margin: 40px auto; padding: 50px 40px; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); border-top: 6px solid #1a2a44; text-align: center; font-family: 'Lato', sans-serif; color: #1a2a44; }
     .rsvp-section h2 { font-family: 'Playfair Display', serif; font-size: 2.6rem; margin-bottom: 8px; color: #1a2a44; letter-spacing: 1px; }
     .rsvp-section p.subtitle { font-style: italic; margin-bottom: 35px; color: #707b7c; font-weight: 300; }
@@ -1846,7 +1765,7 @@ function showStory(id, el) {
     });
 
     // --- RETRIEVED ORIGINAL SUBMISSION LOGIC ---
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyMqbc_a3xx0fwphkQ6JB5pD2sIc2A07GM9Nm31lB7nap99gQUrwDLgPcWAUxYXjgea6g/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyg2er3W5XftcRan7hebmA-YysP2EZvm70HHKE3i7V3OFb8qgJZtZEErbHGpqjdLMD2cw/exec';
     const rsvpForm = document.getElementById('rsvp-form');
 
     rsvpForm.addEventListener('submit', e => {
@@ -2007,7 +1926,7 @@ if (attendance === "Yes") {
 </script>
     <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
         <p style="margin: 0; opacity: 0.8; font-size: 0.95rem;">
-            &copy; 2026 H&C Wedding. Coded & Designed by 
+            © 2026 H&C Wedding. Coded & Designed by 
             <a href="https://instagram.com/hrvyngrs" style="color: #1a2a44; text-decoration: none; border-bottom: 1px solid rgba(0,0,0,0.3);">HARVY</a>. 
             All rights reserved.
         </p>
@@ -2017,7 +1936,6 @@ if (attendance === "Yes") {
 <i class="fa fa-2x fa-angle-down text-white scroll-to-bottom"></i>
 <a href="#" class="btn btn-lg btn-outline-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
-    <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>
@@ -2026,7 +1944,6 @@ if (attendance === "Yes") {
     <script src="lib/isotope/isotope.pkgd.min.js"></script>
     <script src="lib/lightbox/js/lightbox.min.js"></script>
 
-    <!-- Template Javascript -->
     <script src="js/main.js"></script>
 </body>
 </html>
