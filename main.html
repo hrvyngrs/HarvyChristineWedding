@@ -1144,7 +1144,7 @@ function showStory(id, el) {
 
 <div class="container text-center pt-5 pb-5">
     <div style="letter-spacing: 5px; color: #a5a5a5; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 15px; font-weight: 300;">
-        Honoring Our Loved Ones
+        The Entourage
     </div>
 
     <h1 class="font-secondary" style="font-size: 3.8rem; color: #333; margin-bottom: 0; letter-spacing: 1px;">
@@ -1158,7 +1158,7 @@ function showStory(id, el) {
     </div>
 
     <h2 class="mt-4" style="letter-spacing: 8px; font-size: 1.1rem; font-weight: 300; color: #555; text-transform: uppercase;">
-        The Entourage
+        Nuptials
     </h2>
 </div>
 
@@ -1245,6 +1245,9 @@ function showStory(id, el) {
   <div class="container py-5">
     <div class="section-title text-center mb-5">
       <h2 class="font-secondary display-4">The Wedding Squad</h2>
+                <div style="letter-spacing: 5px; color: #a5a5a5; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 15px; font-weight: 300;">
+        To Assist us in our Needs
+    </div>
       <div class="divider-heart">
         <div class="line"></div>
         <i class="far fa-heart"></i>
@@ -1262,6 +1265,7 @@ function showStory(id, el) {
         <p><strong>Ms. Charlene Mae Corsino</strong></p>
       </div>
     </div>
+
 
     <div class="row mt-3">
       <div class="col-6 text-right">
@@ -1316,14 +1320,24 @@ function showStory(id, el) {
     <div class="row justify-content-center">
       <div class="col-4 col-md-3 mb-4">
         <h6 class="text-uppercase text-primary mb-3 letter-spacing">Ring</h6>
+        <div style="letter-spacing: 5px; color: #a5a5a5; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 15px; font-weight: 300;">
+        To Carry our Symbol of Love
+        </div>
         <p>Yugo Akio Quijano</p>
       </div>
+
       <div class="col-4 col-md-3 mb-4">
         <h6 class="text-uppercase text-primary mb-3 letter-spacing">Bible</h6>
+        <div style="letter-spacing: 5px; color: #a5a5a5; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 15px; font-weight: 300;">
+        To Carry our Symbol of Faith
+        </div>
         <p>Jexyll Pidlaoan</p>
       </div>
       <div class="col-4 col-md-3 mb-4">
         <h6 class="text-uppercase text-primary mb-3 letter-spacing">Coin</h6>
+        <div style="letter-spacing: 5px; color: #a5a5a5; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 15px; font-weight: 300;">
+        To Carry our Symbol of Treasures
+        </div>        
         <p>Adrian Kiel Berdin</p> 
       </div>
     </div>
@@ -1331,6 +1345,9 @@ function showStory(id, el) {
     <div class="row justify-content-center mt-2">
       <div class="col-md-6 mb-4">
         <h6 class="text-uppercase text-primary mb-3 letter-spacing">Flower Girls</h6>
+        <div style="letter-spacing: 5px; color: #a5a5a5; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 15px; font-weight: 300;">
+        To Shower our aisle with Flowers
+        </div>
         <p>Alison Reign Bariquit</p>
         <p>Nathalie Claire Gilig</p>
         <p>Freya Elaine Pidlaoan</p>
@@ -1636,7 +1653,7 @@ function showStory(id, el) {
     <form id="rsvp-form">
         <div class="form-group">
             <label>Invite Code</label>
-            <input type="text" name="Invite Code" id="invite-code" class="rsvp-input" placeholder="Validating link..." readonly required>
+            <input type="text" name="Invite Code" id="invite-code" class="rsvp-input" placeholder="Validating code..." readonly required>
         </div>
 
         <div class="form-group">
@@ -1765,7 +1782,7 @@ function showStory(id, el) {
     });
 
     // --- RETRIEVED ORIGINAL SUBMISSION LOGIC ---
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzUNwTle7tA0loolKGweyjcKl2UXe_x2J6xl0ON9-UjiW4X5I_ELTXoetv5kutgcqaKaA/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbz5i9a419qmd3KarRGWtTNLDbGRXPOHPcAtzF1D90vU0g3_9P0dswEB5Ypgqh3NQ3AeNQ/exec';
     const rsvpForm = document.getElementById('rsvp-form');
 
     rsvpForm.addEventListener('submit', e => {
@@ -1932,6 +1949,149 @@ if (attendance === "Yes") {
         </p>
     </footer>
 
+<div id="chat-bubble" onclick="toggleChat()" style="position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: #1a2a44; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1000; transition: transform 0.3s;">
+    <i class="fas fa-comments" style="font-size: 24px;"></i>
+</div>
+
+<div id="chat-window" style="display: none; position: fixed; bottom: 90px; right: 20px; width: 320px; max-height: 450px; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 1000; flex-direction: column; overflow: hidden; font-family: 'Lato', sans-serif;">
+    <div style="background: #1a2a44; color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
+        <span>H&C Wedding Assistant</span>
+        <i class="fas fa-times" onclick="toggleChat()" style="cursor: pointer;"></i>
+    </div>
+    <div id="chat-content" style="padding: 15px; overflow-y: auto; flex-grow: 1; background: #f8f9f9; font-size: 0.9rem; color: #333;">
+        <p>Hi! How can I help you today? Here are some common questions:</p>
+        <div id="faq-options">
+            <p style="font-size: 0.8rem; color: #888;">Loading FAQs...</p>
+        </div>
+    </div>
+    <div id="chat-answer" style="padding: 15px; border-top: 1px solid #eee; display: none; background: white;">
+        <strong id="selected-q" style="display: block; color: #1a2a44; margin-bottom: 5px;"></strong>
+        <p id="selected-a" style="margin-bottom: 10px;"></p>
+        <button onclick="resetChat()" style="background: #d4af37; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.7rem; cursor: pointer;">ASK ANOTHER QUESTION</button>
+    </div>
+</div>
+
+<style>
+    /* Fixed overlapping and added fade-in logic same as back-to-top */
+#chat-bubble {
+    position: fixed;
+    bottom: 20px;
+    right: 90px; /* Changed from 20px or 80px to 90px to clear the top button */
+    width: 60px;
+    height: 60px;
+    background: #1a2a44;
+    border-radius: 50%;
+    display: none; 
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    z-index: 1000;
+    transition: transform 0.3s;
+}
+
+#chat-window {
+    display: none;
+    position: fixed;
+    bottom: 90px; /* Sits above the bubble */
+    right: 90px;  /* Matches the new bubble position */
+    width: 320px;
+    max-height: 450px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    z-index: 1000;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: 'Lato', sans-serif;
+}
+
+    .faq-btn {
+        display: block;
+        width: 100%;
+        text-align: left;
+        background: white;
+        border: 1px solid #d4af37;
+        color: #1a2a44;
+        padding: 8px 12px;
+        margin-bottom: 8px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .faq-btn:hover { background: #1a2a44; color: white; }
+    #chat-bubble:hover { transform: scale(1.1); }
+</style>
+<script>
+    let weddingFAQs = [];
+
+    // 1. Scroll Logic: Toggle bubble visibility based on scroll position
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 100) {
+            $('#chat-bubble').fadeIn('slow');
+        } else {
+            $('#chat-bubble').fadeOut('slow');
+            $('#chat-window').fadeOut('fast'); // Hide window if user scrolls back to top
+        }
+    });
+
+    // 2. Toggle Function: Fixed to use jQuery for reliable showing/hiding
+    function toggleChat() {
+        const win = $('#chat-window');
+        
+        if (win.is(':visible')) {
+            win.fadeOut('fast');
+        } else {
+            win.fadeIn('fast').css('display', 'flex'); // Ensure flex display for layout
+            // Only load from Google Sheets if we haven't loaded them yet
+            if (weddingFAQs.length === 0) {
+                loadFAQs();
+            }
+        }
+    }
+
+    // 3. Load Data from Google Apps Script
+    function loadFAQs() {
+        if (typeof google !== 'undefined' && google.script) {
+            google.script.run
+                .withSuccessHandler(function(data) {
+                    weddingFAQs = data || [];
+                    renderFAQButtons();
+                })
+                .withFailureHandler(function() {
+                    document.getElementById('faq-options').innerHTML = 
+                        '<p style="font-size: 0.8rem; color: red;">Error loading FAQs.</p>';
+                })
+                .getWeddingFAQs();
+        }
+    }
+
+    // 4. UI Rendering
+    function renderFAQButtons() {
+        const container = document.getElementById('faq-options');
+        if (weddingFAQs.length === 0) {
+            container.innerHTML = '<p style="font-size: 0.8rem; color: #888;">No FAQs added yet.</p>';
+            return;
+        }
+        container.innerHTML = weddingFAQs.map((item, index) => 
+            `<button class="faq-btn" onclick="showAnswer(${index})">${item.question}</button>`
+        ).join('');
+    }
+
+    function showAnswer(index) {
+        $('#chat-content').hide();
+        $('#chat-answer').show();
+        document.getElementById('selected-q').innerText = weddingFAQs[index].question;
+        document.getElementById('selected-a').innerText = weddingFAQs[index].answer;
+    }
+
+    function resetChat() {
+        $('#chat-content').show();
+        $('#chat-answer').hide();
+    }
+</script>
 
 <i class="fa fa-2x fa-angle-down text-white scroll-to-bottom"></i>
 <a href="#" class="btn btn-lg btn-outline-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
