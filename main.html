@@ -1705,9 +1705,8 @@ function showStory(id, el) {
         <button type="submit" id="submit-btn">Send RSVP</button>
     </form>
 
-    <div class="nav-links">
+    <div class="nav-links" id="seat-finder-container" style="display: none;">
         <a href="seat-finder.html" class="nav-btn">Seat Finder</a>
-        <a href="floor-plan.html" class="nav-btn">Floor Plan</a>
     </div>
 </div>
 
@@ -1969,8 +1968,19 @@ function showStory(id, el) {
             btn.innerText = "SEND RSVP";
         });
     });
+        // ==========================================
+        // SEAT FINDER REVEAL SWITCH
+        // Change 'false' to 'true' to show the button
+        // ==========================================
+        const showSeatFinder = true; 
+
+        if (showSeatFinder) {
+            document.getElementById('seat-finder-container').style.display = 'flex';
+        }
 </script>
-<footer style="margin-top: 20px; padding: 20px 0 0 0; border-top: 1px solid rgba(255,255,255,0.1); color: #ffffff; margin-bottom: 0 !important; display: block;">
+<footer style="margin-top: 20px; padding: 20px 0 0 0; position: relative; color: inherit; margin-bottom: 0 !important; display: block;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 1px; background-color: currentColor; opacity: 0.15;"></div>
+
     <div style="display: flex; justify-content: center; align-items: center; gap: 20px; padding-bottom: 25px;">
         
         <div style="line-height: 1.4; text-align: right;">
@@ -1978,27 +1988,27 @@ function showStory(id, el) {
                 © 2026 H&C Wedding.
             </p>
             <p style="margin: 0; opacity: 0.6; font-size: 0.7rem; letter-spacing: 1px;">
-                Coded & Designed by the Groom - <a href="https://instagram.com/hrvyngrs" target="_blank" style="color: #d4af37; text-decoration: none; font-weight: 600;">HARVY</a>.
+                Design & Engineering by the Groom - <a href="https://instagram.com/hrvyngrs" target="_blank" style="color: #d4af37; text-decoration: none; font-weight: 600;">HARVY</a>.
             </p>
         </div>
 
-        <div style="width: 1px; height: 30px; background: rgba(255,255,255,0.2);"></div>
+        <div style="width: 1px; height: 30px; background-color: currentColor; opacity: 0.2;"></div>
 
         <div style="line-height: 1.4; text-align: left;">
-            <p style="margin: 0; font-size: 0.6rem; color: #a0a5aa; letter-spacing: 1.5px; text-transform: uppercase;">
+            <p style="margin: 0; font-size: 0.6rem; color: inherit; opacity: 0.5; letter-spacing: 1.5px; text-transform: uppercase;">
                 Bespoke Digital Experiences
             </p>
             <div style="display: flex; gap: 12px; margin-top: 4px; align-items: center;">
-                <a href="mailto:pidlaoanharvy@gmail.com" style="color: #ffffff; opacity: 0.6;" title="Email">
+                <a href="mailto:pidlaoanharvy@gmail.com" style="color: inherit; opacity: 0.6;" title="Email">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                 </a>
-                <a href="https://instagram.com/hrvyngrs" target="_blank" style="color: #ffffff; opacity: 0.6;" title="Instagram">
+                <a href="https://instagram.com/hrvyngrs" target="_blank" style="color: inherit; opacity: 0.6;" title="Instagram">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                 </a>
-                <a href="https://facebook.com/hrvyngrs" target="_blank" style="color: #ffffff; opacity: 0.6;" title="Facebook">
+                <a href="https://facebook.com/hrvyngrs" target="_blank" style="color: inherit; opacity: 0.6;" title="Facebook">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
                 </a>
-                <a href="https://linkedin.com/in/pidlaoanharvy" target="_blank" style="color: #ffffff; opacity: 0.6;" title="LinkedIn">
+                <a href="https://linkedin.com/in/pidlaoanharvy" target="_blank" style="color: inherit; opacity: 0.6;" title="LinkedIn">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                 </a>
             </div>
@@ -2234,6 +2244,31 @@ function resetChat() {
     // Scroll to show the new options
     setTimeout(() => container.scrollTop = container.scrollHeight, 50);
 }
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Grab the current parameters (e.g., "?id=4RDB55&v=pl")
+        const currentParams = window.location.search;
+        
+        // If there are parameters, let's attach them to your links
+        if (currentParams) {
+            // Find specific links that leave the main page
+            const linksToUpdate = document.querySelectorAll(
+                'a[href="index.html"], a[href="seat-finder.html"], a[href="floor-plan.html"]'
+            );
+            
+            linksToUpdate.forEach(link => {
+                // Get the original link destination (e.g., "seat-finder.html")
+                const originalHref = link.getAttribute('href');
+                
+                // Make sure we don't accidentally double-add parameters
+                if (originalHref && !originalHref.includes('?')) {
+                    // Combine them! Result: "seat-finder.html?id=4RDB55&v=pl"
+                    link.setAttribute('href', originalHref + currentParams);
+                }
+            });
+        }
+    });
 </script>
 <i class="fa fa-2x fa-angle-down text-white scroll-to-bottom"></i>
 <a href="#" class="btn btn-lg btn-outline-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>

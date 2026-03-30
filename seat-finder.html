@@ -139,6 +139,41 @@
         @keyframes pulseSeat { 0% { transform: rotate(var(--rot, 0deg)) scale(1); } 50% { transform: rotate(var(--rot, 0deg)) scale(1.3); } 100% { transform: rotate(var(--rot, 0deg)) scale(1); } }
 
         @media (max-width: 480px) { .top-nav { position: relative; top: 0; left: 0; margin-bottom: 20px; } }
+
+        /* Map Watermark & Footer Styles */
+        .fp-watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: rgba(26, 42, 68, 0.12); /* Faded navy for a subtle watermark look */
+            text-align: right;
+            pointer-events: none; /* Crucial: Prevents the logo from blocking dragging/zooming */
+            font-style: italic;
+            font-weight: bold;
+        }
+        .fp-watermark span {
+            font-size: 0.75rem;
+            font-family: 'Lato', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            display: block;
+            margin-top: -5px;
+        }
+        
+        .fp-footer {
+            background: var(--navy-deep);
+            color: var(--silver-text);
+            text-align: center;
+            padding: 12px;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-top: 1px solid rgba(226, 226, 226, 0.1);
+            flex-shrink: 0;
+        }
     </style>
 </head>
 <body>
@@ -152,12 +187,23 @@
         <h3>Wedding Map</h3>
         <button class="close-fp-btn" onclick="closeFloorPlan()">CLOSE</button>
     </div>
+    
     <div id="guest-fp-canvas">
+        <div class="fp-watermark">
+            Harvy & Christine
+            <span>June 12, 2026</span>
+        </div>
+        
         <div id="guest-fp-inner"></div>
     </div>
+    
     <div class="fp-instructions">
         Pinch/Scroll to zoom. Drag to move.<br>
         Your seat is highlighted in <b style="color:#ff3366">Pink/Gold</b>.
+    </div>
+    
+    <div class="fp-footer">
+        © 2026 H&C Wedding • Designed by Harvy
     </div>
 </div>
 
@@ -189,13 +235,43 @@
 
     <div id="result-area"></div>
 
-    <footer>
-    <p style="margin: 0; opacity: 0.8;">
-        &copy; 2026 H&C Wedding. Coded & Designed by 
-        <a href="https://instagram.com/hrvyngrs" style="color: inherit; text-decoration: none; border-bottom: 1px solid rgba(0,0,0,0.1);">HARVY</a>. 
-        All rights reserved.
-    </p>
-    </footer>
+<footer style="margin-top: 20px; padding: 20px 0 0 0; position: relative; color: inherit; margin-bottom: 0 !important; display: block;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 1px; background-color: currentColor; opacity: 0.15;"></div>
+
+    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; padding-bottom: 25px;">
+        
+        <div style="line-height: 1.4; text-align: right;">
+            <p style="margin: 0; opacity: 0.6; font-size: 0.7rem; letter-spacing: 1px;">
+                © 2026 H&C Wedding.
+            </p>
+            <p style="margin: 0; opacity: 0.6; font-size: 0.7rem; letter-spacing: 1px;">
+                Design & Engineering by the Groom - <a href="https://instagram.com/hrvyngrs" target="_blank" style="color: #d4af37; text-decoration: none; font-weight: 600;">HARVY</a>.
+            </p>
+        </div>
+
+        <div style="width: 1px; height: 30px; background-color: currentColor; opacity: 0.2;"></div>
+
+        <div style="line-height: 1.4; text-align: left;">
+            <p style="margin: 0; font-size: 0.6rem; color: inherit; opacity: 0.5; letter-spacing: 1.5px; text-transform: uppercase;">
+                Bespoke Digital Experiences
+            </p>
+            <div style="display: flex; gap: 12px; margin-top: 4px; align-items: center;">
+                <a href="mailto:pidlaoanharvy@gmail.com" style="color: inherit; opacity: 0.6;" title="Email">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </a>
+                <a href="https://instagram.com/hrvyngrs" target="_blank" style="color: inherit; opacity: 0.6;" title="Instagram">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+                <a href="https://facebook.com/hrvyngrs" target="_blank" style="color: inherit; opacity: 0.6;" title="Facebook">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                </a>
+                <a href="https://linkedin.com/in/pidlaoanharvy" target="_blank" style="color: inherit; opacity: 0.6;" title="LinkedIn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
 </div>
 
 <script>

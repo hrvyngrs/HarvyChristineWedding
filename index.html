@@ -541,15 +541,11 @@
         if (!isExpanded) { card.classList.add('expanded'); }
     }
 
-    function buildURL(base, anchor = "") {
-        let params = new URLSearchParams(window.location.search);
-        let newParams = new URLSearchParams();
-        ['id', 'g', 'name'].forEach(key => {
-            if (params.get(key)) newParams.append(key, params.get(key));
-        });
-        let qs = newParams.toString();
-        return qs ? (base + "?" + qs + anchor) : (base + anchor);
-    }
+function buildURL(base, anchor = "") {
+    // This simply grabs "?id=CODE&v=pl&name=..." directly from the address bar
+    let currentParams = window.location.search; 
+    return base + currentParams + anchor;
+}
 
     function enterSite() {
         const wrapper = document.getElementById('envelope-wrapper');
