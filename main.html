@@ -1684,6 +1684,18 @@ function showStory(id, el) {
                 <option value="Bride">Bride</option>
             </select>
         </div>
+        <div class="form-group" style="margin-bottom: 10px;">
+            <div class="policy-group" style="margin-bottom: 5px;">
+                <input type="checkbox" id="notify-opt-in" name="Notify_Opt_In" value="Yes">
+                <label for="notify-opt-in" style="text-transform: none; letter-spacing: normal; font-size: 0.85rem;">
+                    Notify me 7 days before the wedding with my assigned seating.
+                </label>
+            </div>
+        </div>
+        <div class="form-group" id="email-group" style="display: none; margin-bottom: 25px;">
+            <label>Email Address</label>
+            <input type="email" name="Email" id="guest-email" class="rsvp-input" placeholder="Enter your email address">
+        </div>
         <div class="policy-group">
             <input type="checkbox" id="policy-agreement" required>
             <label for="policy-agreement" style="text-transform: none; letter-spacing: normal; font-size: 0.85rem;">
@@ -1781,6 +1793,22 @@ function showStory(id, el) {
         }
     });
 
+    const notifyCheckbox = document.getElementById('notify-opt-in');
+        if(notifyCheckbox) {
+            notifyCheckbox.addEventListener('change', function() {
+                const emailGroup = document.getElementById('email-group');
+                const emailInput = document.getElementById('guest-email');
+                if(this.checked) {
+                    emailGroup.style.display = 'block';
+                    emailInput.required = true;
+                } else {
+                    emailGroup.style.display = 'none';
+                    emailInput.required = false;
+                    emailInput.value = '';
+                }
+            });
+        }
+        
     // --- RETRIEVED ORIGINAL SUBMISSION LOGIC ---
     const scriptURL = 'https://script.google.com/macros/s/AKfycbz5i9a419qmd3KarRGWtTNLDbGRXPOHPcAtzF1D90vU0g3_9P0dswEB5Ypgqh3NQ3AeNQ/exec';
     const rsvpForm = document.getElementById('rsvp-form');
@@ -1797,9 +1825,10 @@ function showStory(id, el) {
         .then(res => res.json())
         .then(data => {
             if (data.result === "success") {
-if (attendance === "Yes") {
+                if (attendance === "Yes") {
                     // 1. Get the Primary Guest
                     const mainGuest = document.getElementById('full-name').value || "Guest";
+                    const inviteCodeUsed = document.getElementById('invite-code').value || "N/A";
                     
                     // 2. Hunt for any Additional Guests they typed in
                     let additionalGuestsHtml = '';
@@ -1897,13 +1926,13 @@ if (attendance === "Yes") {
                                 
                                 <div style="height: 40px; width: 100%; background: repeating-linear-gradient(90deg, #1a2a44 0, #1a2a44 2px, transparent 2px, transparent 4px, #1a2a44 4px, #1a2a44 5px, transparent 5px, transparent 8px, #1a2a44 8px, #1a2a44 12px, transparent 12px, transparent 14px); margin-bottom: 12px; opacity: 0.85; border-radius: 2px;"></div>
                                 
+                                <p style="font-size: 0.9rem; color: #1a2a44; font-weight: 900; letter-spacing: 3px; margin: 0 0 8px 0; text-transform: uppercase;">
+                                    ${inviteCodeUsed}
+                                </p>
+
                                 <p style="font-size: 0.7rem; color: #888; font-style: italic; margin-bottom: 15px;">
                                     Screenshot this pass to save your spot!
                                 </p>
-                                
-                                <a href="seat-finder.html" style="display: block; background: #1a2a44; color: white; padding: 14px; border-radius: 6px; text-decoration: none; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; transition: background 0.3s; border: 1px solid #1a2a44;">
-                                    Locate My Seat
-                                </a>
                             </div>
                         </div>
                         `,
@@ -1941,13 +1970,41 @@ if (attendance === "Yes") {
         });
     });
 </script>
-    <footer style="margin-top: 60px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
-        <p style="margin: 0; opacity: 0.8; font-size: 0.95rem;">
-            © 2026 H&C Wedding. Coded & Designed by 
-            <a href="https://instagram.com/hrvyngrs" style="color: #1a2a44; text-decoration: none; border-bottom: 1px solid rgba(0,0,0,0.3);">HARVY</a>. 
-            All rights reserved.
-        </p>
-    </footer>
+<footer style="margin-top: 20px; padding: 20px 0 0 0; border-top: 1px solid rgba(255,255,255,0.1); color: #ffffff; margin-bottom: 0 !important; display: block;">
+    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; padding-bottom: 25px;">
+        
+        <div style="line-height: 1.4; text-align: right;">
+            <p style="margin: 0; opacity: 0.6; font-size: 0.7rem; letter-spacing: 1px;">
+                © 2026 H&C Wedding.
+            </p>
+            <p style="margin: 0; opacity: 0.6; font-size: 0.7rem; letter-spacing: 1px;">
+                Coded & Designed by the Groom - <a href="https://instagram.com/hrvyngrs" target="_blank" style="color: #d4af37; text-decoration: none; font-weight: 600;">HARVY</a>.
+            </p>
+        </div>
+
+        <div style="width: 1px; height: 30px; background: rgba(255,255,255,0.2);"></div>
+
+        <div style="line-height: 1.4; text-align: left;">
+            <p style="margin: 0; font-size: 0.6rem; color: #a0a5aa; letter-spacing: 1.5px; text-transform: uppercase;">
+                Bespoke Digital Experiences
+            </p>
+            <div style="display: flex; gap: 12px; margin-top: 4px; align-items: center;">
+                <a href="mailto:pidlaoanharvy@gmail.com" style="color: #ffffff; opacity: 0.6;" title="Email">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </a>
+                <a href="https://instagram.com/hrvyngrs" target="_blank" style="color: #ffffff; opacity: 0.6;" title="Instagram">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+                <a href="https://facebook.com/hrvyngrs" target="_blank" style="color: #ffffff; opacity: 0.6;" title="Facebook">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                </a>
+                <a href="https://linkedin.com/in/pidlaoanharvy" target="_blank" style="color: #ffffff; opacity: 0.6;" title="LinkedIn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
 
 <div id="chat-bubble" onclick="toggleChat()" style="position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: #1a2a44; border: 1px solid #1a2a44; color: #ffffff; border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 2147483647; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: all 0.5s;">
     <i class="fas fa-comments" style="font-size: 1.4rem;"></i>
