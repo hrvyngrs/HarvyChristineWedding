@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Find Your Seat | Harvy & Christine</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
@@ -51,10 +51,7 @@
             padding: 8px 12px;
         }
 
-        .back-link:hover {
-            opacity: 1;
-            background: rgba(255, 255, 255, 0.05);
-        }
+        .back-link:hover { opacity: 1; background: rgba(255, 255, 255, 0.05); }
 
         .container {
             background: linear-gradient(135deg, #ffffff 0%, #dcdde1 100%);
@@ -70,194 +67,78 @@
             color: var(--navy-deep);
         }
 
-        .logo-area {
-            margin-bottom: 30px;
-            position: relative;
-            z-index: 2;
-        }
+        .logo-area { margin-bottom: 30px; position: relative; z-index: 2; }
+        .logo-text { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--navy-deep); margin: 0; font-style: italic; }
+        .logo-divider { width: 60px; height: 2px; background: linear-gradient(90deg, transparent, var(--navy-deep), transparent); margin: 15px auto; position: relative; overflow: hidden; }
+        .logo-divider::after { content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent); animation: sparkle 3s infinite; }
 
-        .logo-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
-            color: var(--navy-deep);
-            margin: 0;
-            font-style: italic;
-        }
-
-        .logo-divider {
-            width: 60px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--navy-deep), transparent);
-            margin: 15px auto;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .logo-divider::after {
-            content: "";
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
-            animation: sparkle 3s infinite;
-        }
-
-        h1 {
-            font-size: 0.8rem;
-            margin-bottom: 5px;
-            color: var(--navy-accent);
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            font-weight: 700;
-        }
-
-        .rsvp-note {
-            font-size: 0.7rem;
-            color: #636e72;
-            line-height: 1.4;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 0 10px;
-            font-weight: 400;
-        }
-
-        .search-box {
-            position: relative;
-            z-index: 2;
-            margin-bottom: 20px;
-        }
-
-        input {
-            width: 100%;
-            padding: 15px;
-            border: 1px solid #b2bec3;
-            border-radius: 0;
-            font-size: 16px; 
-            box-sizing: border-box;
-            outline: none;
-            transition: all 0.3s ease;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.9);
-            color: var(--navy-deep);
-        }
-
-        button {
-            background-color: var(--navy-deep);
-            color: var(--silver-bright);
-            border: 1px solid var(--silver-bright);
-            padding: 18px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 15px;
-            transition: background 0.3s;
-        }
-
+        h1 { font-size: 0.8rem; margin-bottom: 5px; color: var(--navy-accent); letter-spacing: 5px; text-transform: uppercase; font-weight: 700; }
+        .rsvp-note { font-size: 0.7rem; color: #636e72; line-height: 1.4; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; padding: 0 10px; font-weight: 400; }
+        .search-box { position: relative; z-index: 2; margin-bottom: 20px; }
+        input { width: 100%; padding: 15px; border: 1px solid #b2bec3; border-radius: 0; font-size: 16px; box-sizing: border-box; outline: none; transition: all 0.3s ease; text-align: center; background: rgba(255, 255, 255, 0.9); color: var(--navy-deep); }
+        button { background-color: var(--navy-deep); color: var(--silver-bright); border: 1px solid var(--silver-bright); padding: 18px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; cursor: pointer; width: 100%; margin-top: 15px; transition: background 0.3s; }
         button:hover { background-color: var(--navy-accent); }
 
-        #result-area {
-            margin-top: 25px;
-            min-height: 110px;
-        }
-
-        .result-card {
-            background: var(--navy-deep);
-            color: var(--silver-bright);
-            padding: 25px;
-            border: 1px solid var(--silver-bright);
-            animation: fadeIn 0.6s ease-out forwards;
-            position: relative;
-        }
-
-        .vip-status {
-            border-color: var(--gold-vip) !important;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
-        }
-
-        .entourage-status {
-            border-color: var(--platinum-accent) !important;
-            box-shadow: 0 0 15px rgba(229, 228, 226, 0.3);
-        }
-
-        .result-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
-            margin-bottom: 10px;
-            border-bottom: 1px solid rgba(226, 226, 226, 0.3);
-            padding-bottom: 10px;
-        }
-
-        .guest-by {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--silver-text);
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        .seat-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .info-item .label {
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--silver-text);
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .info-item .value {
-            font-weight: 700;
-            font-size: 1.6rem;
-            color: var(--white);
-        }
-
+        #result-area { margin-top: 25px; min-height: 110px; }
+        .result-card { background: var(--navy-deep); color: var(--silver-bright); padding: 25px; border: 1px solid var(--silver-bright); animation: fadeIn 0.6s ease-out forwards; position: relative; }
+        .vip-status { border-color: var(--gold-vip) !important; box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); }
+        .entourage-status { border-color: var(--platinum-accent) !important; box-shadow: 0 0 15px rgba(229, 228, 226, 0.3); }
+        .result-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 10px; border-bottom: 1px solid rgba(226, 226, 226, 0.3); padding-bottom: 10px; }
+        .guest-by { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--silver-text); margin-bottom: 15px; display: block; }
+        .seat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .info-item .label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; color: var(--silver-text); display: block; margin-bottom: 5px; }
+        .info-item .value { font-weight: 700; font-size: 1.6rem; color: var(--white); }
         .vip-text { color: var(--gold-vip) !important; text-shadow: 0 0 5px rgba(212, 175, 55, 0.5); }
         .entourage-text { color: var(--platinum-accent) !important; text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+        .side-info { margin-top: 15px; padding-top: 10px; border-top: 1px solid rgba(226, 226, 226, 0.1); }
+        footer { margin-top: 40px; font-size: 0.65rem; color: #636e72; letter-spacing: 1px; text-transform: uppercase; opacity: 0.7; }
 
-        .side-info {
-            margin-top: 15px;
-            padding-top: 10px;
-            border-top: 1px solid rgba(226, 226, 226, 0.1);
-        }
-
-        footer {
-            margin-top: 40px;
-            font-size: 0.65rem;
-            color: #636e72;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            opacity: 0.7;
-        }
-
-        .loader {
-            width: 24px;
-            height: 24px;
-            border: 2px solid rgba(10, 25, 47, 0.1);
-            border-top: 2px solid var(--navy-deep);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 20px auto;
-        }
-
+        .loader { width: 24px; height: 24px; border: 2px solid rgba(10, 25, 47, 0.1); border-top: 2px solid var(--navy-deep); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 20px auto; }
+        
         @keyframes sparkle { 0% { left: -100%; } 20% { left: 100%; } 100% { left: 100%; } }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         .error-text { color: #8b0000; font-size: 0.85rem; font-weight: bold; margin-top: 10px;}
         .no-attendance { font-size: 0.9rem; color: #ff7675; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-top: 10px; }
         
-        @media (max-width: 480px) {
-            .top-nav { position: relative; top: 0; left: 0; margin-bottom: 20px; }
+        /* --- FLOOR PLAN MODAL & VISUALS --- */
+        #fp-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:var(--navy-deep); z-index:99999; flex-direction:column; }
+        .fp-header { padding: 15px; text-align: center; background: var(--navy-accent); border-bottom: 1px solid var(--gold-vip); display: flex; justify-content: space-between; align-items: center; }
+        .fp-header h3 { margin:0; color:var(--gold-vip); font-family: 'Playfair Display', serif; font-size: 1.2rem;}
+        .close-fp-btn { background: transparent; color: var(--silver-bright); border: 1px solid var(--silver-bright); padding: 5px 15px; cursor: pointer; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px; width:auto; margin:0; }
+
+        #guest-fp-canvas { flex:1; position:relative; overflow:hidden; background-color: #f9f9f9; background-image: radial-gradient(rgba(0,0,0,0.08) 1px, transparent 1px); background-size: 20px 20px; touch-action: none; cursor: grab;}
+        #guest-fp-canvas:active { cursor: grabbing; }
+        #guest-fp-inner { width:100%; height:100%; position:relative; transform-origin: top left; transition: transform 0.1s ease-out; }
+        .fp-instructions { padding: 10px; text-align: center; font-size: 0.75rem; color: var(--silver-bright); background: var(--navy-accent); border-top: 1px solid rgba(255,255,255,0.1);}
+
+        .fp-el { position:absolute; user-select:none; transform-origin: center; display:flex; justify-content:center; align-items:center; }
+        .fp-rot-wrapper { width:100%; height:100%; display:flex; justify-content:center; align-items:center; position:relative; transform-origin: center; }
+        .fp-circle, .fp-square, .fp-rect-h, .fp-rect-v, .fp-diamond { background: rgba(255, 255, 255, 0.95) !important; border: 1.5px solid #d4af37 !important; color: #333 !important; font-family: 'Georgia', serif !important; font-weight: normal !important; font-size: 20px !important; box-shadow: 0 5px 15px rgba(0,0,0,0.05) !important; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; }
+        .fp-circle { border-radius: 50%; width:100%; height:100%; }
+        .fp-square, .fp-rect-h, .fp-rect-v { width:100%; height:100%; border-radius: 8px; }
+        .fp-diamond { width:100%; height:100%; transform:rotate(45deg); }
+        .fp-diamond-inner { transform:rotate(-45deg); display:flex; flex-direction:column; align-items:center; }
+        .fp-stage-design { background: rgba(255, 255, 255, 0.8) !important; border: 2px dashed #d4af37 !important; border-radius: 150px 150px 0 0 !important; box-shadow: 0 5px 15px rgba(0,0,0,0.05) !important; color: #333 !important; font-family: 'Georgia', serif !important; display: flex; flex-direction: column; justify-content: flex-start; padding-top: 20px; }
+        .fp-chair { position: absolute; width: 28px; height: 28px; display: flex; justify-content: center; align-items: center; transform: rotate(var(--rot, 0deg)); z-index: 10; }
+        .fp-chair.empty { background: transparent !important; border: 1.5px dashed #a0a5aa !important; border-radius: 50% !important; }
+        .fp-chair.occupied { background: #e0e0e0 !important; border: 1.5px solid #a0a5aa !important; border-radius: 14px 14px 4px 4px !important; align-items: flex-start; box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important; }
+        .fp-chair.occupied::after { content: ''; position: absolute; top: -6px; left: 50%; transform: translateX(-50%); width: 14px; height: 14px; background: #ffe0bd; border-radius: 50%; border: 1px solid rgba(0,0,0,0.15); box-shadow: inset 0 5px 0 #3a2b24; }
+        .fp-guest-name { position: absolute; left: 50%; font-size: 10px; color: #333; font-weight: 600; white-space: nowrap; font-family: 'Segoe UI', sans-serif; text-shadow: 0 0 2px #fff, 0 0 3px #fff; pointer-events:none;}
+
+        /* HIGHLIGHT FOR GUEST SEAT */
+        .my-seat-highlight {
+            border-color: #ff3366 !important;
+            background: #ffcccc !important;
+            box-shadow: 0 0 0 4px rgba(255, 51, 102, 0.4), 0 0 20px 10px rgba(255, 51, 102, 0.6) !important;
+            animation: pulseSeat 1.5s infinite;
+            z-index: 1000 !important;
         }
+        .my-seat-highlight::after { background: #ffeb3b !important; }
+        .my-seat-highlight .fp-guest-name { color: #d40000; font-size: 12px; font-weight: 900; }
+        @keyframes pulseSeat { 0% { transform: rotate(var(--rot, 0deg)) scale(1); } 50% { transform: rotate(var(--rot, 0deg)) scale(1.3); } 100% { transform: rotate(var(--rot, 0deg)) scale(1); } }
+
+        @media (max-width: 480px) { .top-nav { position: relative; top: 0; left: 0; margin-bottom: 20px; } }
     </style>
 </head>
 <body>
@@ -266,22 +147,28 @@
     <a href="main.html#rsvp" class="back-link">← Back to Site</a>
 </div>
 
+<div id="fp-modal">
+    <div class="fp-header">
+        <h3>Wedding Map</h3>
+        <button class="close-fp-btn" onclick="closeFloorPlan()">CLOSE</button>
+    </div>
+    <div id="guest-fp-canvas">
+        <div id="guest-fp-inner"></div>
+    </div>
+    <div class="fp-instructions">
+        Pinch/Scroll to zoom. Drag to move.<br>
+        Your seat is highlighted in <b style="color:#ff3366">Pink/Gold</b>.
+    </div>
+</div>
+
 <script>
     window.addEventListener('DOMContentLoaded', () => {
-        const currentParams = window.location.search; // Gets ?name=...&g=1
+        const currentParams = window.location.search; 
         const backLink = document.querySelector('.back-link');
-
         if (currentParams && backLink) {
-            // Get the original link: "main.html#rsvp"
             const originalHref = backLink.getAttribute('href');
-            
-            // Split the link at the '#' to insert parameters in the middle
             const parts = originalHref.split('#');
-            const basePage = parts[0]; // "main.html"
-            const anchor = parts[1] ? '#' + parts[1] : ''; // "#rsvp"
-            
-            // Reconstruct: "main.html" + "?name=..." + "#rsvp"
-            backLink.setAttribute('href', basePage + currentParams + anchor);
+            backLink.setAttribute('href', parts[0] + currentParams + (parts[1] ? '#' + parts[1] : ''));
         }
     });
 </script>
@@ -293,9 +180,7 @@
         <h1>Seat Finder</h1>
     </div>
 
-    <p class="rsvp-note">
-        Note: Please enter the name exactly as it was submitted in your RSVP.
-    </p>
+    <p class="rsvp-note">Note: Please enter the name exactly as it was submitted in your RSVP.</p>
 
     <div class="search-box">
         <input type="text" id="guest-name-input" placeholder="Type Your Name Here" onkeypress="handleKeyPress(event)">
@@ -316,6 +201,11 @@
 <script>
     const sheetId = '1ZSKHoNvsZ79jPjFXGF-9wdDO9cgJxs11148wNT7L4MY';
     const csvURL = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=Sheet1`;
+    const jsonFpURL = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=FloorPlan`;
+
+    let globalAllGuests = [];
+    let fpItems = [];
+    let fpZoom = 1, panX = 0, panY = 0, isPan = false, sPx = 0, sPy = 0;
 
     function handleKeyPress(e) { if (e.key === 'Enter') findSeat(); }
 
@@ -328,7 +218,7 @@
             return;
         }
 
-        resultArea.innerHTML = '<div class="loader"></div>';
+        resultArea.innerHTML = '<div class="loader" style="border-top-color: var(--navy-deep);"></div>';
 
         try {
             const response = await fetch(csvURL);
@@ -338,9 +228,17 @@
                 row.split(',').map(cell => cell.replace(/^"(.*)"$/, '$1').replace(/"/g, '').trim())
             );
 
-            const guestMatch = rows.find(row => 
-                row[1] && row[1].toLowerCase() === searchInput
-            );
+            // Populate global guests for the map
+            globalAllGuests = rows.map(r => ({
+                name: r[1],
+                attendance: r[2],
+                side: r[3],
+                broughtBy: r[4],
+                table: r[5],
+                seat: r[6]
+            }));
+
+            const guestMatch = rows.find(row => row[1] && row[1].toLowerCase() === searchInput);
 
             if (guestMatch) {
                 const attendance = guestMatch[2] ? guestMatch[2].toLowerCase() : "";
@@ -355,44 +253,32 @@
                     return;
                 }
 
-                // DATA EXTRACTION
                 let teamRaw = guestMatch[3] ? guestMatch[3].toLowerCase() : "";
                 let broughtByRaw = guestMatch[4] ? guestMatch[4].toLowerCase() : "";
                 
-                // GUEST BY & SIDE LOGIC
                 let guestByDisplay = guestMatch[4] || "Self";
                 let sideDisplay = "N/A";
 
                 if (broughtByRaw === "self") {
-                    if (teamRaw.includes("groom")) {
-                        guestByDisplay = "The Groom";
-                        sideDisplay = "Team Groom";
-                    } else if (teamRaw.includes("bride")) {
-                        guestByDisplay = "The Bride";
-                        sideDisplay = "Team Bride";
-                    } else {
-                        sideDisplay = guestMatch[3] || "N/A";
-                    }
+                    if (teamRaw.includes("groom")) { guestByDisplay = "The Groom"; sideDisplay = "Team Groom"; } 
+                    else if (teamRaw.includes("bride")) { guestByDisplay = "The Bride"; sideDisplay = "Team Bride"; } 
+                    else { sideDisplay = guestMatch[3] || "N/A"; }
                 } else {
                     if (teamRaw.includes("groom")) sideDisplay = "Team Groom";
                     else if (teamRaw.includes("bride")) sideDisplay = "Team Bride";
                     else sideDisplay = guestMatch[3] || "N/A";
                 }
 
-                let tableNum = guestMatch[5] || "TBD";
-                const seatNum = guestMatch[6] || "TBD";
+                let rawTable = guestMatch[5] || "TBD";
+                let rawSeat = guestMatch[6] || "TBD";
+                let tableNum = rawTable;
+                let seatNum = rawSeat;
 
-                // SPECIAL TIERS LOGIC
                 let isVIP = false;
                 let isEntourage = false;
 
-                if (tableNum == "101" || tableNum == "102" || tableNum == "103") {
-                    tableNum = "VIP";
-                    isVIP = true;
-                } else if (tableNum == "201" || tableNum == "202" || tableNum == "203" || tableNum == "204") {
-                    tableNum = "Entourage";
-                    isEntourage = true;
-                }
+                if (tableNum == "101" || tableNum == "102" || tableNum == "103") { tableNum = "VIP"; isVIP = true; } 
+                else if (tableNum == "201" || tableNum == "202" || tableNum == "203" || tableNum == "204") { tableNum = "Entourage"; isEntourage = true; }
 
                 resultArea.innerHTML = `
                     <div class="result-card ${isVIP ? 'vip-status' : ''} ${isEntourage ? 'entourage-status' : ''}">
@@ -415,6 +301,7 @@
                             </div>
                         </div>
                     </div>
+                    ${(rawTable !== 'TBD' && rawSeat !== 'TBD') ? `<button onclick="openFloorPlan('${rawTable}', '${rawSeat}')" style="background: var(--gold-vip); color: var(--navy-deep); border-color: var(--gold-vip);">🗺️ SHOW MY SEAT ON MAP</button>` : ''}
                 `;
             } else {
                 resultArea.innerHTML = `<p class='error-text'>NAME NOT FOUND<br><small style="font-weight:normal; color:#444;">Check spelling or visit the coordinator.</small></p>`;
@@ -422,6 +309,194 @@
         } catch (error) {
             resultArea.innerHTML = "<p class='error-text'>Unable to load list. Please contact Harvy.</p>";
         }
+    }
+
+    /* --- FLOOR PLAN LOGIC --- */
+
+    async function openFloorPlan(targetTable, targetSeat) {
+        document.getElementById('fp-modal').style.display = 'flex';
+        document.getElementById('guest-fp-inner').innerHTML = '<div class="loader" style="margin-top:50px;"></div>';
+
+        if (fpItems.length === 0) {
+            try {
+                // We use Google visualization query to extract the JSON without altering code.gs
+                const response = await fetch(jsonFpURL);
+                const text = await response.text();
+                const jsonStr = text.match(/google\.visualization\.Query\.setResponse\((.*)\);/)[1];
+                const data = JSON.parse(jsonStr);
+                const fpJson = data.table.rows[0].c[1].v;
+                fpItems = JSON.parse(fpJson);
+            } catch (e) {
+                document.getElementById('guest-fp-inner').innerHTML = "<p style='color:red; text-align:center; margin-top:50px;'>Map data not currently available.</p>";
+                return;
+            }
+        }
+        renderGuestFP(targetTable, targetSeat);
+        fitGuestFloorPlan();
+    }
+
+    function closeFloorPlan() {
+        document.getElementById('fp-modal').style.display = 'none';
+    }
+
+    function renderGuestFP(targetTable, targetSeat) {
+        const inner = document.getElementById('guest-fp-inner');
+        if(!inner) return; inner.innerHTML = '';
+        
+        fpItems.forEach(item => {
+            const el = document.createElement('div'); el.className = 'fp-el';
+            el.style.left = item.x+'px'; el.style.top = item.y+'px'; el.style.width = item.w+'px'; el.style.height = item.h+'px';
+            
+            let inn = item.type==='table' ? `${item.tableId}<br><small style="font-size:9px">${item.tableType||''}</small>` : `<div style="font-size:18px; font-weight:900; letter-spacing:3px; text-transform:uppercase; color:var(--gold-vip); text-shadow:none;">${item.label}</div>`;
+            let html = `<div class="fp-rot-wrapper" style="transform: rotate(${item.rotation || 0}deg);">`;
+            
+            if(item.shape === 'dancefloor') {
+                inn = `<div style="font-family:'Georgia', serif; font-size: 24px; font-style: italic; color: #a0a5aa; white-space:nowrap;">${item.label}</div>`;
+                html += `<div style="width:100%; height:100%; border: 2px dashed #d4af37; border-radius: 20px; display:flex; justify-content:center; align-items:center; background: rgba(212, 175, 55, 0.05);">${inn}</div>`;
+            } else if (item.shape === 'tree') {
+                inn = '';
+                html += `<svg viewBox="0 0 100 100" width="100%" height="100%" style="filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));">
+                            <path d="M50,10 C30,10 10,30 20,60 C25,75 40,85 50,90 C60,85 75,75 80,60 C90,30 70,10 50,10 Z" fill="none" stroke="#a0a5aa" stroke-width="3"/>
+                            <circle cx="50" cy="50" r="15" fill="none" stroke="#a0a5aa" stroke-width="3"/>
+                         </svg>`;
+            } else if(item.shape === 'door') {
+                html += `<div style="width:100%; height:100%; position:relative;">
+                            <div style="position:absolute; bottom:0; left:0; width:100%; height:100%; border-top:3px dashed #aeb2b7; border-right:3px dashed #aeb2b7; border-top-right-radius:100%; opacity:0.6;"></div>
+                            <div style="position:absolute; bottom:0; left:0; width:100%; height:6px; background:#8b5a2b; transform-origin:left bottom; transform:rotate(-45deg); box-shadow:0 2px 4px rgba(0,0,0,0.4); border-radius:2px;"></div>
+                            <div style="position:absolute; top:-25px; width:100%; text-align:center; color:#555; font-size:11px; pointer-events:none;">${item.label}</div>
+                         </div>`;
+            } else {
+                if(item.type === 'stage') { inn = `<div style="font-size: 16px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; margin-top: -30px;">${item.label}</div>`; }
+                if(item.shape === 'diamond') inn = `<div class="fp-diamond-inner">${inn}</div>`;
+                html += `<div class="fp-${item.shape} ${item.type === 'stage' ? 'fp-stage-design' : ''}">${inn}</div>`;
+            }
+
+            if(item.type === 'table') {
+                for(let i=1; i<=item.seats; i++) {
+                    const pos = getChairPos(i, item.seats, item.w, item.h, item.shape);
+                    const occ = globalAllGuests.find(g => String(g.table) === String(item.tableId) && String(g.seat) === String(i));
+                    let normRot = (pos.rot % 360 + 360) % 360;
+                    
+                    let isTarget = (String(item.tableId) === String(targetTable) && String(i) === String(targetSeat));
+
+                    if(occ) { 
+                        let cls = isTarget ? 'occupied my-seat-highlight' : 'occupied'; 
+                        const safeSide = String(occ.side || '').toLowerCase();
+                        const gCol = '#2c4a7c'; 
+                        const bCol = '#aeb2b7';
+                        let st = safeSide==='bride'? `background:${bCol} !important; border-color:${bCol} !important;` : `background:${gCol} !important; border-color:${gCol} !important;`; 
+                        
+                        const shortName = occ.name ? occ.name.split(' ')[0] : '';
+                        let flipStyle = (normRot > 90 && normRot < 270) ? 'bottom: -18px; transform: translateX(-50%) rotate(180deg);' : 'bottom: -18px; transform: translateX(-50%);';
+
+                        html += `<div class="fp-chair ${cls}" style="left:${pos.x}px; top:${pos.y}px; ${st} --rot:${pos.rot}deg;">
+                                    <div class="fp-guest-name" style="${flipStyle}">${shortName}</div>
+                                 </div>`;
+                    } else {
+                        let flipStyle = (normRot > 90 && normRot < 270) ? 'transform: rotate(180deg); margin-top: 4px;' : 'margin-top: 4px;';
+                        html += `<div class="fp-chair empty" style="left:${pos.x}px; top:${pos.y}px; --rot:${pos.rot}deg;">
+                                    <span style="font-size:10px; color:#888; display:block; text-align:center; width:100%; ${flipStyle}">${i}</span>
+                                 </div>`;
+                    }
+                }
+            } else if (item.type === 'stage') {
+                const gCol = '#2c4a7c'; 
+                const bCol = '#aeb2b7';
+                html += `<div class="fp-chair occupied" style="left:calc(50% - 35px); bottom:-5px; background:${gCol} !important; border-color:${gCol} !important; --rot:0deg;">
+                             <div class="fp-guest-name" style="bottom: -18px; transform: translateX(-50%);">Groom</div>
+                         </div>
+                         <div class="fp-chair occupied" style="left:calc(50% + 5px); bottom:-5px; background:${bCol} !important; border-color:${bCol} !important; --rot:0deg;">
+                             <div class="fp-guest-name" style="bottom: -18px; transform: translateX(-50%);">Bride</div>
+                         </div>`;
+            }
+            
+            html += `</div>`; 
+            el.innerHTML = html; 
+            inner.appendChild(el);
+        });
+    }
+
+    function getChairPos(index, total, w, h, shape) {
+        if (shape === 'circle' || shape === 'diamond') {
+            let minR = (total * 26) / (2 * Math.PI); 
+            let rx = Math.max(w/2 + 25, minR);
+            let ry = Math.max(h/2 + 25, minR);
+            if(shape === 'diamond') { rx += 15; ry += 15; }
+            const angle = ((index - 1) / total) * 2 * Math.PI - (Math.PI/2);
+            let rot = (angle * 180 / Math.PI) - 90;
+            return { x: (w/2) + rx * Math.cos(angle) - 14, y: (h/2) + ry * Math.sin(angle) - 14, rot: rot };
+        } else if (shape === 'rect-h' || shape === 'rect-v') {
+            let isH = shape === 'rect-h';
+            let longSide = isH ? w : h;
+            let seatsPerSide = Math.ceil(total / 2);
+            let sideIndex = index <= seatsPerSide ? 0 : 1; 
+            let posIndex = index <= seatsPerSide ? index : index - seatsPerSide;
+            let totalOnThisSide = sideIndex === 0 ? seatsPerSide : (total - seatsPerSide);
+            let padding = 20; 
+            let spacing = totalOnThisSide > 1 ? (longSide - 2 * padding) / (totalOnThisSide - 1) : 0;
+            let offset = totalOnThisSide > 1 ? padding + (posIndex - 1) * spacing : longSide / 2;
+            let cx, cy, rot;
+            if (isH) { cx = offset; if (sideIndex === 0) { cy = -25; rot = 180; } else { cy = h + 25; rot = 0; } } 
+            else { cy = offset; if (sideIndex === 0) { cx = -25; rot = 90; } else { cx = w + 25; rot = -90; } }
+            return { x: cx - 14, y: cy - 14, rot: rot };
+        } else {
+            let pw = w + 50; let ph = h + 50;
+            let perimeter = 2 * pw + 2 * ph;
+            let d = ((index - 1) / total) * perimeter;
+            let cx, cy, rot;
+            if (d <= pw) { cx = d; cy = 0; rot = 180; }
+            else if (d <= pw + ph) { cx = pw; cy = d - pw; rot = -90; }
+            else if (d <= 2 * pw + ph) { cx = pw - (d - (pw + ph)); cy = ph; rot = 0; }
+            else { cx = 0; cy = ph - (d - (2 * pw + ph)); rot = 90; }
+            return { x: cx - 25 - 14, y: cy - 25 - 14, rot: rot };
+        }
+    }
+
+    // Modal Pan & Zoom Logic
+    const gFpC = document.getElementById('guest-fp-canvas');
+    const gFpI = document.getElementById('guest-fp-inner');
+
+    gFpC.addEventListener('mousedown', e => { isPan=true; sPx=e.clientX-panX; sPy=e.clientY-panY; });
+    gFpC.addEventListener('mousemove', e => { if(isPan){ panX=e.clientX-sPx; panY=e.clientY-sPy; updateFpTransform(); } });
+    gFpC.addEventListener('mouseup', () => { isPan=false; });
+    gFpC.addEventListener('mouseleave', () => { isPan=false; });
+
+    gFpC.addEventListener('touchstart', e => { isPan=true; sPx=e.touches[0].clientX-panX; sPy=e.touches[0].clientY-panY; }, {passive:true});
+    gFpC.addEventListener('touchmove', e => { if(isPan){ e.preventDefault(); panX=e.touches[0].clientX-sPx; panY=e.touches[0].clientY-sPy; updateFpTransform(); } }, {passive:false});
+    gFpC.addEventListener('touchend', () => { isPan=false; });
+
+    gFpC.addEventListener('wheel', e => {
+        e.preventDefault();
+        fpZoom += (e.deltaY < 0 ? 1 : -1) * 0.1;
+        if(fpZoom < 0.3) fpZoom = 0.3;
+        if(fpZoom > 2.5) fpZoom = 2.5;
+        updateFpTransform();
+    }, {passive: false});
+
+    function updateFpTransform() {
+        gFpI.style.transform = `translate(${panX}px, ${panY}px) scale(${fpZoom})`;
+    }
+
+    function fitGuestFloorPlan() {
+        if (fpItems.length === 0) { fpZoom = 1; panX = 0; panY = 0; } 
+        else {
+            let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+            fpItems.forEach(i => {
+                if (i.x < minX) minX = i.x; if (i.y < minY) minY = i.y;
+                if (i.x + i.w > maxX) maxX = i.x + i.w; if (i.y + i.h > maxY) maxY = i.y + i.h;
+            });
+            const cw = gFpC.clientWidth || window.innerWidth;
+            const ch = gFpC.clientHeight || window.innerHeight;
+            const w = maxX - minX, h = maxY - minY;
+            
+            fpZoom = Math.min(cw / (w + 100), ch / (h + 100));
+            if(fpZoom > 1) fpZoom = 1; 
+            if(fpZoom < 0.2) fpZoom = 0.2; 
+            
+            panX = (cw - w * fpZoom) / 2 - minX * fpZoom;
+            panY = (ch - h * fpZoom) / 2 - minY * fpZoom;
+        }
+        updateFpTransform();
     }
 </script>
 
