@@ -459,7 +459,7 @@
                 </div>
 
                 <div class="card" id="card-invite" onclick="toggleCard(this)">
-                    <div id="guest-display" class="invite-text">Hi Name</div>
+                    <div id="guest-display" class="invite-text">Hi, Name</div>
                     <div id="allocation-box" class="seat-allocation">We can't wait to celebrate our special day with you!</div>
                     <button class="btn-enter-card" onclick="enterSite()">Enter Website</button>
                 </div>
@@ -476,27 +476,47 @@
 </div>
 
 <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const guestLimit = urlParams.get('g');
-    const nameParam = urlParams.get('name');
+const urlParams = new URLSearchParams(window.location.search);
 
-    document.addEventListener("DOMContentLoaded", () => {
-        const display = document.getElementById('guest-display');
-        const allocationBox = document.getElementById('allocation-box');
+// CHANGED: Look for the hidden code 'v' instead of 'g'
+const hiddenGuestCode = urlParams.get('v'); 
+const nameParam = urlParams.get('n'); 
 
-        if (display) {
-            display.innerText = nameParam ? "Hi " + decodeURIComponent(nameParam) : "Hi SPECIAL GUEST";
+// The reverse mask to decode the letters back into numbers
+const unmask = { 
+    'st': 0, 
+    'pl': 1, 
+    'ex': 2, 
+    'tr': 3, 
+    'qu': 4, 
+    'mx': 5 
+};
+
+// Figure out the actual guest limit before the page loads
+let guestLimit = "0"; // Default to 0
+if (hiddenGuestCode !== null && unmask[hiddenGuestCode] !== undefined) {
+    // Convert the matched number to a string so it works with your existing logic
+    guestLimit = unmask[hiddenGuestCode].toString(); 
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const display = document.getElementById('guest-display');
+    const allocationBox = document.getElementById('allocation-box');
+
+    if (display) {
+        display.innerText = nameParam ? "Hi, " + decodeURIComponent(nameParam) : "Hi, Special Guest!";
+    }
+
+    if (allocationBox) {
+        // If they have 1 or more extra guests, show the number
+        if (guestLimit && guestLimit !== "0") {
+            allocationBox.innerHTML = `You have (<span>${guestLimit}</span>) additional seat allocated.`;
+        } else {
+            // If they have 0 guests (which matches 'st'), show the default message
+            allocationBox.innerText = "We can't wait to celebrate our special day with you!";
         }
-        
-        if (allocationBox) {
-            if (guestLimit && guestLimit !== "0") {
-                allocationBox.innerHTML = `You have (<span>${guestLimit}</span>) additional seat allocated by the Couple.`;
-            } else {
-                allocationBox.innerText = "We can't wait to celebrate our special day with you!";
-            }
-        }
-    });
-
+    }
+});
     function createHearts() {
         const scene = document.querySelector('.scene');
         for (let i = 0; i < 20; i++) {
