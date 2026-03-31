@@ -112,6 +112,37 @@
         #guest-fp-inner { width:100%; height:100%; position:relative; transform-origin: top left; transition: transform 0.1s ease-out; }
         .fp-instructions { padding: 10px; text-align: center; font-size: 0.75rem; color: var(--silver-bright); background: var(--navy-accent); border-top: 1px solid rgba(255,255,255,0.1);}
 
+        /* Added Map Controls Styling */
+        .fp-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .fp-btn {
+            background: var(--navy-deep);
+            color: var(--gold-vip);
+            border: 1px solid var(--gold-vip);
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: background 0.2s;
+            padding: 0;
+            margin: 0;
+        }
+        .fp-btn:active {
+            background: var(--navy-accent);
+        }
+
         .fp-el { position:absolute; user-select:none; transform-origin: center; display:flex; justify-content:center; align-items:center; }
         .fp-rot-wrapper { width:100%; height:100%; display:flex; justify-content:center; align-items:center; position:relative; transform-origin: center; }
         .fp-circle, .fp-square, .fp-rect-h, .fp-rect-v, .fp-diamond { background: rgba(255, 255, 255, 0.95) !important; border: 1.5px solid #d4af37 !important; color: #333 !important; font-family: 'Georgia', serif !important; font-weight: normal !important; font-size: 20px !important; box-shadow: 0 5px 15px rgba(0,0,0,0.05) !important; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; }
@@ -189,6 +220,12 @@
     </div>
     
     <div id="guest-fp-canvas">
+        <div class="fp-controls">
+            <button class="fp-btn" onclick="zoomMap(0.2)">+</button>
+            <button class="fp-btn" onclick="zoomMap(-0.2)">−</button>
+            <button class="fp-btn" onclick="fitGuestFloorPlan()" style="font-size: 1rem;" title="Recenter">⌂</button>
+        </div>
+
         <div class="fp-watermark">
             H & C
             <span>June 12, 2026</span>
@@ -282,6 +319,8 @@
     let globalAllGuests = [];
     let fpItems = [];
     let fpZoom = 1, panX = 0, panY = 0, isPan = false, sPx = 0, sPy = 0;
+    let initialPinchDistance = null; // Added variable for pinch zoom
+    let initialZoom = 1; // Added variable for pinch zoom
 
     function handleKeyPress(e) { if (e.key === 'Enter') findSeat(); }
 
@@ -528,18 +567,71 @@
         }
     }
 
-    // Modal Pan & Zoom Logic
+    // Modal Pan & Zoom Logic (Updated for Pinch-to-Zoom and Manual Controls)
     const gFpC = document.getElementById('guest-fp-canvas');
     const gFpI = document.getElementById('guest-fp-inner');
+
+    // Added Manual Zoom Function
+    function zoomMap(delta) {
+        fpZoom += delta;
+        if(fpZoom < 0.3) fpZoom = 0.3;
+        if(fpZoom > 2.5) fpZoom = 2.5;
+        updateFpTransform();
+    }
 
     gFpC.addEventListener('mousedown', e => { isPan=true; sPx=e.clientX-panX; sPy=e.clientY-panY; });
     gFpC.addEventListener('mousemove', e => { if(isPan){ panX=e.clientX-sPx; panY=e.clientY-sPy; updateFpTransform(); } });
     gFpC.addEventListener('mouseup', () => { isPan=false; });
     gFpC.addEventListener('mouseleave', () => { isPan=false; });
 
-    gFpC.addEventListener('touchstart', e => { isPan=true; sPx=e.touches[0].clientX-panX; sPy=e.touches[0].clientY-panY; }, {passive:true});
-    gFpC.addEventListener('touchmove', e => { if(isPan){ e.preventDefault(); panX=e.touches[0].clientX-sPx; panY=e.touches[0].clientY-sPy; updateFpTransform(); } }, {passive:false});
-    gFpC.addEventListener('touchend', () => { isPan=false; });
+    // Multi-Touch (Pinch) & Panning Support
+    gFpC.addEventListener('touchstart', e => { 
+        if (e.touches.length === 2) {
+            isPan = false;
+            initialPinchDistance = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            initialZoom = fpZoom;
+        } else if (e.touches.length === 1) {
+            isPan = true;
+            initialPinchDistance = null;
+            sPx = e.touches[0].clientX - panX;
+            sPy = e.touches[0].clientY - panY;
+        }
+    }, {passive:true});
+
+    gFpC.addEventListener('touchmove', e => { 
+        if (e.touches.length === 2 && initialPinchDistance !== null) {
+            e.preventDefault();
+            const currentDistance = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            const ratio = currentDistance / initialPinchDistance;
+            fpZoom = Math.min(Math.max(0.3, initialZoom * ratio), 2.5);
+            updateFpTransform();
+        } else if (isPan && e.touches.length === 1) { 
+            e.preventDefault(); 
+            panX = e.touches[0].clientX - sPx; 
+            panY = e.touches[0].clientY - sPy; 
+            updateFpTransform(); 
+        } 
+    }, {passive:false});
+
+    gFpC.addEventListener('touchend', e => { 
+        if (e.touches.length < 2) {
+            initialPinchDistance = null;
+        }
+        if (e.touches.length === 0) {
+            isPan = false;
+        } else if (e.touches.length === 1) {
+            // Reset panning origin to prevent jumping if one finger is lifted
+            isPan = true;
+            sPx = e.touches[0].clientX - panX;
+            sPy = e.touches[0].clientY - panY;
+        }
+    });
 
     gFpC.addEventListener('wheel', e => {
         e.preventDefault();
