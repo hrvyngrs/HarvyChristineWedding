@@ -75,7 +75,10 @@
         h1 { font-size: 0.8rem; margin-bottom: 5px; color: var(--navy-accent); letter-spacing: 5px; text-transform: uppercase; font-weight: 700; }
         .rsvp-note { font-size: 0.7rem; color: #636e72; line-height: 1.4; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; padding: 0 10px; font-weight: 400; }
         .search-box { position: relative; z-index: 2; margin-bottom: 20px; }
-        input { width: 100%; padding: 15px; border: 1px solid #b2bec3; border-radius: 0; font-size: 16px; box-sizing: border-box; outline: none; transition: all 0.3s ease; text-align: center; background: rgba(255, 255, 255, 0.9); color: var(--navy-deep); }
+        
+        /* ADDED: caret-color: var(--navy-deep); to fix the white blinking cursor */
+        input { width: 100%; padding: 15px; border: 1px solid #b2bec3; border-radius: 0; font-size: 16px; box-sizing: border-box; outline: none; transition: all 0.3s ease; text-align: center; background: rgba(255, 255, 255, 0.9); color: var(--navy-deep); caret-color: var(--navy-deep); }
+        
         button { background-color: var(--navy-deep); color: var(--silver-bright); border: 1px solid var(--silver-bright); padding: 18px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; cursor: pointer; width: 100%; margin-top: 15px; transition: background 0.3s; }
         button:hover { background-color: var(--navy-accent); }
 
@@ -109,7 +112,9 @@
 
         #guest-fp-canvas { flex:1; position:relative; overflow:hidden; background-color: #f9f9f9; background-image: radial-gradient(rgba(0,0,0,0.08) 1px, transparent 1px); background-size: 20px 20px; touch-action: none; cursor: grab;}
         #guest-fp-canvas:active { cursor: grabbing; }
-        #guest-fp-inner { width:100%; height:100%; position:relative; transform-origin: top left; transition: transform 0.1s ease-out; }
+        
+        #guest-fp-inner { width:100%; height:100%; position:relative; transform-origin: top left; will-change: transform; }
+        
         .fp-instructions { padding: 10px; text-align: center; font-size: 0.75rem; color: var(--silver-bright); background: var(--navy-accent); border-top: 1px solid rgba(255,255,255,0.1);}
 
         .fp-el { position:absolute; user-select:none; transform-origin: center; display:flex; justify-content:center; align-items:center; }
@@ -144,13 +149,13 @@
         .fp-watermark {
             position: absolute;
             bottom: 20px;
-            right: 20px;
+            left: 20px;
             z-index: 1000;
             font-family: 'Playfair Display', serif;
             font-size: 2.2rem;
-            color: rgba(26, 42, 68, 0.12); /* Faded navy for a subtle watermark look */
-            text-align: right;
-            pointer-events: none; /* Crucial: Prevents the logo from blocking dragging/zooming */
+            color: rgba(26, 42, 68, 0.12);
+            text-align: left;
+            pointer-events: none; 
             font-style: italic;
             font-weight: bold;
         }
@@ -178,8 +183,8 @@
         /* --- MAP CONTROLS --- */
         .map-controls {
             position: absolute;
-            left: 15px;
-            bottom: 15px;
+            right: 15px; 
+            top: 15px;   
             z-index: 1001;
             display: flex;
             flex-direction: column;
@@ -200,19 +205,18 @@
             margin: 0;
             padding: 0;
             border-radius: 4px;
-            background: transparent; /* Removed background to not look like a box */
-            border: none; /* Removed border */
+            background: transparent;
+            border: none; 
             color: var(--gold-vip);
-            font-size: 1.2rem; /* Adjusted font size */
+            font-size: 1.2rem; 
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: none; /* Removed shadow */
+            box-shadow: none; 
             cursor: pointer;
-            -webkit-tap-highlight-color: transparent; /* Prevents default tap highlight on mobile */
+            -webkit-tap-highlight-color: transparent; 
         }
         
-        /* Restrict hover effects to devices with a mouse to prevent "stuck" hover on touch screens */
         @media (hover: hover) {
             .map-controls button:hover {
                 color: var(--navy-accent);
@@ -220,7 +224,6 @@
             }
         }
         
-        /* Provide brief touch feedback when the button is actively pressed */
         .map-controls button:active {
             opacity: 0.5;
             transform: scale(0.9);
@@ -241,12 +244,12 @@
     
     <div id="guest-fp-canvas">
         <div class="map-controls">
+            <button onclick="toggleMapControls()" title="Toggle Controls">⚙️</button>
             <div id="map-controls-group" class="map-controls-group">
                 <button onclick="manualZoom(0.2)" title="Zoom In">+</button>
                 <button onclick="manualZoom(-0.2)" title="Zoom Out">-</button>
                 <button onclick="fitGuestFloorPlan()" title="Recenter">⌂</button>
             </div>
-            <button onclick="toggleMapControls()" title="Toggle Controls">⚙️</button>
         </div>
 
         <div class="fp-watermark">
@@ -596,13 +599,19 @@
     let initialPinchDistance = null;
     let lastZoom = fpZoom;
 
-    gFpC.addEventListener('mousedown', e => { isPan=true; sPx=e.clientX-panX; sPy=e.clientY-panY; });
-    gFpC.addEventListener('mousemove', e => { if(isPan){ panX=e.clientX-sPx; panY=e.clientY-sPy; updateFpTransform(); } });
+    // Remove transitions immediately when starting direct interactions
+    gFpC.addEventListener('mousedown', e => { 
+        gFpI.style.transition = 'none'; 
+        isPan=true; sPx=e.clientX-panX; sPy=e.clientY-panY; 
+    });
+    gFpC.addEventListener('mousemove', e => { 
+        if(isPan){ panX=e.clientX-sPx; panY=e.clientY-sPy; updateFpTransform(); } 
+    });
     gFpC.addEventListener('mouseup', () => { isPan=false; });
     gFpC.addEventListener('mouseleave', () => { isPan=false; });
 
-    // Updated Touch Listeners for Pinch-to-Zoom
     gFpC.addEventListener('touchstart', e => { 
+        gFpI.style.transition = 'none';
         if (e.touches.length === 2) {
             isPan = false;
             initialPinchDistance = Math.hypot(
@@ -618,7 +627,7 @@
     }, {passive:false}); 
 
     gFpC.addEventListener('touchmove', e => { 
-        e.preventDefault(); // Crucial to prevent iOS bouncing/scrolling when trying to map-pan
+        e.preventDefault(); 
         if (e.touches.length === 2 && initialPinchDistance) {
             const currentDistance = Math.hypot(
                 e.touches[0].clientX - e.touches[1].clientX,
@@ -649,22 +658,26 @@
 
     gFpC.addEventListener('wheel', e => {
         e.preventDefault();
+        gFpI.style.transition = 'none';
         fpZoom += (e.deltaY < 0 ? 1 : -1) * 0.1;
         if(fpZoom < 0.3) fpZoom = 0.3;
         if(fpZoom > 2.5) fpZoom = 2.5;
         updateFpTransform();
     }, {passive: false});
 
-    // Manual Zoom Trigger Function
+    // Manual Zoom Trigger Function (adds smooth transition temporarily)
     function manualZoom(delta) {
+        gFpI.style.transition = 'transform 0.2s ease-out';
         fpZoom += delta;
         if(fpZoom < 0.3) fpZoom = 0.3;
         if(fpZoom > 2.5) fpZoom = 2.5;
         updateFpTransform();
+        setTimeout(() => gFpI.style.transition = 'none', 200);
     }
 
+    // Force hardware acceleration using translate3d
     function updateFpTransform() {
-        gFpI.style.transform = `translate(${panX}px, ${panY}px) scale(${fpZoom})`;
+        gFpI.style.transform = `translate3d(${panX}px, ${panY}px, 0) scale(${fpZoom})`;
     }
 
     function fitGuestFloorPlan() {
@@ -686,7 +699,10 @@
             panX = (cw - w * fpZoom) / 2 - minX * fpZoom;
             panY = (ch - h * fpZoom) / 2 - minY * fpZoom;
         }
+        
+        gFpI.style.transition = 'transform 0.3s ease-out';
         updateFpTransform();
+        setTimeout(() => gFpI.style.transition = 'none', 300);
     }
 
     // Toggle controls Function
