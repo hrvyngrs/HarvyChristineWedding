@@ -32,41 +32,19 @@
             padding: 15px;
         }
 
-        .top-nav {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 10;
-        }
-
+        .top-nav { position: absolute; top: 20px; left: 20px; z-index: 10; }
         .back-link {
-            color: var(--silver-bright);
-            text-decoration: none;
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            opacity: 0.7;
-            transition: opacity 0.3s;
-            border: 1px solid rgba(226, 226, 226, 0.2);
-            padding: 8px 12px;
-            border-radius: 4px;
+            color: var(--silver-bright); text-decoration: none; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.7; transition: opacity 0.3s; border: 1px solid rgba(226, 226, 226, 0.2); padding: 8px 12px; border-radius: 4px;
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%230a192f" stroke="%23d4af37" stroke-width="1.5" d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.24c.45 0 .67-.54.35-.85L5.5 3.21z"/></svg>') 5 3, pointer;
         }
-
         .back-link:hover { opacity: 1; background: rgba(255, 255, 255, 0.05); }
 
         .container {
             background: linear-gradient(135deg, #ffffff 0%, #f0f2f5 100%);
-            padding: 45px 30px 25px 30px; 
-            border-radius: 12px; 
+            padding: 45px 30px 25px 30px; border-radius: 12px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(255,255,255,0.8);
-            max-width: 400px;
-            width: 100%;
-            text-align: center;
-            border: 1px solid var(--white);
-            position: relative;
-            box-sizing: border-box;
-            color: var(--navy-deep);
+            max-width: 400px; width: 100%; text-align: center; border: 1px solid var(--white);
+            position: relative; box-sizing: border-box; color: var(--navy-deep);
         }
 
         .logo-area { margin-bottom: 30px; position: relative; z-index: 2; }
@@ -78,82 +56,31 @@
         .rsvp-note { font-size: 0.7rem; color: #636e72; line-height: 1.4; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; padding: 0 10px; font-weight: 400; }
         .search-box { position: relative; z-index: 2; margin-bottom: 20px; }
         
-        input { 
-            width: 100%; 
-            padding: 16px; 
-            border: 1px solid rgba(10, 25, 47, 0.15); 
-            border-radius: 6px; 
-            font-size: 16px; 
-            box-sizing: border-box; 
-            outline: none; 
-            transition: all 0.3s ease; 
-            text-align: center; 
-            background: #ffffff; 
-            color: var(--navy-deep); 
-            caret-color: var(--navy-deep); 
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-        }
-        input:focus {
-            border-color: var(--gold-vip);
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
-        }
+        input { width: 100%; padding: 16px; border: 1px solid rgba(10, 25, 47, 0.15); border-radius: 6px; font-size: 16px; box-sizing: border-box; outline: none; transition: all 0.3s ease; text-align: center; background: #ffffff; color: var(--navy-deep); caret-color: var(--navy-deep); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }
+        input:focus { border-color: var(--gold-vip); box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15); }
         
         button { 
-            background-color: var(--navy-deep); 
-            color: var(--white); 
-            border: none; 
-            border-radius: 6px; 
-            padding: 18px; 
-            font-size: 0.85rem; 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            letter-spacing: 3px; 
-            width: 100%; 
-            margin-top: 15px; 
-            transition: all 0.3s ease; 
-            box-shadow: 0 4px 10px rgba(10, 25, 47, 0.15);
+            background-color: var(--navy-deep); color: var(--white); border: none; border-radius: 6px; padding: 18px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; width: 100%; margin-top: 15px; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(10, 25, 47, 0.15);
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%230a192f" stroke="%23d4af37" stroke-width="1.5" d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.24c.45 0 .67-.54.35-.85L5.5 3.21z"/></svg>') 5 3, pointer;
         }
-        button:hover { 
-            background-color: var(--navy-accent); 
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(10, 25, 47, 0.25);
-        }
-        button:active {
-            transform: translateY(0);
-        }
+        button:hover { background-color: var(--navy-accent); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(10, 25, 47, 0.25); }
+        button:active { transform: translateY(0); }
 
         #result-area { margin-top: 25px; min-height: 110px; }
         
-        .result-card { 
-            background: linear-gradient(145deg, var(--navy-deep) 0%, #152540 100%); 
-            color: var(--silver-bright); 
-            padding: 25px 20px; 
-            border-radius: 10px; 
-            border: 1px solid rgba(255,255,255,0.05); 
-            box-shadow: 0 15px 35px rgba(10, 25, 47, 0.2);
-            animation: fadeIn 0.6s ease-out forwards; 
-            position: relative; 
-        }
+        .result-card { background: linear-gradient(145deg, var(--navy-deep) 0%, #152540 100%); color: var(--silver-bright); padding: 25px 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 15px 35px rgba(10, 25, 47, 0.2); animation: fadeIn 0.6s ease-out forwards; position: relative; }
         .vip-status { border: 1px solid rgba(212, 175, 55, 0.5) !important; box-shadow: 0 0 20px rgba(212, 175, 55, 0.15); }
         .entourage-status { border: 1px solid rgba(229, 228, 226, 0.4) !important; box-shadow: 0 0 20px rgba(229, 228, 226, 0.1); }
         
-        .result-name { 
-            font-family: 'Playfair Display', serif; 
-            font-size: 1.5rem; 
-            margin-bottom: 12px; 
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3); 
-            padding-bottom: 12px; 
-            color: var(--gold-vip); 
-        }
+        .result-name { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 12px; border-bottom: 1px solid rgba(212, 175, 55, 0.3); padding-bottom: 12px; color: var(--gold-vip); }
         .guest-by { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--silver-text); margin-bottom: 20px; display: block; }
         .seat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 5px; }
         .info-item .label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; color: var(--silver-text); display: block; margin-bottom: 8px; opacity: 0.8; }
         .info-item .value { font-weight: 700; font-size: 1.8rem; color: var(--white); line-height: 1; }
         .vip-text { color: var(--gold-vip) !important; text-shadow: 0 0 8px rgba(212, 175, 55, 0.4); }
         .entourage-text { color: var(--platinum-accent) !important; text-shadow: 0 0 8px rgba(255, 255, 255, 0.4); }
-        
         .side-info { margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+        
         footer { margin-top: 40px; font-size: 0.65rem; color: #636e72; letter-spacing: 1px; text-transform: uppercase; opacity: 0.7; }
 
         .loader { width: 24px; height: 24px; border: 2px solid rgba(10, 25, 47, 0.1); border-top: 2px solid var(--navy-deep); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 20px auto; }
@@ -164,7 +91,7 @@
         .error-text { color: #8b0000; font-size: 0.85rem; font-weight: bold; margin-top: 10px;}
         .no-attendance { font-size: 0.9rem; color: #ff7675; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-top: 10px; }
         
-        /* --- FLOOR PLAN MODAL & VISUALS --- */
+        /* --- FLOOR PLAN MODAL & VISUALS (SYNCED WITH ADMIN) --- */
         #fp-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:var(--navy-deep); z-index:99999; flex-direction:column; }
         .fp-header { padding: 15px; text-align: center; background: var(--navy-accent); border-bottom: 1px solid var(--gold-vip); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 10; }
         .fp-header h3 { margin:0; color:var(--gold-vip); font-family: 'Playfair Display', serif; font-size: 1.2rem;}
@@ -176,15 +103,13 @@
         #guest-fp-canvas { flex:1; position:relative; overflow:hidden; background-color: #f9f9f9; background-image: radial-gradient(rgba(0,0,0,0.08) 1px, transparent 1px); background-size: 20px 20px; touch-action: none; 
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="%23d4af37" stroke-width="2"/></svg>') 12 12, grab;
         }
-
-        #guest-fp-canvas:active { 
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6" fill="%23d4af37" /></svg>') 12 12, grabbing; 
-        }
+        #guest-fp-canvas:active { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6" fill="%23d4af37" /></svg>') 12 12, grabbing; }
 
         #guest-fp-inner { width:100%; height:100%; position:relative; transform-origin: top left; will-change: transform; }
         
         .fp-instructions { padding: 12px; text-align: center; font-size: 0.75rem; color: var(--silver-bright); background: var(--navy-accent); border-top: 1px solid rgba(255,255,255,0.05); z-index: 10;}
 
+        /* Sync shapes exactly with Admin panel */
         .fp-el { position:absolute; user-select:none; transform-origin: center; display:flex; justify-content:center; align-items:center; }
         .fp-rot-wrapper { width:100%; height:100%; display:flex; justify-content:center; align-items:center; position:relative; transform-origin: center; }
         .fp-circle, .fp-square, .fp-rect-h, .fp-rect-v, .fp-diamond { background: rgba(255, 255, 255, 0.95) !important; border: 1.5px solid #d4af37 !important; color: #333 !important; font-family: 'Georgia', serif !important; font-weight: normal !important; font-size: 20px !important; box-shadow: 0 5px 15px rgba(0,0,0,0.05) !important; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; }
@@ -193,6 +118,7 @@
         .fp-diamond { width:100%; height:100%; transform:rotate(45deg); }
         .fp-diamond-inner { transform:rotate(-45deg); display:flex; flex-direction:column; align-items:center; }
         .fp-stage-design { background: rgba(255, 255, 255, 0.8) !important; border: 2px dashed #d4af37 !important; border-radius: 150px 150px 0 0 !important; box-shadow: 0 5px 15px rgba(0,0,0,0.05) !important; color: #333 !important; font-family: 'Georgia', serif !important; display: flex; flex-direction: column; justify-content: flex-start; padding-top: 20px; }
+        
         .fp-chair { position: absolute; width: 28px; height: 28px; display: flex; justify-content: center; align-items: center; transform: rotate(var(--rot, 0deg)); z-index: 10; }
         .fp-chair.empty { background: transparent !important; border: 1.5px dashed #a0a5aa !important; border-radius: 50% !important; }
         .fp-chair.occupied { background: #e0e0e0 !important; border: 1.5px solid #a0a5aa !important; border-radius: 14px 14px 4px 4px !important; align-items: flex-start; box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important; }
@@ -200,142 +126,25 @@
         .fp-guest-name { position: absolute; left: 50%; font-size: 10px; color: #333; font-weight: 600; white-space: nowrap; font-family: 'Segoe UI', sans-serif; text-shadow: 0 0 2px #fff, 0 0 3px #fff; pointer-events:none;}
 
         /* HIGHLIGHT FOR GUEST SEAT */
-        .my-seat-highlight {
-            border-color: #ff3366 !important;
-            background: #ffcccc !important;
-            box-shadow: 0 0 0 4px rgba(255, 51, 102, 0.4), 0 0 20px 10px rgba(255, 51, 102, 0.6) !important;
-            animation: pulseSeat 1.5s infinite;
-            z-index: 1000 !important;
-        }
+        .my-seat-highlight { border-color: #ff3366 !important; background: #ffcccc !important; box-shadow: 0 0 0 4px rgba(255, 51, 102, 0.4), 0 0 20px 10px rgba(255, 51, 102, 0.6) !important; animation: pulseSeat 1.5s infinite; z-index: 1000 !important; }
         .my-seat-highlight::after { background: #ffeb3b !important; }
-        .my-seat-highlight .fp-guest-name { color: #d40000; font-size: 12px; font-weight: 900; }
+        .my-seat-highlight .fp-guest-name { color: #d40000; font-size: 12px; font-weight: 900; z-index: 1001; }
         @keyframes pulseSeat { 0% { transform: rotate(var(--rot, 0deg)) scale(1); } 50% { transform: rotate(var(--rot, 0deg)) scale(1.3); } 100% { transform: rotate(var(--rot, 0deg)) scale(1); } }
 
-        @media (max-width: 480px) { .top-nav { position: relative; top: 0; left: 0; margin-bottom: 20px; } }
-
-        /* Map Watermark & Footer Styles */
-        .fp-watermark {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            z-index: 1000;
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
-            color: rgba(26, 42, 68, 0.12);
-            text-align: left;
-            pointer-events: none; 
-            font-style: italic;
-            font-weight: bold;
-        }
-        .fp-watermark span {
-            font-size: 0.75rem;
-            font-family: 'Lato', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            display: block;
-            margin-top: -5px;
-        }
+        /* Map Watermark, Legend, & Controls */
+        .fp-watermark { position: absolute; bottom: 20px; left: 20px; z-index: 1000; font-family: 'Playfair Display', serif; font-size: 2.2rem; color: rgba(26, 42, 68, 0.12); text-align: left; pointer-events: none; font-style: italic; font-weight: bold; }
+        .fp-watermark span { font-size: 0.75rem; font-family: 'Lato', sans-serif; text-transform: uppercase; letter-spacing: 3px; display: block; margin-top: -5px; }
         
-        .fp-footer {
-            background: var(--navy-deep);
-            color: var(--silver-text);
-            text-align: center;
-            padding: 12px;
-            font-size: 0.65rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            border-top: 1px solid rgba(226, 226, 226, 0.1);
-            flex-shrink: 0;
-            z-index: 10;
-        }
-
-        /* --- MAP CONTROLS --- */
-        .map-controls {
-            position: absolute;
-            right: 15px; 
-            top: 15px;   
-            z-index: 1001;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .map-controls-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            transition: all 0.3s ease;
-        }
-        .map-controls-group.hidden {
-            display: none;
-        }
-        .map-controls button {
-            width: 32px;
-            height: 32px;
-            margin: 0;
-            padding: 0;
-            border-radius: 4px;
-            background: rgba(10, 25, 47, 0.4);
-            border: 1px solid rgba(212, 175, 55, 0.5); 
-            color: var(--gold-vip);
-            font-size: 1.2rem; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: none; 
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%230a192f" stroke="%23d4af37" stroke-width="1.5" d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.24c.45 0 .67-.54.35-.85L5.5 3.21z"/></svg>') 5 3, pointer;
-            -webkit-tap-highlight-color: transparent; 
-        }
+        .map-legend { position: absolute; top: 15px; left: 15px; z-index: 1000; background: rgba(255, 255, 255, 0.85); border: 1px solid rgba(212, 175, 55, 0.4); padding: 8px 12px; border-radius: 6px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); backdrop-filter: blur(4px); font-family: 'Lato', sans-serif; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--navy-deep); display: flex; flex-direction: column; gap: 6px; pointer-events: none; }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+        .color-box { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.2); box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
         
-        @media (hover: hover) {
-            .map-controls button:hover {
-                background: rgba(212, 175, 55, 0.9);
-                color: var(--navy-deep);
-                transform: scale(1.05);
-            }
-        }
-        
-        .map-controls button:active {
-            opacity: 0.8;
-            transform: scale(0.95);
-        }
-
-        /* --- COLOR LEGEND --- */
-        .map-legend {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            z-index: 1000;
-            background: rgba(255, 255, 255, 0.85);
-            border: 1px solid rgba(212, 175, 55, 0.4); /* Subtle gold border */
-            padding: 8px 12px;
-            border-radius: 6px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-            backdrop-filter: blur(4px);
-            font-family: 'Lato', sans-serif;
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--navy-deep);
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            pointer-events: none; /* Prevents legend from blocking map dragging */
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-        }
-        .color-box {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%; /* Make them circles to match chairs */
-            border: 1px solid rgba(0, 0, 0, 0.2);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .groom-color { background-color: #2c4a7c; } /* Navy Blue */
-        .bride-color { background-color: #aeb2b7; } /* Gray */
+        .map-controls { position: absolute; right: 15px; top: 15px; z-index: 1001; display: flex; flex-direction: column; gap: 6px; }
+        .map-controls-group { display: flex; flex-direction: column; gap: 6px; transition: all 0.3s ease; }
+        .map-controls-group.hidden { display: none; }
+        .map-controls button { width: 32px; height: 32px; margin: 0; padding: 0; border-radius: 4px; background: rgba(10, 25, 47, 0.4); border: 1px solid rgba(212, 175, 55, 0.5); color: var(--gold-vip); font-size: 1.2rem; display: flex; justify-content: center; align-items: center; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+        @media (hover: hover) { .map-controls button:hover { background: rgba(212, 175, 55, 0.9); color: var(--navy-deep); transform: scale(1.05); } }
+        .map-controls button:active { opacity: 0.8; transform: scale(0.95); }
     </style>
 </head>
 <body>
@@ -351,14 +160,9 @@
     </div>
     
     <div id="guest-fp-canvas">
-        
         <div class="map-legend">
-            <div class="legend-item">
-                <span class="color-box groom-color"></span> Groom Side
-            </div>
-            <div class="legend-item">
-                <span class="color-box bride-color"></span> Bride Side
-            </div>
+            <div class="legend-item"><span class="color-box" id="legend-groom"></span> Groom Side</div>
+            <div class="legend-item"><span class="color-box" id="legend-bride"></span> Bride Side</div>
         </div>
 
         <div class="map-controls">
@@ -370,11 +174,7 @@
             </div>
         </div>
 
-        <div class="fp-watermark">
-            H & C
-            <span>June 12, 2026</span>
-        </div>
-        
+        <div class="fp-watermark">H & C<span>June 12, 2026</span></div>
         <div id="guest-fp-inner"></div>
     </div>
     
@@ -383,22 +183,10 @@
         Your seat is highlighted in <b style="color:#ff3366">Red/Gold</b>.
     </div>
     
-    <div class="fp-footer">
+    <div class="fp-footer" style="background: var(--navy-deep); color: var(--silver-text); text-align: center; padding: 12px; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; border-top: 1px solid rgba(226, 226, 226, 0.1); flex-shrink: 0; z-index: 10;">
         © 2026 H&C Wedding • Designed by Harvy
     </div>
 </div>
-
-<script>
-    window.addEventListener('DOMContentLoaded', () => {
-        const currentParams = window.location.search; 
-        const backLink = document.querySelector('.back-link');
-        if (currentParams && backLink) {
-            const originalHref = backLink.getAttribute('href');
-            const parts = originalHref.split('#');
-            backLink.setAttribute('href', parts[0] + currentParams + (parts[1] ? '#' + parts[1] : ''));
-        }
-    });
-</script>
 
 <div class="container">
     <div class="logo-area">
@@ -418,38 +206,14 @@
 
 <footer style="margin-top: 20px; padding: 20px 0 0 0; position: relative; color: inherit; margin-bottom: 0 !important; display: block;">
     <div style="position: absolute; top: 0; left: 0; width: 100%; height: 1px; background-color: currentColor; opacity: 0.15;"></div>
-
     <div style="display: flex; justify-content: center; align-items: center; gap: 20px; padding-bottom: 25px;">
-        
         <div style="line-height: 1.4; text-align: right;">
-            <p style="margin: 0; opacity: 0.6; font-size: 0.7rem; letter-spacing: 1px;">
-                © 2026 H&C Wedding.
-            </p>
-            <p style="margin: 0; opacity: 0.6; font-size: 0.7rem; letter-spacing: 1px;">
-                Design & Engineering by the Groom - <a href="https://instagram.com/hrvyngrs" target="_blank" style="color: #d4af37; text-decoration: none; font-weight: 600;">HARVY</a>.
-            </p>
+            <p style="margin: 0; opacity: 0.6; font-size: 0.7rem; letter-spacing: 1px;">© 2026 H&C Wedding.</p>
+            <p style="margin: 0; opacity: 0.6; font-size: 0.7rem; letter-spacing: 1px;">Design & Engineering by the Groom - <a href="https://instagram.com/hrvyngrs" target="_blank" style="color: #d4af37; text-decoration: none; font-weight: 600;">HARVY</a>.</p>
         </div>
-
         <div style="width: 1px; height: 30px; background-color: currentColor; opacity: 0.2;"></div>
-
         <div style="line-height: 1.4; text-align: left;">
-            <p style="margin: 0; font-size: 0.6rem; color: inherit; opacity: 0.5; letter-spacing: 1.5px; text-transform: uppercase;">
-                Bespoke Digital Experiences
-            </p>
-            <div style="display: flex; gap: 12px; margin-top: 4px; align-items: center;">
-                <a href="mailto:pidlaoanharvy@gmail.com" style="color: inherit; opacity: 0.6;" title="Email">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                </a>
-                <a href="https://instagram.com/hrvyngrs" target="_blank" style="color: inherit; opacity: 0.6;" title="Instagram">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                </a>
-                <a href="https://facebook.com/hrvyngrs" target="_blank" style="color: inherit; opacity: 0.6;" title="Facebook">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
-                </a>
-                <a href="https://linkedin.com/in/pidlaoanharvy" target="_blank" style="color: inherit; opacity: 0.6;" title="LinkedIn">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-                </a>
-            </div>
+            <p style="margin: 0; font-size: 0.6rem; color: inherit; opacity: 0.5; letter-spacing: 1.5px; text-transform: uppercase;">Bespoke Digital Experiences</p>
         </div>
     </div>
 </footer>
@@ -459,23 +223,47 @@
     const sheetId = '1ZSKHoNvsZ79jPjFXGF-9wdDO9cgJxs11148wNT7L4MY';
     const csvURL = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=Sheet1&cachebust=${Date.now()}`;
     const jsonFpURL = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=FloorPlan&cachebust=${Date.now()}`;
+    const settingsURL = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Settings&cachebust=${Date.now()}`;
 
     let globalAllGuests = [];
     let fpItems = [];
+    let motifColors = { groom: '#2c4a7c', bride: '#aeb2b7' }; // Defaults
     let fpZoom = 1, panX = 0, panY = 0, isPan = false, sPx = 0, sPy = 0;
 
     function handleKeyPress(e) { if (e.key === 'Enter') findSeat(); }
+
+    async function loadSettings() {
+        try {
+            const response = await fetch(settingsURL);
+            const text = await response.text();
+            const jsonStr = text.match(/google\.visualization\.Query\.setResponse\((.*)\);/)[1];
+            const data = JSON.parse(jsonStr);
+            // Column V is index 21 in Google Visualization Array
+            const motifStr = data.table.rows[0].c[21].v;
+            if(motifStr) {
+                const colors = motifStr.split(',');
+                motifColors.groom = colors[0] || '#2c4a7c';
+                motifColors.bride = colors[1] || '#aeb2b7';
+            }
+            // Update Legend UI
+            document.getElementById('legend-groom').style.backgroundColor = motifColors.groom;
+            document.getElementById('legend-bride').style.backgroundColor = motifColors.bride;
+        } catch (e) {
+            console.warn("Could not load dynamic motif settings, using defaults.", e);
+            document.getElementById('legend-groom').style.backgroundColor = motifColors.groom;
+            document.getElementById('legend-bride').style.backgroundColor = motifColors.bride;
+        }
+    }
 
     async function findSeat() {
         const searchInput = document.getElementById('guest-name-input').value.trim().toLowerCase();
         const resultArea = document.getElementById('result-area');
         
-        if (!searchInput) {
-            resultArea.innerHTML = "<p class='error-text'>PLEASE ENTER YOUR NAME</p>";
-            return;
-        }
-
+        if (!searchInput) { resultArea.innerHTML = "<p class='error-text'>PLEASE ENTER YOUR NAME</p>"; return; }
         resultArea.innerHTML = '<div class="loader" style="border-top-color: var(--navy-deep);"></div>';
+
+        // Load motif settings first
+        await loadSettings();
 
         try {
             const response = await fetch(csvURL);
@@ -485,21 +273,11 @@
                 row.split(',').map(cell => cell.replace(/^"(.*)"$/, '$1').replace(/"/g, '').trim())
             );
 
-            // Populate global guests for the map
-            globalAllGuests = rows.map(r => ({
-                name: r[1],
-                attendance: r[2],
-                side: r[3],
-                broughtBy: r[4],
-                table: r[5],
-                seat: r[6]
-            }));
-
+            globalAllGuests = rows.map(r => ({ name: r[1], attendance: r[2], side: r[3], broughtBy: r[4], table: r[5], seat: r[6] }));
             const guestMatch = rows.find(row => row[1] && row[1].toLowerCase() === searchInput);
 
             if (guestMatch) {
                 const attendance = guestMatch[2] ? guestMatch[2].toLowerCase() : "";
-                
                 if (attendance === "no") {
                     resultArea.innerHTML = `
                         <div class="result-card">
@@ -512,7 +290,6 @@
 
                 let teamRaw = guestMatch[3] ? guestMatch[3].toLowerCase() : "";
                 let broughtByRaw = guestMatch[4] ? guestMatch[4].toLowerCase() : "";
-                
                 let guestByDisplay = guestMatch[4] || "Self";
                 let sideDisplay = "N/A";
 
@@ -526,57 +303,39 @@
                     else sideDisplay = guestMatch[3] || "N/A";
                 }
 
-                let rawTable = guestMatch[5] || "TBD";
-                let rawSeat = guestMatch[6] || "TBD";
-                let tableNum = rawTable;
-                let seatNum = rawSeat;
-
-                let isVIP = false;
-                let isEntourage = false;
-
-                if (tableNum == "101" || tableNum == "102" || tableNum == "103") { tableNum = "VIP"; isVIP = true; } 
-                else if (tableNum == "201" || tableNum == "202" || tableNum == "203" || tableNum == "204") { tableNum = "Entourage"; isEntourage = true; }
+                let tableNum = guestMatch[5] || "TBD";
+                let seatNum = guestMatch[6] || "TBD";
+                let isVIP = (tableNum == "101" || tableNum == "102" || tableNum == "103") ? true : false;
+                let isEntourage = (tableNum == "201" || tableNum == "202" || tableNum == "203" || tableNum == "204") ? true : false;
+                if(isVIP) tableNum = "VIP"; if(isEntourage) tableNum = "Entourage";
 
                 resultArea.innerHTML = `
                     <div class="result-card ${isVIP ? 'vip-status' : ''} ${isEntourage ? 'entourage-status' : ''}">
                         <div class="result-name">Welcome, ${guestMatch[1]}</div>
                         <span class="guest-by">Guest of<strong> ${guestByDisplay} </strong></span>
                         <div class="seat-grid">
-                            <div class="info-item">
-                                <span class="label">TABLE</span>
-                                <span class="value ${isVIP ? 'vip-text' : ''} ${isEntourage ? 'entourage-text' : ''}">${tableNum}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="label">SEAT</span>
-                                <span class="value">${seatNum}</span>
-                            </div>
+                            <div class="info-item"><span class="label">TABLE</span><span class="value ${isVIP ? 'vip-text' : ''} ${isEntourage ? 'entourage-text' : ''}">${tableNum}</span></div>
+                            <div class="info-item"><span class="label">SEAT</span><span class="value">${seatNum}</span></div>
                         </div>
                         <div class="side-info">
-                            <div class="info-item">
-                                <span class="label">TEAM SELECTION</span>
-                                <span class="value" style="font-size: 1rem; letter-spacing: 1px; text-transform: uppercase;">${sideDisplay}</span>
-                            </div>
+                            <div class="info-item"><span class="label">TEAM SELECTION</span><span class="value" style="font-size: 1rem; letter-spacing: 1px; text-transform: uppercase;">${sideDisplay}</span></div>
                         </div>
                     </div>
-                    ${(rawTable !== 'TBD' && rawSeat !== 'TBD') ? `<button onclick="openFloorPlan('${rawTable}', '${rawSeat}')" style="background: linear-gradient(135deg, #d4af37 0%, #b5952f 100%); color: var(--navy-deep); border-color: transparent;">🗺️ SHOW MY SEAT ON MAP</button>` : ''}
+                    ${(guestMatch[5] && guestMatch[5] !== 'TBD') ? `<button onclick="openFloorPlan('${guestMatch[5]}', '${guestMatch[6]}')" style="background: linear-gradient(135deg, #d4af37 0%, #b5952f 100%); color: var(--navy-deep); border-color: transparent;">🗺️ SHOW MY SEAT ON MAP</button>` : ''}
                 `;
             } else {
                 resultArea.innerHTML = `<p class='error-text'>NAME NOT FOUND<br><small style="font-weight:normal; color:#444;">Check spelling or visit the coordinator.</small></p>`;
             }
-        } catch (error) {
-            resultArea.innerHTML = "<p class='error-text'>Unable to load list. Please contact Harvy.</p>";
-        }
+        } catch (error) { resultArea.innerHTML = "<p class='error-text'>Unable to load list.</p>"; }
     }
 
-    /* --- FLOOR PLAN LOGIC --- */
-
+    /* --- FLOOR PLAN LOGIC (FULLY SYNCED WITH ADMIN) --- */
     async function openFloorPlan(targetTable, targetSeat) {
         document.getElementById('fp-modal').style.display = 'flex';
         document.getElementById('guest-fp-inner').innerHTML = '<div class="loader" style="margin-top:50px;"></div>';
 
         if (fpItems.length === 0) {
             try {
-                // We use Google visualization query to extract the JSON without altering code.gs
                 const response = await fetch(jsonFpURL);
                 const text = await response.text();
                 const jsonStr = text.match(/google\.visualization\.Query\.setResponse\((.*)\);/)[1];
@@ -592,9 +351,7 @@
         fitGuestFloorPlan();
     }
 
-    function closeFloorPlan() {
-        document.getElementById('fp-modal').style.display = 'none';
-    }
+    function closeFloorPlan() { document.getElementById('fp-modal').style.display = 'none'; }
 
     function renderGuestFP(targetTable, targetSeat) {
         const inner = document.getElementById('guest-fp-inner');
@@ -604,7 +361,7 @@
             const el = document.createElement('div'); el.className = 'fp-el';
             el.style.left = item.x+'px'; el.style.top = item.y+'px'; el.style.width = item.w+'px'; el.style.height = item.h+'px';
             
-            let inn = item.type==='table' ? `${item.tableId}<br><small style="font-size:9px">${item.tableType||''}</small>` : `<div style="font-size:18px; font-weight:900; letter-spacing:3px; text-transform:uppercase; color:var(--gold-vip); text-shadow:none;">${item.label}</div>`;
+            let inn = item.type==='table' ? `<div style="font-size: 13px; font-weight: bold; line-height: 1.2; text-align: center; color: #333; pointer-events: none; margin-top: 2px;">${item.tableId}<br><span style="font-size: 9px; font-weight: normal; opacity: 0.7;">${item.tableType||''}</span></div>` : `<div style="font-size:11px; font-weight:900; letter-spacing:1px; text-transform:uppercase; color:var(--gold-vip); text-align:center; padding:0 4px; word-wrap:break-word; max-width:100%; box-sizing:border-box; line-height:1.2; pointer-events:none;">${item.label}</div>`;
             let html = `<div class="fp-rot-wrapper" style="transform: rotate(${item.rotation || 0}deg);">`;
             
             if(item.shape === 'dancefloor') {
@@ -612,9 +369,14 @@
                 html += `<div style="width:100%; height:100%; border: 2px dashed #d4af37; border-radius: 20px; display:flex; justify-content:center; align-items:center; background: rgba(212, 175, 55, 0.05);">${inn}</div>`;
             } else if (item.shape === 'tree') {
                 inn = '';
-                html += `<svg viewBox="0 0 100 100" width="100%" height="100%" style="filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));">
-                            <path d="M50,10 C30,10 10,30 20,60 C25,75 40,85 50,90 C60,85 75,75 80,60 C90,30 70,10 50,10 Z" fill="none" stroke="#a0a5aa" stroke-width="3"/>
-                            <circle cx="50" cy="50" r="15" fill="none" stroke="#a0a5aa" stroke-width="3"/>
+                html += `<svg viewBox="0 0 100 100" width="100%" height="100%" style="filter: drop-shadow(0 5px 8px rgba(0,0,0,0.2));">
+                            <circle cx="50" cy="50" r="14" fill="#5c3a21" />
+                            <path d="M50,5 C20,5 0,30 15,50 C0,70 20,95 50,95 C80,95 100,70 85,50 C100,30 80,5 50,5 Z" fill="${item.color}" opacity="0.85" />
+                            <path d="M50,15 C30,15 10,35 25,50 C10,65 30,85 50,85 C70,85 90,65 75,50 C90,35 70,15 50,15 Z" fill="#fff" opacity="0.15" />
+                            <line x1="50" y1="20" x2="50" y2="80" stroke="#fff" stroke-width="2.5" opacity="0.4" stroke-linecap="round"/>
+                            <line x1="20" y1="50" x2="80" y2="50" stroke="#fff" stroke-width="2.5" opacity="0.4" stroke-linecap="round"/>
+                            <line x1="30" y1="30" x2="70" y2="70" stroke="#fff" stroke-width="2" opacity="0.3" stroke-linecap="round"/>
+                            <line x1="30" y1="70" x2="70" y2="30" stroke="#fff" stroke-width="2" opacity="0.3" stroke-linecap="round"/>
                          </svg>`;
             } else if(item.shape === 'door') {
                 html += `<div style="width:100%; height:100%; position:relative;">
@@ -639,9 +401,7 @@
                     if(occ) { 
                         let cls = isTarget ? 'occupied my-seat-highlight' : 'occupied'; 
                         const safeSide = String(occ.side || '').toLowerCase();
-                        const gCol = '#2c4a7c'; 
-                        const bCol = '#aeb2b7';
-                        let st = safeSide==='bride'? `background:${bCol} !important; border-color:${bCol} !important;` : `background:${gCol} !important; border-color:${gCol} !important;`; 
+                        let st = safeSide==='bride'? `background:${motifColors.bride} !important; border-color:${motifColors.bride} !important;` : `background:${motifColors.groom} !important; border-color:${motifColors.groom} !important;`; 
                         
                         const shortName = occ.name ? occ.name.split(' ')[0] : '';
                         let flipStyle = (normRot > 90 && normRot < 270) ? 'bottom: -18px; transform: translateX(-50%) rotate(180deg);' : 'bottom: -18px; transform: translateX(-50%);';
@@ -657,13 +417,14 @@
                     }
                 }
             } else if (item.type === 'stage') {
-                const gCol = '#2c4a7c'; 
-                const bCol = '#aeb2b7';
-                html += `<div class="fp-chair occupied" style="left:calc(50% - 35px); bottom:-5px; background:${gCol} !important; border-color:${gCol} !important; --rot:0deg;">
-                             <div class="fp-guest-name" style="bottom: -18px; transform: translateX(-50%);">Groom</div>
+                html += `<div class="fp-chair occupied" style="left:calc(50% - 35px); bottom:-5px; background:${motifColors.groom} !important; border-color:${motifColors.groom} !important; --rot:0deg;">
+                             <div style="position:absolute; top:8px; left:50%; transform:translateX(-50%); width:0; height:0; border-left:6px solid transparent; border-right:6px solid transparent; border-top:10px solid #fff; z-index:5;"></div>
+                             <div style="position:absolute; top:8px; left:50%; transform:translateX(-50%); width:4px; height:3px; background:#111; border-radius:1px; z-index:6;"></div>
+                             <div class="fp-guest-name" style="bottom: -18px; transform: translateX(-50%); font-weight: 900; font-size: 11px; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 0 2px 4px rgba(0,0,0,0.5);">Groom</div>
                          </div>
-                         <div class="fp-chair occupied" style="left:calc(50% + 5px); bottom:-5px; background:${bCol} !important; border-color:${bCol} !important; --rot:0deg;">
-                             <div class="fp-guest-name" style="bottom: -18px; transform: translateX(-50%);">Bride</div>
+                         <div class="fp-chair occupied" style="left:calc(50% + 5px); bottom:-5px; background:${motifColors.bride} !important; border-color:${motifColors.bride} !important; --rot:0deg;">
+                             <div style="position:absolute; top:-8px; left:50%; transform:translateX(-50%); width:26px; height:18px; background:rgba(255,255,255,0.8); border-radius:13px 13px 0 0; border:1px solid rgba(200,200,200,0.6); z-index:1;"></div>
+                             <div class="fp-guest-name" style="bottom: -18px; transform: translateX(-50%); font-weight: 900; font-size: 11px; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 0 2px 4px rgba(0,0,0,0.5);">Bride</div>
                          </div>`;
             }
             
@@ -682,6 +443,7 @@
             const angle = ((index - 1) / total) * 2 * Math.PI - (Math.PI/2);
             let rot = (angle * 180 / Math.PI) - 90;
             return { x: (w/2) + rx * Math.cos(angle) - 14, y: (h/2) + ry * Math.sin(angle) - 14, rot: rot };
+            
         } else if (shape === 'rect-h' || shape === 'rect-v') {
             let isH = shape === 'rect-h';
             let longSide = isH ? w : h;
@@ -689,42 +451,56 @@
             let sideIndex = index <= seatsPerSide ? 0 : 1; 
             let posIndex = index <= seatsPerSide ? index : index - seatsPerSide;
             let totalOnThisSide = sideIndex === 0 ? seatsPerSide : (total - seatsPerSide);
+            
             let padding = 20; 
             let spacing = totalOnThisSide > 1 ? (longSide - 2 * padding) / (totalOnThisSide - 1) : 0;
             let offset = totalOnThisSide > 1 ? padding + (posIndex - 1) * spacing : longSide / 2;
+
             let cx, cy, rot;
-            if (isH) { cx = offset; if (sideIndex === 0) { cy = -25; rot = 180; } else { cy = h + 25; rot = 0; } } 
-            else { cy = offset; if (sideIndex === 0) { cx = -25; rot = 90; } else { cx = w + 25; rot = -90; } }
+            if (isH) {
+                cx = offset;
+                if (sideIndex === 0) { cy = -25; rot = 180; }
+                else { cy = h + 25; rot = 0; }
+            } else {
+                cy = offset;
+                if (sideIndex === 0) { cx = -25; rot = 90; }
+                else { cx = w + 25; rot = -90; }
+            }
             return { x: cx - 14, y: cy - 14, rot: rot };
+            
         } else {
-            let pw = w + 50; let ph = h + 50;
-            let perimeter = 2 * pw + 2 * ph;
-            let d = ((index - 1) / total) * perimeter;
+            let padding = 25; 
+            let rem = total;
+            let counts = [];
+            for(let i=4; i>0; i--) { let c = Math.ceil(rem / i); counts.push(c); rem -= c; }
+            
+            let currentSide = 0, currentPos = 0, sum = 0;
+            for(let i=0; i<4; i++) { if (index <= sum + counts[i]) { currentSide = i; currentPos = index - sum; break; } sum += counts[i]; }
+            
+            let mySideTotal = counts[currentSide];
+            let sideLength = (currentSide % 2 === 0) ? w : h;
+            
+            let spacing = mySideTotal > 1 ? (sideLength - 2 * padding) / (mySideTotal - 1) : 0;
+            let offset = mySideTotal > 1 ? padding + (currentPos - 1) * spacing : sideLength / 2;
+            
             let cx, cy, rot;
-            if (d <= pw) { cx = d; cy = 0; rot = 180; }
-            else if (d <= pw + ph) { cx = pw; cy = d - pw; rot = -90; }
-            else if (d <= 2 * pw + ph) { cx = pw - (d - (pw + ph)); cy = ph; rot = 0; }
-            else { cx = 0; cy = ph - (d - (2 * pw + ph)); rot = 90; }
-            return { x: cx - 25 - 14, y: cy - 25 - 14, rot: rot };
+            if (currentSide === 0) { cx = offset; cy = -20; rot = 180; }
+            else if (currentSide === 1) { cx = w + 20; cy = offset; rot = -90; }
+            else if (currentSide === 2) { cx = w - offset; cy = h + 20; rot = 0; }
+            else { cx = -20; cy = h - offset; rot = 90; }
+            
+            return { x: cx - 14, y: cy - 14, rot: rot };
         }
     }
 
     // Modal Pan & Zoom Logic
     const gFpC = document.getElementById('guest-fp-canvas');
     const gFpI = document.getElementById('guest-fp-inner');
-    
-    // Pinch-to-zoom variables
     let initialPinchDistance = null;
     let lastZoom = fpZoom;
 
-    // Remove transitions immediately when starting direct interactions
-    gFpC.addEventListener('mousedown', e => { 
-        gFpI.style.transition = 'none'; 
-        isPan=true; sPx=e.clientX-panX; sPy=e.clientY-panY; 
-    });
-    gFpC.addEventListener('mousemove', e => { 
-        if(isPan){ panX=e.clientX-sPx; panY=e.clientY-sPy; updateFpTransform(); } 
-    });
+    gFpC.addEventListener('mousedown', e => { gFpI.style.transition = 'none'; isPan=true; sPx=e.clientX-panX; sPy=e.clientY-panY; });
+    gFpC.addEventListener('mousemove', e => { if(isPan){ panX=e.clientX-sPx; panY=e.clientY-sPy; updateFpTransform(); } });
     gFpC.addEventListener('mouseup', () => { isPan=false; });
     gFpC.addEventListener('mouseleave', () => { isPan=false; });
 
@@ -732,71 +508,43 @@
         gFpI.style.transition = 'none';
         if (e.touches.length === 2) {
             isPan = false;
-            initialPinchDistance = Math.hypot(
-                e.touches[0].clientX - e.touches[1].clientX,
-                e.touches[0].clientY - e.touches[1].clientY
-            );
+            initialPinchDistance = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
             lastZoom = fpZoom;
         } else if (e.touches.length === 1) {
-            isPan = true; 
-            sPx = e.touches[0].clientX - panX; 
-            sPy = e.touches[0].clientY - panY; 
+            isPan = true; sPx = e.touches[0].clientX - panX; sPy = e.touches[0].clientY - panY; 
         }
     }, {passive:false}); 
 
     gFpC.addEventListener('touchmove', e => { 
         e.preventDefault(); 
         if (e.touches.length === 2 && initialPinchDistance) {
-            const currentDistance = Math.hypot(
-                e.touches[0].clientX - e.touches[1].clientX,
-                e.touches[0].clientY - e.touches[1].clientY
-            );
+            const currentDistance = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
             const scale = currentDistance / initialPinchDistance;
             fpZoom = lastZoom * scale;
-            
-            if(fpZoom < 0.3) fpZoom = 0.3;
-            if(fpZoom > 2.5) fpZoom = 2.5;
-            
+            if(fpZoom < 0.3) fpZoom = 0.3; if(fpZoom > 2.5) fpZoom = 2.5;
             updateFpTransform();
         } else if (isPan && e.touches.length === 1) { 
-            panX = e.touches[0].clientX - sPx; 
-            panY = e.touches[0].clientY - sPy; 
-            updateFpTransform(); 
+            panX = e.touches[0].clientX - sPx; panY = e.touches[0].clientY - sPy; updateFpTransform(); 
         } 
     }, {passive:false});
 
-    gFpC.addEventListener('touchend', e => { 
-        if (e.touches.length < 2) {
-            initialPinchDistance = null;
-        }
-        if (e.touches.length === 0) {
-            isPan = false; 
-        }
-    });
-
+    gFpC.addEventListener('touchend', e => { if (e.touches.length < 2) { initialPinchDistance = null; } if (e.touches.length === 0) { isPan = false; }});
     gFpC.addEventListener('wheel', e => {
-        e.preventDefault();
-        gFpI.style.transition = 'none';
+        e.preventDefault(); gFpI.style.transition = 'none';
         fpZoom += (e.deltaY < 0 ? 1 : -1) * 0.1;
-        if(fpZoom < 0.3) fpZoom = 0.3;
-        if(fpZoom > 2.5) fpZoom = 2.5;
+        if(fpZoom < 0.3) fpZoom = 0.3; if(fpZoom > 2.5) fpZoom = 2.5;
         updateFpTransform();
     }, {passive: false});
 
-    // Manual Zoom Trigger Function (adds smooth transition temporarily)
     function manualZoom(delta) {
         gFpI.style.transition = 'transform 0.2s ease-out';
         fpZoom += delta;
-        if(fpZoom < 0.3) fpZoom = 0.3;
-        if(fpZoom > 2.5) fpZoom = 2.5;
+        if(fpZoom < 0.3) fpZoom = 0.3; if(fpZoom > 2.5) fpZoom = 2.5;
         updateFpTransform();
         setTimeout(() => gFpI.style.transition = 'none', 200);
     }
 
-    // Force hardware acceleration using translate3d
-    function updateFpTransform() {
-        gFpI.style.transform = `translate3d(${panX}px, ${panY}px, 0) scale(${fpZoom})`;
-    }
+    function updateFpTransform() { gFpI.style.transform = `translate3d(${panX}px, ${panY}px, 0) scale(${fpZoom})`; }
 
     function fitGuestFloorPlan() {
         if (fpItems.length === 0) { fpZoom = 1; panX = 0; panY = 0; } 
@@ -811,23 +559,17 @@
             const w = maxX - minX, h = maxY - minY;
             
             fpZoom = Math.min(cw / (w + 100), ch / (h + 100));
-            if(fpZoom > 1) fpZoom = 1; 
-            if(fpZoom < 0.2) fpZoom = 0.2; 
+            if(fpZoom > 1) fpZoom = 1; if(fpZoom < 0.2) fpZoom = 0.2; 
             
             panX = (cw - w * fpZoom) / 2 - minX * fpZoom;
             panY = (ch - h * fpZoom) / 2 - minY * fpZoom;
         }
-        
         gFpI.style.transition = 'transform 0.3s ease-out';
         updateFpTransform();
         setTimeout(() => gFpI.style.transition = 'none', 300);
     }
 
-    // Toggle controls Function
-    function toggleMapControls() {
-        const group = document.getElementById('map-controls-group');
-        group.classList.toggle('hidden');
-    }
+    function toggleMapControls() { document.getElementById('map-controls-group').classList.toggle('hidden'); }
 </script>
 
 </body>
