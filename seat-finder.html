@@ -58,7 +58,7 @@
         .container {
             background: linear-gradient(135deg, #ffffff 0%, #f0f2f5 100%);
             padding: 45px 30px 25px 30px; 
-            border-radius: 12px; /* Softened edges */
+            border-radius: 12px; 
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(255,255,255,0.8);
             max-width: 400px;
             width: 100%;
@@ -82,7 +82,7 @@
             width: 100%; 
             padding: 16px; 
             border: 1px solid rgba(10, 25, 47, 0.15); 
-            border-radius: 6px; /* Softened */
+            border-radius: 6px; 
             font-size: 16px; 
             box-sizing: border-box; 
             outline: none; 
@@ -102,7 +102,7 @@
             background-color: var(--navy-deep); 
             color: var(--white); 
             border: none; 
-            border-radius: 6px; /* Softened */
+            border-radius: 6px; 
             padding: 18px; 
             font-size: 0.85rem; 
             font-weight: 700; 
@@ -126,7 +126,7 @@
         #result-area { margin-top: 25px; min-height: 110px; }
         
         .result-card { 
-            background: linear-gradient(145deg, var(--navy-deep) 0%, #152540 100%); /* Richer depth */
+            background: linear-gradient(145deg, var(--navy-deep) 0%, #152540 100%); 
             color: var(--silver-bright); 
             padding: 25px 20px; 
             border-radius: 10px; 
@@ -142,9 +142,9 @@
             font-family: 'Playfair Display', serif; 
             font-size: 1.5rem; 
             margin-bottom: 12px; 
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3); /* Gold accent line */
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3); 
             padding-bottom: 12px; 
-            color: var(--gold-vip); /* Elegant highlight */
+            color: var(--gold-vip); 
         }
         .guest-by { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--silver-text); margin-bottom: 20px; display: block; }
         .seat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 5px; }
@@ -298,6 +298,44 @@
             opacity: 0.8;
             transform: scale(0.95);
         }
+
+        /* --- COLOR LEGEND --- */
+        .map-legend {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(212, 175, 55, 0.4); /* Subtle gold border */
+            padding: 8px 12px;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(4px);
+            font-family: 'Lato', sans-serif;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--navy-deep);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            pointer-events: none; /* Prevents legend from blocking map dragging */
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+        }
+        .color-box {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%; /* Make them circles to match chairs */
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .groom-color { background-color: #2c4a7c; } /* Navy Blue */
+        .bride-color { background-color: #aeb2b7; } /* Gray */
     </style>
 </head>
 <body>
@@ -313,6 +351,16 @@
     </div>
     
     <div id="guest-fp-canvas">
+        
+        <div class="map-legend">
+            <div class="legend-item">
+                <span class="color-box groom-color"></span> Groom Side
+            </div>
+            <div class="legend-item">
+                <span class="color-box bride-color"></span> Bride Side
+            </div>
+        </div>
+
         <div class="map-controls">
             <button onclick="toggleMapControls()" title="Toggle Controls">⚙️</button>
             <div id="map-controls-group" class="map-controls-group">
@@ -409,8 +457,8 @@
 
 <script>
     const sheetId = '1ZSKHoNvsZ79jPjFXGF-9wdDO9cgJxs11148wNT7L4MY';
-    const csvURL = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=Sheet1`;
-    const jsonFpURL = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=FloorPlan`;
+    const csvURL = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=Sheet1&cachebust=${Date.now()}`;
+    const jsonFpURL = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=FloorPlan&cachebust=${Date.now()}`;
 
     let globalAllGuests = [];
     let fpItems = [];
