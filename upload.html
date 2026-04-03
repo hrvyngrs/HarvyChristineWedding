@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Live Moments | Harvy & Christine</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Dancing+Script:wght@700&family=Montserrat:wght@400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet"> 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        :root { --navy: #1a2a44; --gold: #d4af37; --bg: #f8f9f9; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--navy); margin: 0; padding: 0; overflow-x: hidden; }
+        
+        .header { background: var(--navy); padding: 20px; text-align: center; color: white; position: relative; border-bottom: 3px solid var(--gold); }
+        .header h1 { font-family: 'Dancing Script', cursive; font-size: 2.5rem; margin: 0; color: var(--gold); }
+        .header p { font-family: 'Playfair Display', serif; font-size: 0.9rem; margin: 5px 0 0 0; letter-spacing: 2px; text-transform: uppercase; }
+
+        .upload-container { max-width: 500px; margin: 40px auto; padding: 30px; background: white; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label { display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 8px; color: var(--navy); }
+        .form-control { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; font-size: 1rem; box-sizing: border-box; }
+        
+        .file-upload-wrapper { position: relative; border: 2px dashed #ccc; border-radius: 8px; padding: 30px; text-align: center; background: #fafafa; cursor: pointer; transition: all 0.3s; }
+        .file-upload-wrapper:hover { border-color: var(--gold); background: #fffcf5; }
+        .file-upload-wrapper i { font-size: 3rem; color: #ccc; margin-bottom: 10px; transition: color 0.3s; }
+        .file-upload-wrapper:hover i { color: var(--gold); }
+        .file-upload-wrapper input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+        
+        #preview-container { display: none; margin-top: 15px; border-radius: 8px; overflow: hidden; position: relative; }
+        #preview-image { width: 100%; display: block; }
+        
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 4px; font-family: inherit; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .btn-gold { background: var(--gold); color: white; }
+        .btn-gold:hover { background: #b08d57; }
+        .btn-outline { background: transparent; border: 2px solid var(--navy); color: var(--navy); }
+        .btn-outline:hover { background: var(--navy); color: white; }
+
+        /* Slideshow Fullscreen overlay */
+        #slideshow-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; flex-direction: column; }
+        #slide-image-container { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; background-size: contain; background-repeat: no-repeat; background-position: center; transition: background-image 1s ease-in-out; }
+        .slide-caption { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 40px 20px 20px 20px; box-sizing: border-box; text-align: center; }
+        .slide-caption h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin: 0 0 5px 0; color: var(--gold); }
+        .slide-caption p { font-family: 'Montserrat', sans-serif; font-size: 1rem; margin: 0; opacity: 0.9; }
+        .close-slideshow { position: absolute; top: 20px; right: 20px; color: white; background: rgba(0,0,0,0.5); border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.2rem; cursor: pointer; z-index: 10000; }
+        .slideshow-empty { color: white; font-family: 'Playfair Display', serif; font-size: 1.5rem; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Capture the Moment</h1>
+        <p>Harvy & Christine's Wedding</p>
+    </div>
+
+    <div class="upload-container" id="upload-section">
+        <div style="text-align: center; margin-bottom: 25px;">
+            <h2 style="font-family: 'Playfair Display', serif; margin-bottom: 5px; color: var(--navy);">Share your photos!</h2>
+            <p style="font-size: 0.85rem; color: #666;">Take a picture or upload from your gallery to add it to our live wedding slideshow.</p>
+        </div>
+
+        <form id="photo-upload-form">
+            <div class="form-group">
+                <div class="file-upload-wrapper" id="upload-wrapper">
+                    <i class="fas fa-camera"></i>
+                    <div id="upload-text"><strong>Tap to take a photo</strong><br><small>or choose from gallery</small></div>
+                    <input type="file" id="image-input" accept="image/*" required>
+                </div>
+                <div id="preview-container">
+                    <img id="preview-image" src="" alt="Preview">
+                    <button type="button" class="btn btn-outline" style="padding: 10px; font-size: 0.8rem; margin-top: 10px;" onclick="resetImage()">Retake / Remove</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Your Name</label>
+                <input type="text" id="guest-name" class="form-control" placeholder="e.g. John & Jane" required>
+            </div>
+
+            <div class="form-group">
+                <label>Message for the Couple (Optional)</label>
+                <input type="text" id="guest-message" class="form-control" placeholder="Write a short wish or caption..." maxlength="80">
+            </div>
+
+            <button type="submit" class="btn btn-gold" id="submit-btn">Upload Photo</button>
+        </form>
+        
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+        <button class="btn btn-outline" onclick="startSlideshow()"><i class="fas fa-play-circle"></i> View Live Slideshow</button>
+    </div>
+
+    <div id="slideshow-overlay">
+        <button class="close-slideshow" onclick="stopSlideshow()"><i class="fas fa-times"></i></button>
+        <div id="slide-image-container">
+            <div class="slideshow-empty" id="slideshow-empty-text">Waiting for photos...</div>
+            <div class="slide-caption" id="slide-caption" style="display: none;">
+                <h3 id="slide-name">Name</h3>
+                <p id="slide-message">Message</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // REPLACE WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbz5i9a419qmd3KarRGWtTNLDbGRXPOHPcAtzF1D90vU0g3_9P0dswEB5Ypgqh3NQ3AeNQ/exec';
+        
+        let compressedBase64 = null;
+
+        // Image Selection & Compression (to keep uploads fast and avoid Google Script size limits)
+        document.getElementById('image-input').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            document.getElementById('submit-btn').innerText = "Processing Image...";
+            document.getElementById('submit-btn').disabled = true;
+
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function(e) {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 1200;
+                    const MAX_HEIGHT = 1200;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                    } else {
+                        if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    compressedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+                    
+                    document.getElementById('preview-image').src = compressedBase64;
+                    document.getElementById('upload-wrapper').style.display = 'none';
+                    document.getElementById('preview-container').style.display = 'block';
+                    
+                    document.getElementById('submit-btn').innerText = "Upload Photo";
+                    document.getElementById('submit-btn').disabled = false;
+                }
+            };
+        });
+
+        function resetImage() {
+            document.getElementById('image-input').value = "";
+            compressedBase64 = null;
+            document.getElementById('preview-container').style.display = 'none';
+            document.getElementById('upload-wrapper').style.display = 'block';
+        }
+
+        // Upload Form Submission
+        document.getElementById('photo-upload-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!compressedBase64) {
+                Swal.fire({ icon: 'warning', title: 'Oops', text: 'Please select a photo first.', confirmButtonColor: '#d4af37' });
+                return;
+            }
+
+            const name = document.getElementById('guest-name').value;
+            const message = document.getElementById('guest-message').value;
+            const btn = document.getElementById('submit-btn');
+            
+            btn.disabled = true;
+            btn.innerText = "Uploading... Please wait";
+
+            const formData = new FormData();
+            formData.append('action', 'uploadPhoto');
+            formData.append('guestName', name);
+            formData.append('message', message);
+            formData.append('image', compressedBase64);
+
+            fetch(scriptURL, { method: 'POST', body: formData })
+            .then(response => response.json())
+            .then(data => {
+                if(data.result === 'success') {
+                    Swal.fire({ icon: 'success', title: 'Uploaded!', text: 'Your photo will appear on the slideshow shortly.', confirmButtonColor: '#d4af37' });
+                    document.getElementById('photo-upload-form').reset();
+                    resetImage();
+                } else {
+                    Swal.fire({ icon: 'error', title: 'Error', text: 'Failed to upload: ' + data.error, confirmButtonColor: '#1a2a44' });
+                }
+                btn.disabled = false;
+                btn.innerText = "Upload Photo";
+            })
+            .catch(error => {
+                Swal.fire({ icon: 'error', title: 'Error', text: 'Network error. Please try again.', confirmButtonColor: '#1a2a44' });
+                btn.disabled = false;
+                btn.innerText = "Upload Photo";
+            });
+        });
+
+        // =====================================
+        // SLIDESHOW LOGIC
+        // =====================================
+        let slideshowInterval;
+        let fetchInterval;
+        let photosArray = [];
+        let currentIndex = 0;
+
+        function startSlideshow() {
+            document.getElementById('slideshow-overlay').style.display = 'flex';
+            if(document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(err => {});
+            }
+            fetchPhotos(); // Fetch immediately
+            fetchInterval = setInterval(fetchPhotos, 15000); // Check for new photos every 15s
+            slideshowInterval = setInterval(showNextPhoto, 6000); // Change picture every 6 seconds
+        }
+
+        function stopSlideshow() {
+            document.getElementById('slideshow-overlay').style.display = 'none';
+            clearInterval(slideshowInterval);
+            clearInterval(fetchInterval);
+            if(document.exitFullscreen) {
+                document.exitFullscreen().catch(err => {});
+            }
+        }
+
+        function fetchPhotos() {
+            // Using JSONP pattern for fetching to avoid any CORS issues since it's hosted externally
+            const script = document.createElement('script');
+            script.id = 'photo-fetcher';
+            script.src = scriptURL + '?action=getPhotos&callback=handlePhotosUpdate&_=' + new Date().getTime();
+            document.body.appendChild(script);
+        }
+
+        window.handlePhotosUpdate = function(data) {
+            const oldLength = photosArray.length;
+            photosArray = data || [];
+            
+            const loader = document.getElementById('photo-fetcher');
+            if(loader) loader.remove();
+
+            // If this is the first time we load and we have photos, trigger the display immediately
+            if (oldLength === 0 && photosArray.length > 0) {
+                currentIndex = photosArray.length - 1; // Start with the newest picture!
+                showNextPhoto();
+            }
+        }
+
+        function showNextPhoto() {
+            if (photosArray.length === 0) return;
+            
+            const container = document.getElementById('slide-image-container');
+            const nameEl = document.getElementById('slide-name');
+            const msgEl = document.getElementById('slide-message');
+            const captionBox = document.getElementById('slide-caption');
+            const emptyTxt = document.getElementById('slideshow-empty-text');
+
+            const photo = photosArray[currentIndex];
+            
+            emptyTxt.style.display = 'none';
+            container.style.backgroundImage = `url('${photo.url}')`;
+            
+            nameEl.innerText = photo.name;
+            if (photo.message && photo.message.trim() !== "") {
+                msgEl.innerText = photo.message;
+                msgEl.style.display = 'block';
+            } else {
+                msgEl.style.display = 'none';
+            }
+            captionBox.style.display = 'block';
+
+            // Move to next photo (looping back to 0)
+            currentIndex++;
+            if (currentIndex >= photosArray.length) {
+                currentIndex = 0;
+            }
+        }
+    </script>
+</body>
+</html>
