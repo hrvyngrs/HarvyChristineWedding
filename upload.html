@@ -16,7 +16,7 @@
             --gold: #d4af37; 
             --gray: #6c757d; 
             --bg: #f8f9f9; 
-            --paper: #ffffff;
+            --paper: #fdfaf5; 
         }
         
         body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--navy); margin: 0; padding: 0; overflow-x: hidden; }
@@ -44,7 +44,7 @@
         .btn-outline { background: transparent; border: 2px solid var(--navy); color: var(--navy); }
 
         /* --- Landscape Photo Booth Slideshow --- */
-        #slideshow-overlay {
+        #slideshow-overlay, #album-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -55,6 +55,8 @@
             align-items: center;
         }
 
+        #album-overlay { background: var(--paper); overflow-y: auto; cursor: default; flex-direction: column; align-items: center; padding: 80px 0; }
+
         .close-slideshow {
             position: absolute; top: 20px; right: 20px; color: #ffffff;
             background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2);
@@ -63,111 +65,63 @@
         }
         #slideshow-overlay.show-controls .close-slideshow { opacity: 1; }
 
+        .close-album {
+            position: absolute; top: 20px; right: 20px; color: var(--navy);
+            background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 50%; width: 44px; height: 44px; font-size: 1.3rem;
+            cursor: pointer; z-index: 10001;
+        }
+
+        /* Album Grid */
+        .album-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px; width: 90%; max-width: 1000px;
+        }
+        .album-item { position: relative; aspect-ratio: 1; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background: #eee; }
+        .album-item img { width: 100%; height: 100%; object-fit: cover; }
+        .dl-icon { position: absolute; bottom: 10px; right: 10px; background: var(--gold); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 0.8rem; }
+
         /* The Premium Landscape Frame */
         #photo-frame {
             position: relative;
-            width: 96vw;
-            height: 94vh;
+            width: 100vw; height: 100vh;
             background: var(--paper);
-            padding: 20px;
-            box-sizing: border-box;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-            display: flex;
-            flex-direction: column;
-            border-radius: 4px;
+            padding: 0; box-sizing: border-box;
+            display: flex; flex-direction: column;
+            border-radius: 0; box-shadow: 0 0 50px rgba(0,0,0,0.5);
         }
 
-        /* Top Logo Area inside the frame */
         .frame-header {
-            height: 100px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 10px;
+            height: 100px; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; border-bottom: 2px solid var(--gold); padding: 10px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 10; position: relative;
         }
 
-        .logo-names {
-            font-family: 'Great Vibes', cursive;
-            font-size: 3.5rem;
-            color: var(--navy);
-            margin: 0;
-            line-height: 1;
+        .frame-header::before, .frame-header::after,
+        .frame-footer::before, .frame-footer::after {
+            content: ''; position: absolute; width: 30px; height: 30px; border: 1px solid var(--gold); opacity: 0.35;
         }
+        .frame-header::before { top: 15px; left: 15px; border-right: 0; border-bottom: 0; }
+        .frame-header::after { top: 15px; right: 15px; border-left: 0; border-bottom: 0; }
+        .frame-footer::before { bottom: 15px; left: 15px; border-right: 0; border-top: 0; }
+        .frame-footer::after { bottom: 15px; right: 15px; border-left: 0; border-top: 0; }
 
-        .logo-ampersand {
-            font-family: 'Dancing Script', cursive;
-            color: var(--gold);
-            font-size: 2.5rem;
-            margin: 0 10px;
-        }
+        .logo-names { font-family: 'Great Vibes', cursive; font-size: 3.5rem; color: var(--navy); margin: 0; line-height: 1; font-weight: bold; }
+        .logo-ampersand { font-family: 'Dancing Script', cursive; color: var(--gold); font-size: 2.5rem; margin: 0 10px; }
+        .logo-subtext { font-family: 'Montserrat', sans-serif; font-size: 0.7rem; letter-spacing: 5px; text-transform: uppercase; color: var(--gray); margin-top: 5px; }
 
-        .logo-subtext {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.7rem;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            color: var(--gray);
-            margin-top: 5px;
-        }
+        #slide-image-container { flex: 1; position: relative; width: 100%; background: #000; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        .slide-img { width: 100%; height: 100%; object-fit: contain; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 1s ease-in-out; z-index: 2; }
+        .slide-bg { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; opacity: 0; filter: blur(25px) brightness(0.7); transform: scale(1.1); transition: opacity 1s ease-in-out; z-index: 1; }
+        .slide-img.active, .slide-bg.active { opacity: 1; }
 
-        /* Image Display - MAX SIZE */
-        #slide-image-container {
-            flex: 1;
-            position: relative;
-            width: 100%;
-            background: #111;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+        .frame-footer { height: 70px; display: flex; justify-content: center; align-items: center; padding: 10px 0; border-top: 2px solid var(--gold); box-shadow: 0 -4px 15px rgba(0,0,0,0.1); z-index: 10; position: relative; }
+        .slide-caption { text-align: center; width: 100%; }
+        .slide-caption h3 { font-family: 'Montserrat', sans-serif; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); margin: 0 0 2px 0; }
+        .slide-caption p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; margin: 0; color: var(--navy); }
 
-        .slide-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            position: absolute;
-            top: 0; left: 0;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-        }
-        .slide-img.active { opacity: 1; }
-
-        /* Bottom Caption Stamp Area */
-        .frame-footer {
-            height: 70px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding-top: 10px;
-        }
-
-        .slide-caption {
-            text-align: center;
-            width: 100%;
-        }
-
-        .slide-caption h3 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--gold);
-            margin: 0 0 2px 0;
-        }
-
-        .slide-caption p {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-size: 1.1rem;
-            margin: 0;
-            color: var(--navy);
-        }
-
-        .slideshow-empty { color: #444; position: absolute; top: 50%; width: 100%; text-align: center; }
+        .slideshow-empty { color: #fff; position: absolute; top: 50%; width: 100%; text-align: center; z-index: 5; }
 
         /* Footer Tooltip Style */
         .inquiry-bubble {
@@ -181,7 +135,10 @@
         @media (max-width: 768px) {
             .logo-names { font-size: 2.2rem; }
             .frame-header { height: 70px; }
-            #photo-frame { width: 100vw; height: 100vh; border-radius: 0; padding: 10px; }
+            #photo-frame { width: 100vw; height: 100vh; border-radius: 0; padding: 0; }
+            #slide-message { font-size: 0.9rem; }
+            .frame-header::before, .frame-header::after, .frame-footer::before, .frame-footer::after { width: 15px; height: 15px; }
+            .album-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -225,65 +182,46 @@
         </form>
         
         <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
-        <button class="btn btn-outline" onclick="startSlideshow()"><i class="fas fa-play-circle"></i> View Live Slideshow</button>
+        <div style="display: flex; gap: 10px;">
+            <button class="btn btn-outline" onclick="startSlideshow()" style="flex: 1;"><i class="fas fa-play-circle"></i> View Live Slideshow</button>
+            <button class="btn btn-outline" onclick="openAlbum()" style="flex: 1;"><i class="fas fa-images"></i> Browse Album</button>
+        </div>
     </div>
 
-    <footer style="margin-top: 20px; padding: 20px 0 0 0; position: relative; color: inherit; margin-bottom: 0 !important; display: block; font-family: 'Montserrat', sans-serif;">
+    <footer style="margin-top: 20px; padding: 20px 0; position: relative; color: inherit; display: block; font-family: 'Montserrat', sans-serif;">
         <div style="position: absolute; top: 0; left: 0; width: 100%; height: 1px; background-color: currentColor; opacity: 0.15;"></div>
-        <div style="display: flex; justify-content: center; align-items: center; gap: 20px; padding-bottom: 25px;">
+        <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
             <div style="line-height: 1.4; text-align: right;">
-                <p style="margin: 0; opacity: 0.6; font-size: 0.7rem; letter-spacing: 1px;">
-                    © 2026 H&C Wedding.
-                </p>
-                <p style="margin: 0; opacity: 0.6; font-size: 0.7rem; letter-spacing: 1px;">
-                    Design & Engineering by the Groom - <a href="https://instagram.com/hrvyngrs" target="_blank" style="color: #d4af37; text-decoration: none; font-weight: 600;">HARVY</a>.
-                </p>
+                <p style="margin: 0; opacity: 0.6; font-size: 0.7rem; letter-spacing: 1px;">© 2026 H&C Wedding.</p>
+                <p style="margin: 0; opacity: 0.6; font-size: 0.7rem; letter-spacing: 1px;">Design & Engineering by the Groom - <a href="https://instagram.com/hrvyngrs" target="_blank" style="color: #d4af37; text-decoration: none; font-weight: 600;">HARVY</a>.</p>
             </div>
             <div style="width: 1px; height: 35px; background-color: currentColor; opacity: 0.2;"></div>
             <div style="line-height: 1.4; text-align: left;">
-                <p style="margin: 0; font-size: 0.6rem; color: inherit; opacity: 0.5; letter-spacing: 1.5px; text-transform: uppercase;">
-                    Bespoke Digital Experiences
-                </p>
+                <p style="margin: 0; font-size: 0.6rem; opacity: 0.5; letter-spacing: 1.5px; text-transform: uppercase;">Bespoke Digital Experiences</p>
                 <div style="display: flex; gap: 12px; margin-top: 4px; align-items: center;">
-                    <a href="mailto:pidlaoanharvy@gmail.com" style="color: inherit; opacity: 0.6;" title="Email">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                    </a>
-                    <a href="https://instagram.com/hrvyngrs" target="_blank" style="color: inherit; opacity: 0.6;" title="Instagram">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                    </a>
-                    <a href="https://facebook.com/hrvyngrs" target="_blank" style="color: inherit; opacity: 0.6;" title="Facebook">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
-                    </a>
-                    <a href="https://linkedin.com/in/pidlaoanharvy" target="_blank" style="color: inherit; opacity: 0.6;" title="LinkedIn">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-                    </a>
-                    <div style="position: relative; display: inline-flex; align-items: center;" class="inquiry-wrapper">
-                        <a href="../services/" style="color: #d4af37; margin-left: 2px; display: flex; align-items: center;" title="Build Your Story">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                            </svg>
-                        </a>
-                        <span class="inquiry-bubble">Build Your Story</span>
-                    </div>
+                    <a href="mailto:pidlaoanharvy@gmail.com" style="color: inherit; opacity: 0.6;"><i class="fas fa-envelope"></i></a>
+                    <a href="https://instagram.com/hrvyngrs" target="_blank" style="color: inherit; opacity: 0.6;"><i class="fab fa-instagram"></i></a>
+                    <a href="https://facebook.com/hrvyngrs" target="_blank" style="color: inherit; opacity: 0.6;"><i class="fab fa-facebook"></i></a>
+                    <a href="https://linkedin.com/in/pidlaoanharvy" target="_blank" style="color: inherit; opacity: 0.6;"><i class="fab fa-linkedin"></i></a>
                 </div>
             </div>
         </div>
     </footer>
+
     <div id="slideshow-overlay">
         <button id="close-slideshow" class="close-slideshow" onclick="stopSlideshow()"><i class="fas fa-times"></i></button>
-        
         <div id="photo-frame">
             <div class="frame-header">
                 <div class="logo-names">Harvy <span class="logo-ampersand">&</span> Christine</div>
                 <div class="logo-subtext">The Wedding • 2026</div>
             </div>
-
             <div id="slide-image-container">
                 <div class="slideshow-empty" id="slideshow-empty-text">Loading Gallery...</div>
-                <img id="slide-img-1" class="slide-img active" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="">
-                <img id="slide-img-2" class="slide-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="">
+                <img id="slide-bg-1" class="slide-bg active" src="" alt="">
+                <img id="slide-img-1" class="slide-img active" src="" alt="">
+                <img id="slide-bg-2" class="slide-bg" src="" alt="">
+                <img id="slide-img-2" class="slide-img" src="" alt="">
             </div>
-
             <div class="frame-footer">
                 <div class="slide-caption" id="slide-caption" style="display:none;">
                     <h3 id="slide-name">CAPTURED BY Name</h3>
@@ -291,6 +229,15 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div id="album-overlay">
+        <button class="close-album" onclick="closeAlbum()"><i class="fas fa-times"></i></button>
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h2 style="font-family: 'Great Vibes', cursive; font-size: 3rem; color: var(--navy); margin: 0;">Wedding Album</h2>
+            <p style="font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold);">Tap to save your favorites</p>
+        </div>
+        <div class="album-grid" id="album-grid"></div>
     </div>
 
     <script>
@@ -311,14 +258,13 @@
                 img.src = e.target.result;
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 1600; 
-                    let width = img.width;
-                    let height = img.height;
+                    const MAX_WIDTH = 2560; 
+                    let width = img.width; let height = img.height;
                     if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
                     canvas.width = width; canvas.height = height;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
-                    compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
+                    compressedBase64 = canvas.toDataURL('image/jpeg', 0.95);
                     document.getElementById('preview-image').src = compressedBase64;
                     document.getElementById('upload-wrapper').style.display = 'none';
                     document.getElementById('preview-container').style.display = 'block';
@@ -336,13 +282,11 @@
             e.preventDefault();
             const btn = document.getElementById('submit-btn');
             btn.disabled = true; btn.innerText = "Posting...";
-            
             const formData = new FormData();
             formData.append('action', 'uploadPhoto');
             formData.append('guestName', document.getElementById('guest-name').value);
             formData.append('message', document.getElementById('guest-message').value);
             formData.append('image', compressedBase64);
-
             fetch(scriptURL, { method: 'POST', body: formData })
             .then(res => res.json())
             .then(data => {
@@ -350,33 +294,42 @@
                 document.getElementById('photo-upload-form').reset();
                 resetImage();
                 btn.disabled = false; btn.innerText = "Post to Slideshow";
+                fetchPhotos(); 
             });
         });
 
         function showNextPhoto() {
             if (photosArray.length === 0) return;
             if (currentIndex >= photosArray.length) currentIndex = 0;
-
             const photo = photosArray[currentIndex];
             const nextImgIndex = activeImgIndex === 1 ? 2 : 1;
             const activeImg = document.getElementById('slide-img-' + activeImgIndex);
+            const activeBg = document.getElementById('slide-bg-' + activeImgIndex);
             const nextImg = document.getElementById('slide-img-' + nextImgIndex);
+            const nextBg = document.getElementById('slide-bg-' + nextImgIndex);
 
             let fileId = photo.url.match(/id=([a-zA-Z0-9_-]+)/)?.[1] || photo.url.split('/').pop().split('?')[0];
-            const directImageUrl = "https://lh3.googleusercontent.com/d/" + fileId;
+            const directImageUrl = "https://lh3.googleusercontent.com/d/" + fileId; 
 
             const tempLoader = new Image();
             tempLoader.onload = function() {
                 document.getElementById('slideshow-empty-text').style.display = 'none';
-                nextImg.src = directImageUrl;
-                nextImg.classList.add('active'); 
-                activeImg.classList.remove('active'); 
+                nextImg.src = directImageUrl; nextBg.src = directImageUrl;
+                nextImg.classList.add('active'); nextBg.classList.add('active');
+                activeImg.classList.remove('active'); activeBg.classList.remove('active');
                 activeImgIndex = nextImgIndex; 
-
+                
                 document.getElementById('slide-name').innerText = "CAPTURED BY " + photo.name;
                 const msgEl = document.getElementById('slide-message');
-                if (photo.message) { msgEl.innerText = photo.message; msgEl.parentElement.style.display = 'block'; }
-                else { msgEl.parentElement.style.display = 'none'; }
+                const captionEl = document.getElementById('slide-caption');
+                
+                if (photo.message && photo.message.trim() !== "") { 
+                    msgEl.innerText = photo.message; 
+                    msgEl.style.display = 'block'; 
+                } else { 
+                    msgEl.style.display = 'none'; 
+                }
+                captionEl.style.display = 'block';
                 
                 currentIndex++; 
             };
@@ -392,6 +345,7 @@
         window.handlePhotosUpdate = function(data) {
             photosArray = data || [];
             if (photosArray.length > 0 && !slideshowInterval) showNextPhoto();
+            renderAlbum();
         };
 
         function startSlideshow() {
@@ -399,10 +353,8 @@
             over.style.display = 'flex';
             over.classList.remove('show-controls');
             over.addEventListener('click', () => over.classList.toggle('show-controls'));
-            
             fetchPhotos();
-            slideshowInterval = setInterval(showNextPhoto, 8000);
-            setInterval(fetchPhotos, 20000);
+            if (!slideshowInterval) slideshowInterval = setInterval(showNextPhoto, 8000);
         }
 
         function stopSlideshow() {
@@ -410,6 +362,25 @@
             clearInterval(slideshowInterval);
             slideshowInterval = null;
         }
+
+        function renderAlbum() {
+            const grid = document.getElementById('album-grid');
+            grid.innerHTML = '';
+            photosArray.forEach(photo => {
+                let fileId = photo.url.match(/id=([a-zA-Z0-9_-]+)/)?.[1] || photo.url.split('/').pop().split('?')[0];
+                const directImageUrl = "https://lh3.googleusercontent.com/d/" + fileId;
+                const item = document.createElement('div');
+                item.className = 'album-item';
+                item.innerHTML = `<img src="${directImageUrl}" loading="lazy"><a href="${directImageUrl}" target="_blank" download="wedding.jpg" class="dl-icon"><i class="fas fa-download"></i></a>`;
+                grid.appendChild(item);
+            });
+        }
+
+        function openAlbum() { document.getElementById('album-overlay').style.display = 'flex'; fetchPhotos(); }
+        function closeAlbum() { document.getElementById('album-overlay').style.display = 'none'; }
+
+        fetchPhotos();
+        setInterval(fetchPhotos, 20000);
     </script>
 </body>
 </html>
