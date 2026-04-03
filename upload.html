@@ -39,13 +39,27 @@
         .btn-outline:hover { background: var(--navy); color: white; }
 
         /* Slideshow Fullscreen overlay */
+        /* Fullscreen Slideshow Overlay */
         #slideshow-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; flex-direction: column; }
-        #slide-image-container { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; background-size: contain; background-repeat: no-repeat; background-position: center; transition: background-image 1s ease-in-out; }
-        .slide-caption { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 40px 20px 20px 20px; box-sizing: border-box; text-align: center; }
-        .slide-caption h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin: 0 0 5px 0; color: var(--gold); }
-        .slide-caption p { font-family: 'Montserrat', sans-serif; font-size: 1rem; margin: 0; opacity: 0.9; }
-        .close-slideshow { position: absolute; top: 20px; right: 20px; color: white; background: rgba(0,0,0,0.5); border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.2rem; cursor: pointer; z-index: 10000; }
-        .slideshow-empty { color: white; font-family: 'Playfair Display', serif; font-size: 1.5rem; text-align: center; }
+        .close-slideshow { position: absolute; top: 20px; right: 20px; color: white; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; width: 40px; height: 40px; font-size: 1.2rem; cursor: pointer; z-index: 10000; transition: 0.3s; }
+        .close-slideshow:hover { background: rgba(255,255,255,0.2); }
+        .slideshow-empty { color: white; font-family: 'Playfair Display', serif; font-size: 1.5rem; text-align: center; position: absolute; z-index: 2; width: 100%; top: 50%; transform: translateY(-50%); }
+        
+        #slide-image-container { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        
+        /* The Two-Image Crossfade Setup */
+        .slide-img { width: 100%; height: 100%; object-fit: contain; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 1.2s ease-in-out; z-index: 1; }
+        .slide-img.active { opacity: 1; z-index: 2; }
+        
+        /* The thick gradient ensures text is always readable over any photo */
+        .slide-caption { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0.95)); color: white; padding: 60px 20px 30px 20px; box-sizing: border-box; text-align: center; z-index: 3; }
+        .slide-caption h3 { font-family: 'Playfair Display', serif; font-size: 2rem; margin: 0 0 8px 0; color: var(--gold); letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        .slide-caption p { font-family: 'Montserrat', sans-serif; font-size: 1.1rem; margin: 0; opacity: 0.95; font-weight: 500; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -93,8 +107,13 @@
 
     <div id="slideshow-overlay">
         <button class="close-slideshow" onclick="stopSlideshow()"><i class="fas fa-times"></i></button>
+        
         <div id="slide-image-container">
             <div class="slideshow-empty" id="slideshow-empty-text">Waiting for photos...</div>
+            
+            <img id="slide-img-1" class="slide-img active" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="">
+            <img id="slide-img-2" class="slide-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="">
+            
             <div class="slide-caption" id="slide-caption" style="display: none;">
                 <h3 id="slide-name">Name</h3>
                 <p id="slide-message">Message</p>
@@ -104,7 +123,7 @@
 
     <script>
         // REPLACE WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbz5i9a419qmd3KarRGWtTNLDbGRXPOHPcAtzF1D90vU0g3_9P0dswEB5Ypgqh3NQ3AeNQ/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzGsgIl759jiq7vTrnkbvzkv_WabI1pjA9tGgMu8Zw8uEQYCFw4V_sDO_os7xG837sC1g/exec';
         
         let compressedBase64 = null;
 
@@ -242,39 +261,67 @@
 
             // If this is the first time we load and we have photos, trigger the display immediately
             if (oldLength === 0 && photosArray.length > 0) {
-                currentIndex = photosArray.length - 1; // Start with the newest picture!
+                currentIndex = 0; // Start at the beginning
                 showNextPhoto();
             }
         }
 
+let activeImgIndex = 1; // Tracks which of the two <img> tags is currently visible
+
         function showNextPhoto() {
             if (photosArray.length === 0) return;
             
-            const container = document.getElementById('slide-image-container');
-            const nameEl = document.getElementById('slide-name');
-            const msgEl = document.getElementById('slide-message');
-            const captionBox = document.getElementById('slide-caption');
-            const emptyTxt = document.getElementById('slideshow-empty-text');
-
-            const photo = photosArray[currentIndex];
-            
-            emptyTxt.style.display = 'none';
-            container.style.backgroundImage = `url('${photo.url}')`;
-            
-            nameEl.innerText = photo.name;
-            if (photo.message && photo.message.trim() !== "") {
-                msgEl.innerText = photo.message;
-                msgEl.style.display = 'block';
-            } else {
-                msgEl.style.display = 'none';
-            }
-            captionBox.style.display = 'block';
-
-            // Move to next photo (looping back to 0)
-            currentIndex++;
+            // Loop back to the start if we reach the end of the photos
             if (currentIndex >= photosArray.length) {
                 currentIndex = 0;
             }
+
+            const photo = photosArray[currentIndex];
+            const emptyTxt = document.getElementById('slideshow-empty-text');
+            
+            // Determine which image tag is currently hidden in the background
+            const nextImgIndex = activeImgIndex === 1 ? 2 : 1;
+            const activeImg = document.getElementById('slide-img-' + activeImgIndex);
+            const nextImg = document.getElementById('slide-img-' + nextImgIndex);
+
+            // PRE-LOADER: Secretly download the image. 
+            // We use the exact URL from the spreadsheet. NO cachebusters or hacks!
+            const tempLoader = new Image();
+            
+            tempLoader.onload = function() {
+                // Image downloaded successfully! Crossfade it in.
+                emptyTxt.style.display = 'none';
+                
+                nextImg.src = photo.url;
+                nextImg.classList.add('active'); // Fade in new
+                activeImg.classList.remove('active'); // Fade out old
+                
+                activeImgIndex = nextImgIndex; // Update tracker
+
+                // Update text overlay
+                document.getElementById('slide-name').innerText = photo.name;
+                const msgEl = document.getElementById('slide-message');
+                const captionBox = document.getElementById('slide-caption');
+
+                if (photo.message && photo.message.trim() !== "") {
+                    msgEl.innerText = photo.message;
+                    msgEl.style.display = 'block';
+                } else {
+                    msgEl.style.display = 'none';
+                }
+                captionBox.style.display = 'block';
+
+                currentIndex++; // Advance math for next round
+            };
+
+            // FAILSAFE: If an image is broken, skip it so the slideshow doesn't freeze
+            tempLoader.onerror = function() {
+                console.log("Skipping broken image:", photo.url);
+                currentIndex++; 
+            };
+            
+            // Trigger the download
+            tempLoader.src = photo.url;
         }
     </script>
 </body>
