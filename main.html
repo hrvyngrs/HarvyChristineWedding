@@ -1809,7 +1809,7 @@ function showStory(id, el) {
         }
         
     // --- RETRIEVED ORIGINAL SUBMISSION LOGIC ---
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbz5i9a419qmd3KarRGWtTNLDbGRXPOHPcAtzF1D90vU0g3_9P0dswEB5Ypgqh3NQ3AeNQ/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzGsgIl759jiq7vTrnkbvzkv_WabI1pjA9tGgMu8Zw8uEQYCFw4V_sDO_os7xG837sC1g/exec';
     const rsvpForm = document.getElementById('rsvp-form');
 
     rsvpForm.addEventListener('submit', e => {
@@ -2013,7 +2013,7 @@ function showStory(id, el) {
                 </a>
 
                 <div style="position: relative; display: inline-flex; align-items: center;" class="inquiry-wrapper">
-                    <a href="../digitalservices/" style="color: #d4af37; margin-left: 2px; display: flex; align-items: center;" title="Build Your Story">
+                    <a href="../services/" style="color: #d4af37; margin-left: 2px; display: flex; align-items: center;" title="Build Your Story">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                         </svg>
@@ -2096,8 +2096,20 @@ function showStory(id, el) {
         
         <div class="msg-row bot-row">
             <div class="msg-name" style="text-align: left;">Harvy & Christine</div>
-            <div class="msg bot" style="text-align: left;">Hi! I'm the digital assistant for Harvy & Christine. How can I help you today?</div>
+            <div class="msg bot" style="text-align: left;" id="welcome-message">Hi! I'm the digital assistant for Harvy & Christine. How can I help you today?</div>
         </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const guestName = urlParams.get('n');
+                
+                // If there's a name in the URL, update the text and make the name bold
+                if (guestName) {
+                    document.getElementById('welcome-message').innerHTML = `Hi, <strong>${guestName}</strong>! I'm the digital assistant for Harvy & Christine. How can I help you today?`;
+                }
+            });
+        </script>
         
         <div class="faq-options-list" style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 5px; width: 100%;">
             <p id="faq-loading-msg" style="font-size: 0.75rem; color: #888; margin-bottom: 5px;">Loading questions...</p>
@@ -2110,40 +2122,79 @@ function showStory(id, el) {
 </div>
 
 <style>
-    .msg { max-width: 85%; padding: 10px 14px; border-radius: 18px; font-size: 0.85rem; line-height: 1.4; position: relative; word-wrap: break-word; }
+.msg { max-width: 85%; padding: 10px 14px; border-radius: 18px; font-size: 0.85rem; line-height: 1.4; position: relative; word-wrap: break-word; }
     .bot { align-self: flex-start; background: #e4e6eb; color: #050505; border-bottom-left-radius: 4px; }
     .guest { align-self: flex-end; background: #0084ff; color: white; border-bottom-right-radius: 4px; }
     /* Name labels above bubbles */
-.msg-name {
-    font-size: 0.65rem;
-    color: #888;
-    margin-bottom: 2px;
-    font-weight: bold;
-}
+    .msg-name {
+        font-size: 0.65rem;
+        color: #888;
+        margin-bottom: 2px;
+        font-weight: bold;
+    }
 
-.msg-row {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-}
-.bot-row { align-items: flex-start; }
-.guest-row { align-items: flex-end; }
+    .msg-row {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+    }
+    .bot-row { align-items: flex-start; }
+    .guest-row { align-items: flex-end; }
 
-/* Keep current bubble styles but remove the bold text from inside the bot bubble */
-.bot {
-    align-self: flex-start;
-    background: #e4e6eb;
-    color: #050505;
-    border-bottom-left-radius: 4px;
-}
+    /* Keep current bubble styles but remove the bold text from inside the bot bubble */
+    .bot {
+        align-self: flex-start;
+        background: #e4e6eb;
+        color: #050505;
+        border-bottom-left-radius: 4px;
+    }
     .faq-choice-btn { background: #fff; border: 1px solid #d4af37; color: #1a2a44; padding: 8px 12px; border-radius: 10px; font-size: 0.8rem; cursor: pointer; text-align: left; transition: 0.2s; }
     #conversation-container::-webkit-scrollbar { width: 4px; }
     #conversation-container::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
 
-/* Swaps the Go To Top button to the higher position */
-.back-to-top {
-    bottom: 85px !important;
-}
+    /* Swaps the Go To Top button to the higher position */
+    .back-to-top {
+        bottom: 85px !important;
+    }
+
+    /* Typing Indicator Animation */
+    .typing-dots {
+        display: inline-flex;
+        align-items: center;
+        height: 15px;
+        gap: 4px;
+        padding: 0 4px;
+    }
+    .typing-dots span {
+        width: 6px;
+        height: 6px;
+        background-color: #888;
+        border-radius: 50%;
+        animation: typingBounce 1.4s infinite ease-in-out both;
+    }
+    .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+    .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+    @keyframes typingBounce {
+        0%, 80%, 100% { transform: scale(0); }
+        40% { transform: scale(1); }
+    }
+    #chat-window {
+        /* Originates exactly from the center of the 50x50 chat bubble below it */
+        transform-origin: calc(100% - 25px) calc(100% + 40px);
+        animation: springFromButton 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes springFromButton {
+        0% {
+            opacity: 0;
+            transform: scale(0.1) translateY(20px);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
 </style>
 
 <script>
@@ -2183,7 +2234,7 @@ function loadFAQs() {
     const optionsContainer = document.getElementById('faq-options-list');
     
     // 1. YOUR ACTUAL SCRIPT URL
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbz5i9a419qmd3KarRGWtTNLDbGRXPOHPcAtzF1D90vU0g3_9P0dswEB5Ypgqh3NQ3AeNQ/exec';
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbzGsgIl759jiq7vTrnkbvzkv_WabI1pjA9tGgMu8Zw8uEQYCFw4V_sDO_os7xG837sC1g/exec';
 
     // 2. Clear previous errors
     document.getElementById('faq-loading-msg').innerText = "Loading questions...";
@@ -2240,11 +2291,15 @@ function sendGuestMessage(index, btnElement) {
     }
 
     // 2. Add Guest Message Row (Aligned Right)
+    // Check the URL for the 'n' parameter, default to "Guest" if not found
+    const urlParams = new URLSearchParams(window.location.search);
+    const guestName = urlParams.get('n') || "Guest"; 
+
     const guestRow = document.createElement('div');
     guestRow.className = 'msg-row guest-row';
     guestRow.style.alignItems = 'flex-end';
     guestRow.innerHTML = `
-        <div class="msg-name">Guest</div>
+        <div class="msg-name">${guestName}</div>
         <div class="msg guest">${selected.question}</div>
     `;
     container.appendChild(guestRow);
@@ -2258,7 +2313,9 @@ function sendGuestMessage(index, btnElement) {
     typingRow.id = 'typing-indicator';
     typingRow.innerHTML = `
         <div class="msg-name">Harvy & Christine</div>
-        <div class="msg bot">...</div>
+        <div class="msg bot">
+            <div class="typing-dots"><span></span><span></span><span></span></div>
+        </div>
     `;
     container.appendChild(typingRow);
     
