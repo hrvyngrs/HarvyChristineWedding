@@ -19,49 +19,368 @@
     <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
 
     <link href="css/style.css" rel="stylesheet">
+
+    <style>
+        /* =========================================
+           GLOBAL & FIXES
+           ========================================= */
+        /* --- MOBILE HORIZONTAL SCROLL FIX --- */
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* --- HIDE VERTICAL SCROLLBAR --- */
+        html::-webkit-scrollbar {
+            display: none; /* Chrome, Safari and Opera */
+        }
+        html {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        /* =========================================
+           TYPING TEXT & CURSOR
+           ========================================= */
+        .typing-text {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+            color: #001F54;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: .15em solid #001F54;
+            width: 0;
+            animation: typing 2s steps(17, end) forwards, blink-caret 0.75s step-end infinite;
+        }
+
+        .cursor {
+            display: inline-block;
+            color: #001F54;
+            animation: blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 17ch; }
+        }
+
+        @keyframes blink-caret {
+            50% { border-color: transparent; }
+            100% { border-color: #001F54; }
+        }
+
+        .typing-text.finished .cursor {
+            animation: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        /* =========================================
+           GLITTER & HEARTS
+           ========================================= */
+        .glitter-container {
+            position: relative !important;
+            display: inline-block !important;
+            overflow: visible !important;
+        }
+
+        .glitter-text {
+            position: relative;
+            z-index: 5;
+        }
+
+        .heart-element {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0;
+            filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+            animation: heart-fly-out 4s infinite ease-out;
+        }
+
+        @keyframes heart-fly-out {
+            0% { transform: translate(0, 0) scale(0) rotate(0deg); opacity: 0; }
+            15% { opacity: 1; }
+            100% { transform: translate(var(--drift-x), -80px) scale(1.5) rotate(var(--rot)); opacity: 0; }
+        }
+
+        /* =========================================
+           HERO & ANIMATIONS
+           ========================================= */
+        .reveal-item { opacity: 0; transform: translateY(30px); }
+
+        .names-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            pointer-events: none; z-index: 15;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+        }
+
+        .names-overlay > div { pointer-events: auto; text-align: center; }
+
+        .sparkle {
+            position: absolute; background: white; border-radius: 50%; pointer-events: none;
+            box-shadow: 0 0 10px white, 0 0 20px white;
+            animation: flySparkle linear forwards; z-index: 99;
+        }
+
+        @keyframes flySparkle {
+            0% { transform: translate(0, 0) scale(0); opacity: 0; }
+            20% { opacity: 1; transform: translate(5px, -10px) scale(1); }
+            100% { transform: translate(var(--x-end), var(--y-end)) scale(0); opacity: 0; }
+        }
+
+        .name-swap { display: inline-grid; perspective: 1000px; transform-style: preserve-3d; vertical-align: middle; text-align: center; }
+        .name-swap::before, .name-swap::after { grid-area: 1 / 1; backface-visibility: hidden; display: block; animation: flipNamesGlobal 6s linear infinite; }
+        .name-swap::before { content: attr(data-first); }
+        .name-swap::after { content: attr(data-last); animation-delay: -3s;  }
+
+        @keyframes flipNamesGlobal {
+            0%, 40% { transform: rotateX(0deg); opacity: 1; }
+            45% { opacity: 0; }
+            50%, 90% { transform: rotateX(180deg); opacity: 1; }
+            95% { opacity: 0; }
+            100% { transform: rotateX(360deg); opacity: 1; }
+        }
+
+        .name {
+            white-space: nowrap; display: flex; align-items: center; justify-content: center; flex-wrap: nowrap;
+            font-size: calc(1.5rem + 4vw) !important;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8), 0px 0px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        @media (max-width: 576px) {
+            .name { font-size: 3.5rem !important; flex-direction: column; white-space: normal; line-height: 1.1; }
+            .heart-svg { width: 1.5em; height: 1.5em; margin: 10px 0; }
+        }
+
+        .announcement-text, .wedding-container { text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7); color: white; }
+
+        @keyframes slideInUp { to { opacity: 1; transform: translateY(0); } }
+
+        .initial-load .name { animation: slideInUp 1.2s ease-out 0.2s forwards; }
+        .initial-load .announcement { animation: slideInUp 1.2s ease-out 0.5s forwards; }
+        .initial-load .wedding-info { animation: slideInUp 1.2s ease-out 0.8s forwards; }
+        .initial-load .play-btn { animation: slideInUp 1.2s ease-out 1.1s forwards; }
+        #home:not(.initial-load) .reveal-item { opacity: 1; transform: translateY(0); }
+
+        .carousel-item img { height: 100vh !important; width: 100% !important; object-fit: cover; }
+        .heart-svg { width: 1.2em; height: 1.2em; margin: 0 15px; vertical-align: middle; }
+
+        .heart-path {
+            stroke: white; stroke-width: 3; fill: none; stroke-linecap: round;
+            stroke-dasharray: 160; stroke-dashoffset: 160;
+            animation: drawHeartSynced 6s linear infinite; filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
+        }
+
+        @keyframes drawHeartSynced {
+            0% { stroke-dashoffset: 160; opacity: 0; }
+            5% { opacity: 1; }
+            35% { stroke-dashoffset: 0; opacity: 1; }
+            40%, 100% { stroke-dashoffset: 0; opacity: 0; }
+        }
+
+        .infinity-path {
+            stroke: white; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round;
+            stroke-dasharray: 220; stroke-dashoffset: 220; opacity: 0;
+            animation: drawInfinitySynced 6s linear infinite; animation-delay: 3s; 
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
+        }
+
+        @keyframes drawInfinitySynced {
+            0% { stroke-dashoffset: 220; opacity: 0; }
+            5% { opacity: 1; }
+            35% { stroke-dashoffset: 0; opacity: 1; }
+            40%, 100% { stroke-dashoffset: 0; opacity: 0; }
+        }
+
+        .btn-play {
+            position: relative; display: flex; align-items: center; justify-content: center;
+            width: 65px; height: 65px; border: 2px solid #fff; border-radius: 50%;
+            background: #fff !important; cursor: pointer; padding: 0; outline: none !important;
+        }
+
+        .btn-play span {
+            display: block !important; width: 0 !important; height: 0 !important;
+            border-left: 18px solid #000 !important; border-top: 10px solid transparent !important;
+            border-bottom: 10px solid transparent !important; margin-left: 5px !important;
+        }
+
+        .btn-play.playing span {
+            width: 16px !important; height: 20px !important; border-left: 5px solid #000 !important;
+            border-right: 5px solid #000 !important; border-top: none !important; border-bottom: none !important; margin-left: 0 !important;
+        }
+
+        .carousel-control-prev, .carousel-control-next { z-index: 20 !important; width: 10%; }
+
+        /* =========================================
+           SCRAPBOOK & STORY
+           ========================================= */
+        .scrapbook-flip-card { background-color: transparent; height: 580px; perspective: 1500px; margin-bottom: 30px; }
+        .scrapbook-flip-inner { position: relative; width: 100%; height: 100%; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; cursor: pointer; }
+        .scrapbook-flip-inner.is-flipped { transform: rotateY(180deg); }
+        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .flip-front { padding: 15px 15px 120px 15px; display: flex; flex-direction: column; border: none; }
+        .groom-frame { background-color: #001f3f; }
+        .bride-frame { background-color: #708090; }
+        .flip-front img { width: 100%; height: 100%; object-fit: cover; border-radius: 2px; }
+        .flip-label-area { position: absolute; bottom: 0; left: 0; width: 100%; height: 120px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #ffffff; }
+        .label-header { display: flex; align-items: center; justify-content: center; margin-bottom: 5px; }
+        .groom-label-bar { border-radius: 0 0 8px 8px; }
+        .bride-label-bar { border-radius: 0 0 8px 8px; }
+        .flip-label-area h3 { font-family: 'Georgia', serif; font-size: 1.4rem; margin: 0; letter-spacing: 2px; color: #d4af37;  }
+        .flip-label-area span { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; margin-bottom: 10px; }
+        .tap-hint { font-size: 0.7rem; color: #ffffff; text-transform: uppercase; letter-spacing: 2px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 8px; font-weight: bold; opacity: 0.8; }
+        .flip-back { transform: rotateY(180deg); padding: 40px 30px; display: flex; flex-direction: column; overflow-y: auto; color: #ffffff; }
+        .groom-back { background-color: #001f3f; }
+        .bride-back { background-color: #708090; }
+        .flip-back h3 { color: #d4af37; font-family: 'Secondary Font', serif; border-bottom: 1px solid rgba(212, 175, 55, 0.3); padding-bottom: 10px; margin-bottom: 20px; text-align: center; }
+        .flip-back p { font-size: 1rem; line-height: 1.8; margin-bottom: 15px; color: rgba(255, 255, 255, 0.95); text-align: justify; }
+        .flip-back .name-footer { text-align: center; font-weight: bold; color: #d4af37; margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .flip-back::-webkit-scrollbar { width: 4px; }
+        .flip-back::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
+        @media (max-width: 768px) { .scrapbook-flip-card { height: 520px; } }
+
+        .compact-nav-wrapper { position: relative; max-width: 450px; margin: 0 auto 30px auto; }
+        .nav-gold-line { position: absolute; top: 20px; left: 0; right: 0; height: 1px; background: #d4af37; z-index: 1; }
+        .nav-icons { display: flex; justify-content: space-between; position: relative; z-index: 2; }
+        .nav-node { cursor: pointer; text-align: center; width: 60px; }
+        .icon-circle { width: 40px; height: 40px; background: #fff; border: 1px solid #d4af37; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #1a2a44; transition: 0.3s; margin: 0 auto 5px auto; }
+        .nav-node.active .icon-circle { background: #d4af37; color: #fff; transform: scale(1.1); box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3); }
+        .node-year { font-size: 0.7rem; font-weight: 700; color: #bbb; }
+        .nav-node.active .node-year { color: #1a2a44; }
+
+        .compact-story-container { max-width: 900px; margin: 0 auto; }
+        .story-card { background: #fff; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; overflow: hidden; min-height: 420px; height: 420px;  }
+        .story-pane { display: none; height: 100%; animation: fadeIn 0.4s ease forwards; }
+        .story-pane.active { display: block; }
+        .pane-img { width: 100%; height: 420px; object-fit: cover; }
+        .pane-content { padding: 30px; height: 420px; overflow-y: auto; text-align: left; }
+        .pane-content::-webkit-scrollbar { width: 4px; }
+        .pane-content::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
+        .pane-h { font-family: 'Dancing Script', cursive; color: #1a2a44; font-size: 2rem; margin-bottom: 15px; }
+        .pane-p { font-size: 0.9rem; line-height: 1.7; color: #555; text-align: justify; }
+        .gold-line { width: 40px; height: 2px; background: #d4af37; margin: 15px auto; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes heartBeat { 0%, 70%, 100% { transform: scale(1); } 14% { transform: scale(1.1); } 28% { transform: scale(1); } 42% { transform: scale(1.1); } }
+
+        @media (max-width: 992px) {
+            .story-card { height: auto; min-height: 500px; }
+            .pane-img { height: 250px; }
+            .pane-content { height: auto; overflow: visible; padding: 20px; }
+        }
+
+        /* =========================================
+           EVENT, MAP, ATTIRE & COUNTDOWN
+           ========================================= */
+        .countdown-timer-bottom { display: inline-flex; justify-content: center; align-items: center; color: #333; font-family: 'Playfair Display', serif; margin-top: 20px; }
+        .countdown-item { display: flex; flex-direction: column; align-items: center; min-width: 80px; position: relative; }
+        .countdown-item:not(:last-child)::after { content: ""; position: absolute; right: 0; top: 25%; height: 50%; width: 1px; background: linear-gradient(to bottom, transparent, #ccc, transparent); }
+        .countdown-value { font-size: 2.5rem; font-weight: 400; line-height: 1; color: #b08d57; }
+        .countdown-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; margin-top: 8px; font-weight: 700; color: #888; }
+        
+        .map-wrapper { width: 100%; display: flex; justify-content: center; }
+        .map-container { width: 100%; max-width: 600px; aspect-ratio: 16/9; }
+        .map-container iframe { width: 100%; height: 100%; border: 0; }
+
+        .letter-spacing { letter-spacing: 3px; }
+        .script-title { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 500; font-size: 2.2rem; margin-bottom: 0.2rem; color: #1a2a44; }
+        .divider-heart { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 15px auto; width: 250px; }
+        .divider-heart .line { flex: 1; border-top: 1px solid #b08d57; }
+        .divider-heart i { color: #b08d57; font-size: 12px; }
+        .row p { margin-bottom: 0.7rem; font-size: 1.05rem; }
+        @media (max-width: 576px) { .font-secondary.display-4 { font-size: 2.5rem; } .row p { font-size: 0.9rem; } .script-title { font-size: 1.8rem; } }
+
+        .attire-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; max-width: 1000px; margin: 0 auto 3rem; }
+        .attire-card { flex: 1; min-width: 300px; max-width: 450px; padding: 20px; text-align: center; transition: transform 0.4s ease, box-shadow 0.4s ease; cursor: pointer; }
+        .attire-card:hover, .attire-card:active { transform: translateY(-10px) scale(1.02); }
+        .vertical-divider { width: 1px; background-color: #003366; align-self: stretch; }
+        @media (max-width: 768px) { .vertical-divider { display: none; } .attire-card { min-width: 100%; } }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); transform: translate(-50%, -50%) scale(1); }
+            70% { box-shadow: 0 0 0 25px rgba(255, 255, 255, 0); transform: translate(-50%, -50%) scale(1.05); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); transform: translate(-50%, -50%) scale(1); }
+        }
+        @keyframes openingGift {
+            0%, 15% { transform: translateY(0) rotate(0deg); }
+            35%, 55% { transform: translateY(-22px) rotate(-8deg); } 
+            80%, 100% { transform: translateY(0) rotate(0deg); }
+        }
+        @keyframes sparkleFloat {
+            0% { transform: scale(0) translateY(0); opacity: 0; }
+            50% { transform: scale(1.2) translateY(-40px); opacity: 1; }
+            100% { transform: scale(0) translateY(-70px); opacity: 0; }
+        }
+        @keyframes silverShimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        /* =========================================
+           RSVP & MODAL
+           ========================================= */
+        .rsvp-section { max-width: 480px; margin: 40px auto; padding: 50px 40px; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); border-top: 6px solid #1a2a44; text-align: center; font-family: 'Lato', sans-serif; color: #1a2a44; }
+        .rsvp-section h2 { font-family: 'Playfair Display', serif; font-size: 2.6rem; margin-bottom: 8px; color: #1a2a44; letter-spacing: 1px; }
+        .rsvp-section p.subtitle { font-style: italic; margin-bottom: 35px; color: #707b7c; font-weight: 300; }
+        .form-group { text-align: left; margin-bottom: 25px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 400; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: #1a2a44; }
+        .rsvp-input { width: 100%; padding: 14px; border: 1px solid #d5d8dc; border-radius: 4px; box-sizing: border-box; font-size: 1rem; background-color: #f8f9f9; transition: all 0.3s ease; }
+        .rsvp-input:focus { border-color: #1a2a44; background-color: #fff; outline: none; }
+        .rsvp-input[readonly] { background-color: #f2f4f4; color: #7f8c8d; cursor: not-allowed; border-style: dashed; }
+        .policy-group { display: flex; align-items: flex-start; gap: 10px; text-align: left; margin-bottom: 25px; font-size: 0.9rem; }
+        .policy-group input { margin-top: 4px; }
+        .policy-link { color: #1a2a44; text-decoration: underline; font-weight: 400; }
+        #submit-btn { background: #1a2a44; color: #ffffff; border: none; padding: 16px; width: 100%; border-radius: 4px; cursor: pointer; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; transition: background 0.3s; }
+        #submit-btn:hover { background: #2c3e50; }
+        .nav-links { margin-top: 30px; display: flex; gap: 10px; justify-content: center; }
+        .nav-btn { flex: 1; padding: 12px; background: #f8f9f9; color: #1a2a44; border: 1px solid #d5d8dc; text-decoration: none; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; transition: all 0.3s; }
+        .nav-btn:hover { background: #d5d8dc; color: #1a2a44; }
+        .allowance-text { font-size: 0.8rem; color: #707b7c; margin-top: -15px; margin-bottom: 20px; text-align: left; font-style: italic; }
+        
+        div.swal2-popup.vip-modal-custom { padding: 0 !important; border-radius: 12px !important; width: 90% !important; max-width: 420px !important; background: #ffffff !important; border: 2px solid #1a2a44 !important; box-shadow: 0 15px 35px rgba(0,0,0,0.2) !important; -ms-overflow-style: none !important; scrollbar-width: none !important; }
+        div.swal2-popup.vip-modal-custom .swal2-html-container { margin: 0 !important; padding: 0 !important; overflow: hidden !important; }
+        div.swal2-popup.vip-modal-custom::-webkit-scrollbar, div.swal2-popup.vip-modal-custom *::-webkit-scrollbar { display: none !important; }
+        div.swal2-popup.vip-modal-custom .swal2-close { position: absolute !important; top: 5px !important; right: 5px !important; background: transparent !important; color: #a5a5a5 !important; width: 36px !important; height: 36px !important; font-size: 28px !important; font-weight: 300 !important; box-shadow: none !important; outline: none !important; transition: color 0.2s ease !important; z-index: 10 !important; }
+        div.swal2-popup.vip-modal-custom .swal2-close:hover { color: #1a2a44 !important; background: transparent !important; }
+
+        /* =========================================
+           FOOTER & CHAT SYSTEM
+           ========================================= */
+        .inquiry-wrapper { cursor: pointer; }
+        .inquiry-bubble { visibility: hidden; background-color: #d4af37; color: #0a192f; text-align: center; padding: 4px 10px; border-radius: 3px; font-size: 0.55rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; position: absolute; z-index: 10; bottom: 160%; left: 50%; transform: translateX(-50%) translateY(5px); opacity: 0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .inquiry-bubble::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -4px; border-width: 4px; border-style: solid; border-color: #d4af37 transparent transparent transparent; }
+        .inquiry-wrapper:hover .inquiry-bubble { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        .msg { max-width: 85%; padding: 10px 14px; border-radius: 18px; font-size: 0.85rem; line-height: 1.4; position: relative; word-wrap: break-word; }
+        .bot { align-self: flex-start; background: #e4e6eb; color: #050505; border-bottom-left-radius: 4px; }
+        .guest { align-self: flex-end; background: #0084ff; color: white; border-bottom-right-radius: 4px; }
+        .msg-name { font-size: 0.65rem; color: #888; margin-bottom: 2px; font-weight: bold; }
+        .msg-row { display: flex; flex-direction: column; margin-bottom: 10px; }
+        .bot-row { align-items: flex-start; }
+        .guest-row { align-items: flex-end; }
+        .faq-choice-btn { background: #fff; border: 1px solid #d4af37; color: #1a2a44; padding: 8px 12px; border-radius: 10px; font-size: 0.8rem; cursor: pointer; text-align: left; transition: 0.2s; }
+        #conversation-container::-webkit-scrollbar { width: 4px; }
+        #conversation-container::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+
+        .back-to-top { bottom: 85px !important; }
+
+        .typing-dots { display: inline-flex; align-items: center; height: 15px; gap: 4px; padding: 0 4px; }
+        .typing-dots span { width: 6px; height: 6px; background-color: #888; border-radius: 50%; animation: typingBounce 1.4s infinite ease-in-out both; }
+        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typingBounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+
+        #chat-window { transform-origin: calc(100% - 25px) calc(100% + 40px); animation: springFromButton 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes springFromButton { 0% { opacity: 0; transform: scale(0.1) translateY(20px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+    </style>
 </head>
 
 <body>
-<style>
-.typing-text {
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 18px;
-  color: #001F54;
-  white-space: nowrap;
-  overflow: hidden;
-  border-right: .15em solid #001F54;
-  width: 0;
-  animation:
-    typing 2s steps(17, end) forwards, /* typing 2 seconds for 17 characters */
-    blink-caret 0.75s step-end infinite;
-}
-
-/* Blinking cursor */
-.cursor {
-  display: inline-block;
-  color: #001F54;
-  animation: blink-caret 0.75s step-end infinite;
-}
-
-/* typing animation */
-@keyframes typing {
-  from { width: 0; }
-  to { width: 17ch; }
-}
-
-/* blinking caret */
-@keyframes blink-caret {
-  50% { border-color: transparent; }
-  100% { border-color: #001F54; }
-}
-
-/* fade out cursor after typing finishes */
-.typing-text.finished .cursor {
-  animation: none;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-</style>
 
 <nav class="navbar fixed-top shadow-sm navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-lg-5">
     <a href="index.html" class="navbar-brand d-block d-lg-none">
@@ -92,277 +411,6 @@
         </div>
     </div>
 </nav>
-
-<style>
-    .glitter-container {
-        position: relative !important;
-        display: inline-block !important;
-        overflow: visible !important;
-    }
-
-    .glitter-text {
-        position: relative;
-        z-index: 5; /* Keeps text in front of the hearts */
-    }
-
-    /* Updated Heart Styles to fly behind and sideward */
-    .heart-element {
-        position: absolute;
-        width: 10px;
-        height: 10px;
-        pointer-events: none;
-        z-index: 1; /* Positioned behind the text */
-        opacity: 0;
-        filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
-        animation: heart-fly-out 4s infinite ease-out;
-    }
-
-    @keyframes heart-fly-out {
-        0% {
-            transform: translate(0, 0) scale(0) rotate(0deg);
-            opacity: 0;
-        }
-        15% {
-            opacity: 1;
-        }
-        100% {
-            /* Sideward movement via JS variables */
-            transform: translate(var(--drift-x), -80px) scale(1.5) rotate(var(--rot));
-            opacity: 0;
-        }
-    }
-</style>
-
-<script>
-    function createHearts() {
-        const containers = document.querySelectorAll('.glitter-container');
-        
-        const heartSVG = `
-            <svg viewBox="0 0 32 32">
-                <path d="M16 28.5L14.1 26.75C7.35 20.65 3 16.7 3 11.85 3 7.85 6.15 4.7 10.15 4.7c2.25 0 4.45 1.05 5.85 2.7 1.4-1.65 3.6-2.7 5.85-2.7 4 0 7.15 3.15 7.15 7.15 0 4.85-4.35 8.8-11.1 14.9L16 28.5z"/>
-            </svg>
-        `;
-
-        containers.forEach(container => {
-            if (container.querySelectorAll('.heart-element').length > 0) return;
-
-            // Creating 6 hearts for a more balanced spread
-            for (let i = 0; i < 6; i++) {
-                const heartWrap = document.createElement('div');
-                heartWrap.className = 'heart-element';
-                heartWrap.innerHTML = heartSVG;
-
-                // Navy/Silver/Pink palette to match your wedding theme
-                const colors = ['#C0C0C0', '#ffb3c1', '#ffffff', '#e0e0e0'];
-                heartWrap.style.fill = colors[i % colors.length];
-
-                // Centering start position behind the text
-                heartWrap.style.left = '45%';
-                heartWrap.style.top = '20%';
-
-                // Calculate random sideward drift and rotation
-                const driftX = (Math.random() * 100 - 50) + 'px'; // -50px to 50px
-                const rotation = (Math.random() * 120 - 60) + 'deg';
-
-                heartWrap.style.setProperty('--drift-x', driftX);
-                heartWrap.style.setProperty('--rot', rotation);
-
-                // Staggered appearance
-                heartWrap.style.animationDelay = (i * 0.7) + 's';
-
-                container.appendChild(heartWrap);
-            }
-        });
-    }
-
-    window.addEventListener('load', createHearts);
-</script>
-    <style>
-    /* 1. INITIAL ENTRANCE (Only on First Visit) */
-    .reveal-item {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-
-    /* FIXED OVERLAY FOR NAMES with DARK GRADIENT for readability */
-    .names-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        pointer-events: none;
-        z-index: 15;
-        background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
-    }
-
-    .names-overlay > div {
-        pointer-events: auto;
-        text-align: center;
-    }
-
-    /* SPARKLE EFFECT CSS */
-    .sparkle {
-        position: absolute;
-        background: white;
-        border-radius: 50%;
-        pointer-events: none;
-        box-shadow: 0 0 10px white, 0 0 20px white;
-        animation: flySparkle linear forwards;
-        z-index: 99;
-    }
-
-    @keyframes flySparkle {
-        0% {
-            transform: translate(0, 0) scale(0);
-            opacity: 0;
-        }
-        20% {
-            opacity: 1;
-            transform: translate(5px, -10px) scale(1);
-        }
-        100% {
-            transform: translate(var(--x-end), var(--y-end)) scale(0);
-            opacity: 0;
-        }
-    }
-
-    /* FLIPPING ANIMATION */
-    .name-swap {
-        display: inline-grid;
-        perspective: 1000px;
-        transform-style: preserve-3d;
-        vertical-align: middle;
-        text-align: center;
-    }
-
-    .name-swap::before,
-    .name-swap::after {
-        grid-area: 1 / 1;
-        backface-visibility: hidden;
-        display: block;
-        animation: flipNamesGlobal 6s linear infinite;
-    }
-
-    .name-swap::before {
-        content: attr(data-first);
-    }
-
-    .name-swap::after {
-        content: attr(data-last);
-        animation-delay: -3s; 
-    }
-
-    @keyframes flipNamesGlobal {
-        0%, 40% { transform: rotateX(0deg); opacity: 1; }
-        45% { opacity: 0; }
-        50%, 90% { transform: rotateX(180deg); opacity: 1; }
-        95% { opacity: 0; }
-        100% { transform: rotateX(360deg); opacity: 1; }
-    }
-
-    .name {
-        white-space: nowrap;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-wrap: nowrap;
-        font-size: calc(1.5rem + 4vw) !important;
-        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8), 0px 0px 15px rgba(0, 0, 0, 0.5);
-    }
-
-    /* MOBILE FIX */
-    @media (max-width: 576px) {
-        .name {
-            font-size: 3.5rem !important;
-            flex-direction: column;
-            white-space: normal;
-            line-height: 1.1;
-        }
-        .heart-svg { 
-            width: 1.5em; 
-            height: 1.5em; 
-            margin: 10px 0; 
-        }
-    }
-
-    .announcement-text, .wedding-container {
-        text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
-        color: white;
-    }
-
-    @keyframes slideInUp {
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    .initial-load .name          { animation: slideInUp 1.2s ease-out 0.2s forwards; }
-    .initial-load .announcement { animation: slideInUp 1.2s ease-out 0.5s forwards; }
-    .initial-load .wedding-info { animation: slideInUp 1.2s ease-out 0.8s forwards; }
-    .initial-load .play-btn     { animation: slideInUp 1.2s ease-out 1.1s forwards; }
-
-    #home:not(.initial-load) .reveal-item { opacity: 1; transform: translateY(0); }
-
-    .carousel-item img {
-        height: 100vh !important;
-        width: 100% !important;
-        object-fit: cover;
-    }
-
-    .heart-svg { width: 1.2em; height: 1.2em; margin: 0 15px; vertical-align: middle; }
-
-    .heart-path {
-        stroke: white; stroke-width: 3; fill: none; stroke-linecap: round;
-        stroke-dasharray: 160; stroke-dashoffset: 160;
-        animation: drawHeartSynced 6s linear infinite;
-        filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
-    }
-
-    @keyframes drawHeartSynced {
-        0% { stroke-dashoffset: 160; opacity: 0; }
-        5% { opacity: 1; }
-        35% { stroke-dashoffset: 0; opacity: 1; }
-        40%, 100% { stroke-dashoffset: 0; opacity: 0; }
-    }
-
-    .infinity-path {
-        stroke: white; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round;
-        stroke-dasharray: 220; stroke-dashoffset: 220;
-        opacity: 0;
-        animation: drawInfinitySynced 6s linear infinite;
-        animation-delay: 3s; 
-        filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
-    }
-
-    @keyframes drawInfinitySynced {
-        0% { stroke-dashoffset: 220; opacity: 0; }
-        5% { opacity: 1; }
-        35% { stroke-dashoffset: 0; opacity: 1; }
-        40%, 100% { stroke-dashoffset: 0; opacity: 0; }
-    }
-
-    .btn-play {
-        position: relative; display: flex; align-items: center; justify-content: center;
-        width: 65px; height: 65px; border: 2px solid #fff; border-radius: 50%;
-        background: #fff !important; cursor: pointer; padding: 0; outline: none !important;
-    }
-
-    .btn-play span {
-        display: block !important; width: 0 !important; height: 0 !important;
-        border-left: 18px solid #000 !important; border-top: 10px solid transparent !important;
-        border-bottom: 10px solid transparent !important; margin-left: 5px !important;
-    }
-
-    .btn-play.playing span {
-        width: 16px !important; height: 20px !important; border-left: 5px solid #000 !important;
-        border-right: 5px solid #000 !important; border-top: none !important; border-bottom: none !important; margin-left: 0 !important;
-    }
-
-    .carousel-control-prev, .carousel-control-next { z-index: 20 !important; width: 10%; }
-</style>
 
 <div class="container-fluid p-0 mb-5 pb-5 initial-load" id="home">
     <div id="header-carousel" class="carousel slide carousel-fade" data-ride="carousel">
@@ -423,74 +471,6 @@
 
 <audio id="audioPlayer" src="play.mp3" loop></audio>
 
-<script>
-    // 1. SPARKLE GENERATOR (Restricted to Date Only)
-    function createSparkle() {
-        const container = document.getElementById('sparkle-container');
-        if (!container) return;
-        
-        // LIMITER: Prevent DOM bloat if tab is left open
-        if (container.getElementsByClassName('sparkle').length > 25) return;
-
-        const sparkle = document.createElement('div');
-        sparkle.className = 'sparkle';
-        const size = Math.random() * 6 + 4 + 'px';
-        sparkle.style.width = size;
-        sparkle.style.height = size;
-        sparkle.style.left = Math.random() * 100 + '%';
-        sparkle.style.top = Math.random() * 100 + '%';
-        const xEnd = (Math.random() - 0.5) * 80 + 'px';
-        const yEnd = - (Math.random() * 50 + 30) + 'px';
-        sparkle.style.setProperty('--x-end', xEnd);
-        sparkle.style.setProperty('--y-end', yEnd);
-        sparkle.style.animationDuration = Math.random() * 1.5 + 1 + 's';
-        container.appendChild(sparkle);
-        setTimeout(() => sparkle.remove(), 2500);
-    }
-    setInterval(createSparkle, 150);
-
-    // 2. AUDIO & BUTTON LOGIC
-    const audioPlayer = document.getElementById('audioPlayer');
-    const playBtn = document.getElementById('playBtn');
-
-    function toggleAudio() {
-        if (audioPlayer.paused) {
-            audioPlayer.play();
-            playBtn.classList.add('playing');
-        } else {
-            audioPlayer.pause();
-            playBtn.classList.remove('playing');
-        }
-    }
-
-    // Single specific listener for the play button
-    if(playBtn) {
-        playBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleAudio();
-        });
-    }
-
-    // 3. INITIAL LOAD & CAROUSEL
-    $(document).ready(function() {
-        $('#header-carousel').carousel({ interval: 5000, pause: false });
-    });
-
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            const home = document.getElementById('home');
-            if(home) home.classList.remove('initial-load');
-        }, 3000);
-    });
-
-    document.addEventListener('click', () => { 
-        if(audioPlayer && audioPlayer.paused) {
-            audioPlayer.play().then(() => {
-                if(playBtn) playBtn.classList.add('playing');
-            }).catch(() => {});
-        }
-    }, { once: true });
-</script>
     <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -505,156 +485,6 @@
             </div>
         </div>
     </div>
-    <style>
-    /* Independent Flip Logic */
-    .scrapbook-flip-card {
-        background-color: transparent;
-        height: 580px; 
-        perspective: 1500px;
-        margin-bottom: 30px;
-    }
-
-    .scrapbook-flip-inner {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        transform-style: preserve-3d;
-        cursor: pointer;
-    }
-
-    .scrapbook-flip-inner.is-flipped {
-        transform: rotateY(180deg);
-    }
-
-    .flip-front, .flip-back {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-        border-radius: 8px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    }
-
-    /* Front: Colored Polaroid Styling */
-    .flip-front {
-        padding: 15px 15px 120px 15px;
-        display: flex;
-        flex-direction: column;
-        border: none;
-    }
-
-    /* Assigning Frame Colors */
-    .groom-frame { background-color: #001f3f; } /* Navy Blue */
-    .bride-frame { background-color: #708090; } /* Gray */
-
-    .flip-front img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 2px;
-    }
-
-    .flip-label-area {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 120px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        color: #ffffff;
-    }
-
-    /* Clean Header Styling (Icons Removed) */
-    .label-header {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 5px;
-    }
-
-    /* Label Bars match the frame now */
-    .groom-label-bar { border-radius: 0 0 8px 8px; }
-    .bride-label-bar { border-radius: 0 0 8px 8px; }
-
-    .flip-label-area h3 {
-        font-family: 'Georgia', serif;
-        font-size: 1.4rem;
-        margin: 0;
-        letter-spacing: 2px;
-        color: #d4af37; 
-    }
-
-    .flip-label-area span {
-        font-size: 0.85rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        opacity: 0.9;
-        margin-bottom: 10px;
-    }
-
-    .tap-hint {
-        font-size: 0.7rem;
-        color: #ffffff;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        border-top: 1px solid rgba(255,255,255,0.2);
-        padding-top: 8px;
-        font-weight: bold;
-        opacity: 0.8;
-    }
-
-    /* Back Styling */
-    .flip-back {
-        transform: rotateY(180deg);
-        padding: 40px 30px;
-        display: flex;
-        flex-direction: column;
-        overflow-y: auto; 
-        color: #ffffff;
-    }
-
-    .groom-back { background-color: #001f3f; }
-    .bride-back { background-color: #708090; }
-
-    .flip-back h3 {
-        color: #d4af37; 
-        font-family: 'Secondary Font', serif;
-        border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-        padding-bottom: 10px;
-        margin-bottom: 20px;
-        text-align: center;
-    }
-
-    .flip-back p {
-        font-size: 1rem;
-        line-height: 1.8;
-        margin-bottom: 15px;
-        color: rgba(255, 255, 255, 0.95);
-        text-align: justify;
-    }
-
-    .flip-back .name-footer {
-        text-align: center;
-        font-weight: bold;
-        color: #d4af37;
-        margin-top: auto;
-        padding-top: 20px;
-        border-top: 1px solid rgba(255,255,255,0.1);
-    }
-
-    /* Scrollbar */
-    .flip-back::-webkit-scrollbar { width: 4px; }
-    .flip-back::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
-
-    @media (max-width: 768px) {
-        .scrapbook-flip-card { height: 520px; }
-    }
-</style>
 
 <div class="container-fluid py-5" id="about">
         <div class="container text-center">
@@ -718,25 +548,13 @@
     </div>
 </div>
 
-<script>
-    function toggleFlip(cardInner) {
-        cardInner.classList.toggle('is-flipped');
-        
-        if (cardInner.classList.contains('is-flipped')) {
-            const backElement = cardInner.querySelector('.flip-back');
-            if (backElement) {
-                setTimeout(() => { backElement.scrollTop = 0; }, 100);
-            }
-        }
-    }
-</script>
     <div class="container-fluid py-5" id="story" style="background: #ffffff; margin: 100px 0;">
     <div class="container text-center">
         <div class="section-title mb-4">
             <h1 class="font-secondary display-4 mb-2" style="color: #1a2a44; font-size: 5.5rem;">Our Story</h1>
             <h6 class="text-uppercase text-primary" style="letter-spacing: 3px; color: #d4af37 !important; font-size: 0.7rem;">Tap to see our journey</h6>
         </div>
-
+            </div>
         <div class="compact-nav-wrapper">
             <div class="nav-gold-line"></div>
             <div class="nav-icons">
@@ -820,104 +638,6 @@
     </div>
 </div>
 
-<style>
-    /* NAV STYLES */
-    .compact-nav-wrapper {
-        position: relative;
-        max-width: 450px;
-        margin: 0 auto 30px auto;
-    }
-    .nav-gold-line {
-        position: absolute;
-        top: 20px;
-        left: 0; right: 0;
-        height: 1px;
-        background: #d4af37;
-        z-index: 1;
-    }
-    .nav-icons {
-        display: flex;
-        justify-content: space-between;
-        position: relative;
-        z-index: 2;
-    }
-    .nav-node { cursor: pointer; text-align: center; width: 60px; }
-    .icon-circle {
-        width: 40px;
-        height: 40px;
-        background: #fff;
-        border: 1px solid #d4af37;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #1a2a44;
-        transition: 0.3s;
-        margin: 0 auto 5px auto;
-    }
-    .nav-node.active .icon-circle {
-        background: #d4af37;
-        color: #fff;
-        transform: scale(1.1);
-        box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
-    }
-    .node-year { font-size: 0.7rem; font-weight: 700; color: #bbb; }
-    .nav-node.active .node-year { color: #1a2a44; }
-
-    /* CARD STYLES */
-    .compact-story-container {
-        max-width: 900px;
-        margin: 0 auto;
-    }
-    .story-card {
-        background: #fff;
-        border-radius: 4px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        border: 1px solid #f0f0f0;
-        overflow: hidden;
-        min-height: 420px;
-        height: 420px; 
-    }
-    .story-pane { display: none; height: 100%; animation: fadeIn 0.4s ease forwards; }
-    .story-pane.active { display: block; }
-    
-    .pane-img { width: 100%; height: 420px; object-fit: cover; }
-    
-    .pane-content {
-        padding: 30px;
-        height: 420px;
-        overflow-y: auto;
-        text-align: left;
-    }
-    .pane-content::-webkit-scrollbar { width: 4px; }
-    .pane-content::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
-
-    .pane-h { font-family: 'Dancing Script', cursive; color: #1a2a44; font-size: 2rem; margin-bottom: 15px; }
-    .pane-p { font-size: 0.9rem; line-height: 1.7; color: #555; text-align: justify; }
-    
-    .gold-line { width: 40px; height: 2px; background: #d4af37; margin: 15px auto; }
-
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes heartBeat { 0%, 70%, 100% { transform: scale(1); } 14% { transform: scale(1.1); } 28% { transform: scale(1); } 42% { transform: scale(1.1); } }
-
-    @media (max-width: 992px) {
-        .story-card { height: auto; min-height: 500px; }
-        .pane-img { height: 250px; }
-        .pane-content { height: auto; overflow: visible; padding: 20px; }
-    }
-</style>
-
-<script>
-function showStory(id, el) {
-    document.querySelectorAll('.nav-node').forEach(n => n.classList.remove('active'));
-    el.classList.add('active');
-    document.querySelectorAll('.story-pane').forEach(p => p.classList.remove('active'));
-    document.getElementById('pane-' + id).classList.add('active');
-    
-    const content = document.querySelector('#pane-' + id + ' .pane-content');
-    if(content) content.scrollTop = 0;
-}
-</script>
     <div class="container-fluid bg-gallery" id="gallery" style="padding: 120px 0; margin: 90px 0;">
         <div class="container text-center">
         <div class="section-title mb-4">
@@ -982,51 +702,6 @@ function showStory(id, el) {
             We can’t wait to share this beautiful moment with you!
         </p>
 
-        <style>
-            .countdown-timer-bottom {
-                display: inline-flex;
-                justify-content: center;
-                align-items: center;
-                color: #333; /* Darker color for readability on light backgrounds */
-                font-family: 'Playfair Display', serif;
-                margin-top: 20px;
-            }
-
-            .countdown-item {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                min-width: 80px;
-                position: relative;
-            }
-
-            .countdown-item:not(:last-child)::after {
-                content: "";
-                position: absolute;
-                right: 0;
-                top: 25%;
-                height: 50%;
-                width: 1px;
-                background: linear-gradient(to bottom, transparent, #ccc, transparent);
-            }
-
-            .countdown-value {
-                font-size: 2.5rem;
-                font-weight: 400;
-                line-height: 1;
-                color: #b08d57; /* Elegant gold-toned numbers */
-            }
-
-            .countdown-label {
-                font-size: 0.65rem;
-                text-transform: uppercase;
-                letter-spacing: 3px;
-                margin-top: 8px;
-                font-weight: 700;
-                color: #888;
-            }
-        </style>
-
         <div class="countdown-timer-bottom">
             <div class="countdown-item"><span class="countdown-value days">00</span><span class="countdown-label">Days</span></div>
             <div class="countdown-item"><span class="countdown-value hours">00</span><span class="countdown-label">Hrs</span></div>
@@ -1044,33 +719,6 @@ function showStory(id, el) {
 
     </div>
 </div>
-
-<script>
-    function updateCountdown() {
-        // Target: June 12, 2026, 2:00 PM PHT
-        const targetDate = new Date("June 12, 2026 14:00:00 GMT+0800").getTime();
-        const now = new Date().getTime();
-        const diff = targetDate - now;
-
-        if (diff <= 0) {
-            document.querySelector('.countdown-timer-bottom').innerHTML = "<h4>Today is the Day!</h4>";
-            return;
-        }
-
-        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const s = Math.floor((diff % (1000 * 60)) / 1000);
-
-        document.querySelectorAll('.days').forEach(el => el.innerText = d.toString().padStart(2, '0'));
-        document.querySelectorAll('.hours').forEach(el => el.innerText = h.toString().padStart(2, '0'));
-        document.querySelectorAll('.minutes').forEach(el => el.innerText = m.toString().padStart(2, '0'));
-        document.querySelectorAll('.seconds').forEach(el => el.innerText = s.toString().padStart(2, '0'));
-    }
-
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
-</script>
 
 <div class="row">
     <div class="col-md-6 mb-4 mb-md-0" style="border-right: 2px solid #007bff;">
@@ -1118,25 +766,6 @@ function showStory(id, el) {
     </div>
 </div>
 
-<style>
-.map-wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.map-container {
-    width: 100%;
-    max-width: 600px;
-    aspect-ratio: 16/9;
-}
-
-.map-container iframe {
-    width: 100%;
-    height: 100%;
-    border: 0;
-}
-</style>
     <div class="container-fluid py-5" id="entourage">
 
 <div class="container text-center pt-5 pb-5">
@@ -1353,35 +982,6 @@ function showStory(id, el) {
   </div>
 </div>
 
-<style>
-  .letter-spacing { letter-spacing: 3px; }
-  
-  /* Updated to Serif with Vintage/Calligraphic elements */
-  .script-title { 
-    font-family: 'Playfair Display', serif; 
-    font-style: italic; 
-    font-weight: 500; 
-    font-size: 2.2rem; 
-    margin-bottom: 0.2rem; 
-    color: #1a2a44; 
-  }
-  
-  /* Divider logic */
-  .divider-heart { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 15px auto; width: 250px; }
-  .divider-heart .line { flex: 1; border-top: 1px solid #b08d57; }
-  .divider-heart i { color: #b08d57; font-size: 12px; }
-
-  /* Ensure rows of names don't look cramped */
-  .row p { margin-bottom: 0.7rem; font-size: 1.05rem; }
-  
-  @media (max-width: 576px) {
-    .font-secondary.display-4 { font-size: 2.5rem; }
-    .row p { font-size: 0.9rem; }
-    .script-title { font-size: 1.8rem; }
-  }
-</style>
-
-
     <div class="container-fluid py-5" id="dressgift">
                 <div class="container text-center">
         <div class="section-title mb-4">
@@ -1396,38 +996,6 @@ function showStory(id, el) {
             We have just one small favor: dress up with us for this very special day. It would mean so much to see everyone looking their best as we celebrate love, laughter, and beautiful new beginnings together.
         </p>
     </div>
-
-    <style>
-        .attire-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            max-width: 1000px;
-            margin: 0 auto 3rem;
-        }
-        .attire-card {
-            flex: 1;
-            min-width: 300px;
-            max-width: 450px;
-            padding: 20px;
-            text-align: center;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            cursor: pointer;
-        }
-        .attire-card:hover, .attire-card:active {
-            transform: translateY(-10px) scale(1.02);
-        }
-        .vertical-divider {
-            width: 1px;
-            background-color: #003366;
-            align-self: stretch;
-        }
-        @media (max-width: 768px) {
-            .vertical-divider { display: none; }
-            .attire-card { min-width: 100%; }
-        }
-    </style>
 
     <div class="attire-container">
         <div class="attire-card">
@@ -1469,28 +1037,6 @@ function showStory(id, el) {
         <div style="position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; border-top: 3px solid #C0C0C0; border-right: 3px solid #C0C0C0; opacity: 0.6;"></div>
         <div style="position: absolute; bottom: 20px; left: 20px; width: 40px; height: 40px; border-bottom: 3px solid #C0C0C0; border-left: 3px solid #C0C0C0; opacity: 0.6;"></div>
         <div style="position: absolute; bottom: 20px; right: 20px; width: 40px; height: 40px; border-bottom: 3px solid #C0C0C0; border-right: 3px solid #C0C0C0; opacity: 0.6;"></div>
-
-        <style>
-            @keyframes pulseGlow {
-                0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); transform: translate(-50%, -50%) scale(1); }
-                70% { box-shadow: 0 0 0 25px rgba(255, 255, 255, 0); transform: translate(-50%, -50%) scale(1.05); }
-                100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); transform: translate(-50%, -50%) scale(1); }
-            }
-            @keyframes openingGift {
-                0%, 15% { transform: translateY(0) rotate(0deg); }
-                35%, 55% { transform: translateY(-22px) rotate(-8deg); } 
-                80%, 100% { transform: translateY(0) rotate(0deg); }
-            }
-            @keyframes sparkleFloat {
-                0% { transform: scale(0) translateY(0); opacity: 0; }
-                50% { transform: scale(1.2) translateY(-40px); opacity: 1; }
-                100% { transform: scale(0) translateY(-70px); opacity: 0; }
-            }
-            @keyframes silverShimmer {
-                0% { background-position: -200% center; }
-                100% { background-position: 200% center; }
-            }
-        </style>
 
         <div style="position: relative; width: 120px; height: 120px; margin: 0 auto 30px auto; display: flex; align-items: center; justify-content: center;">
             <div style="position: absolute; top: 50%; left: 50%; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(2px); animation: pulseGlow 2.5s infinite; z-index: 1;"></div>
@@ -1574,75 +1120,6 @@ function showStory(id, el) {
             </p>
         </div>
 
-<style>
-    .rsvp-section { max-width: 480px; margin: 40px auto; padding: 50px 40px; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); border-top: 6px solid #1a2a44; text-align: center; font-family: 'Lato', sans-serif; color: #1a2a44; }
-    .rsvp-section h2 { font-family: 'Playfair Display', serif; font-size: 2.6rem; margin-bottom: 8px; color: #1a2a44; letter-spacing: 1px; }
-    .rsvp-section p.subtitle { font-style: italic; margin-bottom: 35px; color: #707b7c; font-weight: 300; }
-    .form-group { text-align: left; margin-bottom: 25px; }
-    .form-group label { display: block; margin-bottom: 8px; font-weight: 400; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: #1a2a44; }
-    .rsvp-input { width: 100%; padding: 14px; border: 1px solid #d5d8dc; border-radius: 4px; box-sizing: border-box; font-size: 1rem; background-color: #f8f9f9; transition: all 0.3s ease; }
-    .rsvp-input:focus { border-color: #1a2a44; background-color: #fff; outline: none; }
-    /* Styling for read-only invite code */
-    .rsvp-input[readonly] { background-color: #f2f4f4; color: #7f8c8d; cursor: not-allowed; border-style: dashed; }
-    .policy-group { display: flex; align-items: flex-start; gap: 10px; text-align: left; margin-bottom: 25px; font-size: 0.9rem; }
-    .policy-group input { margin-top: 4px; }
-    .policy-link { color: #1a2a44; text-decoration: underline; font-weight: 400; }
-    #submit-btn { background: #1a2a44; color: #ffffff; border: none; padding: 16px; width: 100%; border-radius: 4px; cursor: pointer; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; transition: background 0.3s; }
-    #submit-btn:hover { background: #2c3e50; }
-    .nav-links { margin-top: 30px; display: flex; gap: 10px; justify-content: center; }
-    .nav-btn { flex: 1; padding: 12px; background: #f8f9f9; color: #1a2a44; border: 1px solid #d5d8dc; text-decoration: none; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; transition: all 0.3s; }
-    .nav-btn:hover { background: #d5d8dc; color: #1a2a44; }
-    .allowance-text { font-size: 0.8rem; color: #707b7c; margin-top: -15px; margin-bottom: 20px; text-align: left; font-style: italic; }
-/* --- VIP PASS: CLEAN & CONTAINED --- */
-    div.swal2-popup.vip-modal-custom {
-        padding: 0 !important; 
-        border-radius: 12px !important;
-        width: 90% !important;
-        max-width: 420px !important;
-        background: #ffffff !important; 
-        border: 2px solid #1a2a44 !important; /* Adds a classy navy border instead of circles */
-        box-shadow: 0 15px 35px rgba(0,0,0,0.2) !important;
-    }
-    
-    div.swal2-popup.vip-modal-custom .swal2-html-container {
-        margin: 0 !important;
-        padding: 0 !important;
-        overflow: hidden !important; 
-    }
-
-    /* Kill all scrollbars entirely */
-    div.swal2-popup.vip-modal-custom::-webkit-scrollbar,
-    div.swal2-popup.vip-modal-custom *::-webkit-scrollbar {
-        display: none !important;
-    }
-    div.swal2-popup.vip-modal-custom {
-        -ms-overflow-style: none !important; 
-        scrollbar-width: none !important; 
-    }
-
-    /* The "X" Button - Safely INSIDE the top right */
-    div.swal2-popup.vip-modal-custom .swal2-close {
-        position: absolute !important;
-        top: 5px !important;
-        right: 5px !important;
-        background: transparent !important; 
-        color: #a5a5a5 !important; 
-        width: 36px !important;
-        height: 36px !important;
-        font-size: 28px !important;
-        font-weight: 300 !important;
-        box-shadow: none !important;
-        outline: none !important;
-        transition: color 0.2s ease !important;
-        z-index: 10 !important;
-    }
-    
-    div.swal2-popup.vip-modal-custom .swal2-close:hover {
-        color: #1a2a44 !important; 
-        background: transparent !important;
-    }
-</style>
-
 <div class="rsvp-section">
     <h2>RSVP</h2>
     <p class="subtitle">Kindly respond by the deadline</p>
@@ -1707,274 +1184,6 @@ function showStory(id, el) {
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    // Global variable to store the "Source of Truth" from your Sheet
-    let officialAllowance = 0;
-
-    window.addEventListener('DOMContentLoaded', () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const inviteId = urlParams.get('id'); 
-        const mask = urlParams.get('v'); // The obfuscated parameter (st, pl, ex, tr, qu, mx)
-
-        // 1. Translation Logic: Converts the code to a number 0-5
-        const maskMap = {
-            'st': 0, // Standard
-            'pl': 1, // Plus
-            'ex': 2, // Extended
-            'tr': 3, // Triple
-            'qu': 4, // Quad
-            'mx': 5  // Max
-        };
-        
-        let urlCount = maskMap[mask] || 0;
-        const dynamicContainer = document.getElementById('dynamic-guest-fields');
-        const submitBtn = document.getElementById('submit-btn');
-
-        // 2. IMMEDIATE TRIGGER: Build fields based on the URL mask immediately
-        if (urlCount > 0 && dynamicContainer) {
-            document.getElementById('allowance-display').style.display = 'block';
-            document.getElementById('guest-count-val').textContent = urlCount;
-            
-            let html = '';
-            for (let i = 1; i <= urlCount; i++) {
-                html += `
-                    <div class="form-group" style="margin-top: 15px;">
-                        <label>Additional Guest ${i} Name</label>
-                        <input type="text" name="Additional_Guest_${i}" class="rsvp-input" placeholder="Enter guest name" required>
-                    </div>`;
-            }
-            dynamicContainer.innerHTML = html;
-        }
-
-        if (inviteId) {
-            document.getElementById('invite-code').value = inviteId;
-            
-            // 3. SECURITY SYNC: Verify if the URL mask matches the Sheet data in background
-            google.script.run.withSuccessHandler(function(data) {
-                if (data && data.valid) {
-                    document.getElementById('full-name').value = data.name;
-                    officialAllowance = parseInt(data.allowance) || 0;
-
-                    // If URL was manipulated to a higher number than the Sheet allows, revert it
-                    if (urlCount > officialAllowance) {
-                        urlCount = officialAllowance; 
-                        if (urlCount === 0) {
-                            dynamicContainer.innerHTML = '';
-                            document.getElementById('allowance-display').style.display = 'none';
-                        } else {
-                            let secureHtml = '';
-                            for (let i = 1; i <= urlCount; i++) {
-                                secureHtml += `
-                                    <div class="form-group" style="margin-top: 15px;">
-                                        <label>Additional Guest ${i} Name</label>
-                                        <input type="text" name="Additional_Guest_${i}" class="rsvp-input" placeholder="Enter guest name" required>
-                                    </div>`;
-                            }
-                            dynamicContainer.innerHTML = secureHtml;
-                            document.getElementById('guest-count-val').textContent = urlCount;
-                        }
-                    }
-                } else {
-                    Swal.fire({
-                        title: 'INVALID INVITE',
-                        text: 'This invite code is incorrect or already used. Please contact Harvy or Christine.',
-                        icon: 'error',
-                        confirmButtonColor: '#1a2a44'
-                    });
-                    submitBtn.disabled = true;
-                    submitBtn.innerText = "INVALID ACCESS";
-                }
-            }).getInviteDetails(inviteId);
-        }
-    });
-
-    const notifyCheckbox = document.getElementById('notify-opt-in');
-        if(notifyCheckbox) {
-            notifyCheckbox.addEventListener('change', function() {
-                const emailGroup = document.getElementById('email-group');
-                const emailInput = document.getElementById('guest-email');
-                if(this.checked) {
-                    emailGroup.style.display = 'block';
-                    emailInput.required = true;
-                } else {
-                    emailGroup.style.display = 'none';
-                    emailInput.required = false;
-                    emailInput.value = '';
-                }
-            });
-        }
-        
-    // --- RETRIEVED ORIGINAL SUBMISSION LOGIC ---
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzGsgIl759jiq7vTrnkbvzkv_WabI1pjA9tGgMu8Zw8uEQYCFw4V_sDO_os7xG837sC1g/exec';
-    const rsvpForm = document.getElementById('rsvp-form');
-
-    rsvpForm.addEventListener('submit', e => {
-        e.preventDefault();
-        
-        const btn = document.getElementById('submit-btn');
-        const attendance = document.getElementById('attendance-select').value;
-        btn.disabled = true;
-        btn.innerText = "SENDING...";
-
-        fetch(scriptURL, { method: 'POST', body: new FormData(rsvpForm)})
-        .then(res => res.json())
-        .then(data => {
-            if (data.result === "success") {
-                if (attendance === "Yes") {
-                    // 1. Get the Primary Guest
-                    const mainGuest = document.getElementById('full-name').value || "Guest";
-                    const inviteCodeUsed = document.getElementById('invite-code').value || "N/A";
-                    
-                    // 2. Hunt for any Additional Guests they typed in
-                    let additionalGuestsHtml = '';
-                    let totalAdmit = 1;
-                    const additionalInputs = document.querySelectorAll('input[name^="Additional_Guest_"]');
-                    
-                    if (additionalInputs.length > 0) {
-                        let guestNames = [];
-                        additionalInputs.forEach(input => {
-                            if(input.value.trim() !== '') {
-                                guestNames.push(input.value.trim());
-                                totalAdmit++;
-                            }
-                        });
-                        
-                        // If they added people, build a sleek passenger list
-                        if (guestNames.length > 0) {
-                            additionalGuestsHtml = `
-                                <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e2e8f0;">
-                                    <span style="font-size: 0.55rem; color: #888; letter-spacing: 1px; text-transform: uppercase;">Plus Guests</span><br>
-                                    <strong style="font-size: 0.85rem; color: #1a2a44; line-height: 1.4; text-transform: uppercase;">
-                                        ${guestNames.join('<br>')}
-                                    </strong>
-                                </div>
-                            `;
-                        }
-                    }
-
-                    // 3. Generate the "Jeepney Journey" Ticket
-                    Swal.fire({
-                        html: `
-                        <div style="padding: 0; text-align: left; font-family: 'Montserrat', sans-serif; position: relative;">
-                            
-                            <div style="padding: 40px 25px 20px 25px; background: #ffffff; border-radius: 12px 12px 0 0;">
-                                
-                                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #1a2a44; padding-bottom: 10px; margin-bottom: 20px;">
-                                    <h3 style="color: #1a2a44; font-family: 'Playfair Display', serif; font-weight: 900; letter-spacing: 1px; margin: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
-                                        <i class="fas fa-ticket-alt" style="color: #d4af37;"></i> VIP GUEST PASS
-                                    </h3>
-                                    <div style="text-align: right; background: #1a2a44; color: #d4af37; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 0.7rem; letter-spacing: 2px;">
-                                        ADMIT: ${totalAdmit}
-                                    </div>
-                                </div>
-
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin: 25px 0;">
-                                    
-                                    <div style="text-align: center; width: 35%;">
-                                        <i class="fas fa-church" style="font-size: 1.4rem; color: #1a2a44; margin-bottom: 5px;"></i><br>
-                                        <span style="font-size: 0.75rem; font-weight: 900; color: #1a2a44; letter-spacing: 1px;">CEREMONY</span><br>
-                                        <span style="font-size: 0.55rem; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Redemptorist Church</span>
-                                    </div>
-                                    
-                                    <div style="width: 30%; text-align: center; color: #1a2a44; position: relative;">
-                                        <div style="position: absolute; top: 40%; left: -5px; right: -5px; border-top: 2px dashed #cbd5e1; z-index: 1;"></div>
-                                        <div style="background: #ffffff; padding: 0 8px; position: relative; z-index: 2; display: inline-block;">
-                                            <svg width="32" height="22" viewBox="0 0 50 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M2,12 L30,12 L33,18 L48,18 L48,25 L2,25 Z" fill="#1a2a44"/>
-                                                <rect x="2" y="8" width="28" height="3" fill="#d4af37"/>
-                                                <rect x="5" y="14" width="6" height="4" fill="#ffffff" rx="1"/>
-                                                <rect x="13" y="14" width="6" height="4" fill="#ffffff" rx="1"/>
-                                                <rect x="21" y="14" width="6" height="4" fill="#ffffff" rx="1"/>
-                                                <rect x="33" y="18" width="6" height="3" fill="#ffffff" rx="1"/>
-                                                <circle cx="12" cy="25" r="4" fill="#ffffff" stroke="#1a2a44" stroke-width="2"/>
-                                                <circle cx="38" cy="25" r="4" fill="#ffffff" stroke="#1a2a44" stroke-width="2"/>
-                                            </svg>
-                                        </div>
-                                    </div>
-
-                                    <div style="text-align: center; width: 35%;">
-                                        <i class="fas fa-glass-cheers" style="font-size: 1.4rem; color: #1a2a44; margin-bottom: 5px;"></i><br>
-                                        <span style="font-size: 0.75rem; font-weight: 900; color: #1a2a44; letter-spacing: 1px;">RECEPTION</span><br>
-                                        <span style="font-size: 0.55rem; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Waterfront Hotel</span>
-                                    </div>
-                                </div>
-
-                                <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 5px;">
-                                    <div style="display: flex; justify-content: space-between;">
-                                        <div style="flex: 1;">
-                                            <span style="font-size: 0.55rem; color: #888; letter-spacing: 1px; text-transform: uppercase;">Lead Guest</span><br>
-                                            <strong style="font-size: 1rem; color: #1a2a44; text-transform: uppercase;">${mainGuest}</strong>
-                                        </div>
-                                        <div style="text-align: right;">
-                                            <span style="font-size: 0.55rem; color: #888; letter-spacing: 1px; text-transform: uppercase;">Date & Time</span><br>
-                                            <strong style="font-size: 0.85rem; color: #d4af37;">JUN 12, 2026</strong><br>
-                                            <strong style="font-size: 0.85rem; color: #1a2a44;">02:00 PM</strong>
-                                        </div>
-                                    </div>
-                                    ${additionalGuestsHtml}
-                                </div>
-                            </div>
-
-                            <div style="position: relative; border-top: 2px dashed #cbd5e1; margin: 0 15px;"></div>
-
-                            <div style="padding: 20px 25px 25px 25px; background: #ffffff; text-align: center; border-radius: 0 0 12px 12px;">
-                                
-                                <div style="height: 40px; width: 100%; background: repeating-linear-gradient(90deg, #1a2a44 0, #1a2a44 2px, transparent 2px, transparent 4px, #1a2a44 4px, #1a2a44 5px, transparent 5px, transparent 8px, #1a2a44 8px, #1a2a44 12px, transparent 12px, transparent 14px); margin-bottom: 12px; opacity: 0.85; border-radius: 2px;"></div>
-                                
-                                <p style="font-size: 0.9rem; color: #1a2a44; font-weight: 900; letter-spacing: 3px; margin: 0 0 8px 0; text-transform: uppercase;">
-                                    ${inviteCodeUsed}
-                                </p>
-
-                                <p style="font-size: 0.7rem; color: #888; font-style: italic; margin-bottom: 15px;">
-                                    Screenshot this pass to save your spot!
-                                </p>
-                            </div>
-                        </div>
-                        `,
-                        showConfirmButton: false,
-                        showCloseButton: true,
-                        customClass: { popup: 'vip-modal-custom' }
-                    });
-                } else {
-                    Swal.fire({
-                        title: 'THANK YOU',
-                        text: "We are sorry you can't make it, but we appreciate you letting us know!",
-                        icon: 'info',
-                        confirmButtonText: 'CLOSE',
-                        confirmButtonColor: '#1a2a44'
-                    });
-                }
-                rsvpForm.reset();
-            } else if (data.result === "duplicate") {
-                Swal.fire({
-                    title: 'ALREADY REGISTERED',
-                    text: data.name ? `The name "${data.name.toUpperCase()}" is already registered on our list.` : 'One of the names submitted is already registered.',
-                    icon: 'warning',
-                    confirmButtonColor: '#1a2a44'
-                });
-            } else {
-                Swal.fire({ title: 'ERROR', text: data.error || 'Something went wrong.', icon: 'error', confirmButtonColor: '#1a2a44' });
-            }
-            btn.disabled = false;
-            btn.innerText = "SEND RSVP";
-        })
-        .catch(err => {
-            Swal.fire({ title: 'ERROR', text: 'Please try again.', icon: 'error', confirmButtonColor: '#1a2a44' });
-            btn.disabled = false;
-            btn.innerText = "SEND RSVP";
-        });
-    });
-        // ==========================================
-        // SEAT FINDER REVEAL SWITCH
-        // Change 'false' to 'true' to show the button
-        // ==========================================
-        const showSeatFinder = true; 
-
-        if (showSeatFinder) {
-            document.getElementById('seat-finder-container').style.display = 'flex';
-        }
-</script>
 <footer style="margin-top: 20px; padding: 20px 0 0 0; position: relative; color: inherit; margin-bottom: 0 !important; display: block; font-family: 'Montserrat', sans-serif;">
     <div style="position: absolute; top: 0; left: 0; width: 100%; height: 1px; background-color: currentColor; opacity: 0.15;"></div>
 
@@ -2020,52 +1229,6 @@ function showStory(id, el) {
             </div>
         </div>
     </div>
-
-    <style>
-        .inquiry-wrapper {
-            cursor: pointer;
-        }
-        
-        .inquiry-bubble {
-            visibility: hidden;
-            background-color: #d4af37;
-            color: #0a192f;
-            text-align: center;
-            padding: 4px 10px;
-            border-radius: 3px;
-            font-size: 0.55rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: absolute;
-            z-index: 10;
-            bottom: 160%;
-            left: 50%;
-            transform: translateX(-50%) translateY(5px);
-            opacity: 0;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            white-space: nowrap;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-
-        /* The little tail on the bubble */
-        .inquiry-bubble::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -4px;
-            border-width: 4px;
-            border-style: solid;
-            border-color: #d4af37 transparent transparent transparent;
-        }
-
-        .inquiry-wrapper:hover .inquiry-bubble {
-            visibility: visible;
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-    </style>
 </footer>
 
 <div id="chat-bubble" onclick="toggleChat()" style="position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: #1a2a44; border: 1px solid rgba(255,255,255,0.2); color: #ffffff; border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 2147483647; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: all 0.5s;">
@@ -2095,18 +1258,6 @@ function showStory(id, el) {
             <div class="msg-name" style="text-align: left;">Harvy & Christine</div>
             <div class="msg bot" style="text-align: left;" id="welcome-message">Hi! I'm the digital assistant for Harvy & Christine. How can I help you today?</div>
         </div>
-
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const urlParams = new URLSearchParams(window.location.search);
-                const guestName = urlParams.get('n');
-                
-                // If there's a name in the URL, update the text and make the name bold
-                if (guestName) {
-                    document.getElementById('welcome-message').innerHTML = `Hi, <strong>${guestName}</strong>! I'm the digital assistant for Harvy & Christine. How can I help you today?`;
-                }
-            });
-        </script>
         
         <div class="faq-options-list" style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 5px; width: 100%;">
             <p id="faq-loading-msg" style="font-size: 0.75rem; color: #888; margin-bottom: 5px;">Loading questions...</p>
@@ -2118,272 +1269,6 @@ function showStory(id, el) {
     </div>
 </div>
 
-<style>
-.msg { max-width: 85%; padding: 10px 14px; border-radius: 18px; font-size: 0.85rem; line-height: 1.4; position: relative; word-wrap: break-word; }
-    .bot { align-self: flex-start; background: #e4e6eb; color: #050505; border-bottom-left-radius: 4px; }
-    .guest { align-self: flex-end; background: #0084ff; color: white; border-bottom-right-radius: 4px; }
-    /* Name labels above bubbles */
-    .msg-name {
-        font-size: 0.65rem;
-        color: #888;
-        margin-bottom: 2px;
-        font-weight: bold;
-    }
-
-    .msg-row {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 10px;
-    }
-    .bot-row { align-items: flex-start; }
-    .guest-row { align-items: flex-end; }
-
-    /* Keep current bubble styles but remove the bold text from inside the bot bubble */
-    .bot {
-        align-self: flex-start;
-        background: #e4e6eb;
-        color: #050505;
-        border-bottom-left-radius: 4px;
-    }
-    .faq-choice-btn { background: #fff; border: 1px solid #d4af37; color: #1a2a44; padding: 8px 12px; border-radius: 10px; font-size: 0.8rem; cursor: pointer; text-align: left; transition: 0.2s; }
-    #conversation-container::-webkit-scrollbar { width: 4px; }
-    #conversation-container::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
-
-    /* Swaps the Go To Top button to the higher position */
-    .back-to-top {
-        bottom: 85px !important;
-    }
-
-    /* Typing Indicator Animation */
-    .typing-dots {
-        display: inline-flex;
-        align-items: center;
-        height: 15px;
-        gap: 4px;
-        padding: 0 4px;
-    }
-    .typing-dots span {
-        width: 6px;
-        height: 6px;
-        background-color: #888;
-        border-radius: 50%;
-        animation: typingBounce 1.4s infinite ease-in-out both;
-    }
-    .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
-    .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
-
-    @keyframes typingBounce {
-        0%, 80%, 100% { transform: scale(0); }
-        40% { transform: scale(1); }
-    }
-    #chat-window {
-        /* Originates exactly from the center of the 50x50 chat bubble below it */
-        transform-origin: calc(100% - 25px) calc(100% + 40px);
-        animation: springFromButton 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    }
-
-    @keyframes springFromButton {
-        0% {
-            opacity: 0;
-            transform: scale(0.1) translateY(20px);
-        }
-        100% {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-        }
-    }
-</style>
-
-<script>
-    let weddingFAQs = [];
-
-    // RELIABLE SCROLL LOGIC
-    window.onscroll = function() {
-        var bubble = document.getElementById("chat-bubble");
-        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-            bubble.style.display = "flex";
-        } else {
-            bubble.style.display = "none";
-            document.getElementById("chat-window").style.display = "none";
-        }
-    };
-
-function toggleChat() {
-    const win = document.getElementById('chat-window');
-    const tooltip = document.getElementById('chat-tooltip');
-    const badge = document.getElementById('chat-badge'); // New line
-    
-    if (win.style.display === 'none' || win.style.display === '') {
-        win.style.display = 'flex';
-        
-        // Hide the notification bubble and remove the red badge when clicked
-        if (tooltip) tooltip.style.display = 'none'; 
-        if (badge) badge.style.removeProperty('display'); // Or badge.remove();
-        if (badge) badge.style.display = 'none'; 
-        
-        if (weddingFAQs.length === 0) loadFAQs();
-    } else {
-        win.style.display = 'none';
-    }
-}
-
-function loadFAQs() {
-    const optionsContainer = document.getElementById('faq-options-list');
-    
-    // 1. YOUR ACTUAL SCRIPT URL
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbzGsgIl759jiq7vTrnkbvzkv_WabI1pjA9tGgMu8Zw8uEQYCFw4V_sDO_os7xG837sC1g/exec';
-
-    // 2. Clear previous errors
-    document.getElementById('faq-loading-msg').innerText = "Loading questions...";
-
-    // 3. Define the response handler
-    window.handleFAQResponse = function(data) {
-        weddingFAQs = data || [];
-        renderFAQButtons();
-        // Remove the script tag after loading
-        const loader = document.getElementById('faq-script-loader');
-        if(loader) loader.remove();
-    };
-
-    // 4. Create the script tag with a cache-buster
-    const script = document.createElement('script');
-    script.id = 'faq-script-loader';
-    // The '_=' part is a timestamp to prevent the browser from using an old "broken" connection
-    script.src = scriptUrl + '?action=getFAQs&callback=handleFAQResponse&_=' + new Date().getTime();
-    
-    script.onerror = function() {
-        document.getElementById('faq-loading-msg').innerHTML = 
-            '<span style="color:red;">Connection Error.</span><br><button onclick="loadFAQs()" style="background:none; border:none; color:#1a2a44; text-decoration:underline; font-size:0.7rem; cursor:pointer;">Try Again</button>';
-    };
-    
-    document.body.appendChild(script);
-}
-
-function renderFAQButtons() {
-    // Find all lists and grab the most recent one
-    const lists = document.querySelectorAll('.faq-options-list');
-    const container = lists[lists.length - 1]; 
-    
-    if (!container) return;
-    if (weddingFAQs.length === 0) {
-        container.innerHTML = '<p style="font-size:0.75rem; color:#888;">No questions found.</p>';
-        return;
-    }
-
-    let html = '';
-    weddingFAQs.forEach((item, index) => {
-        // We added 'this' so the function knows EXACTLY which button was clicked
-        html += `<button class="faq-choice-btn" onclick="sendGuestMessage(${index}, this)">${item.question}</button>`;
-    });
-    container.innerHTML = html;
-}
-
-function sendGuestMessage(index, btnElement) {
-    const container = document.getElementById('conversation-container');
-    const selected = weddingFAQs[index];
-
-    // 1. Hide ONLY the list of choices that the user just clicked
-    if (btnElement) {
-        btnElement.closest('.faq-options-list').style.display = 'none';
-    }
-
-    // 2. Add Guest Message Row (Aligned Right)
-    // Check the URL for the 'n' parameter, default to "Guest" if not found
-    const urlParams = new URLSearchParams(window.location.search);
-    const guestName = urlParams.get('n') || "Guest"; 
-
-    const guestRow = document.createElement('div');
-    guestRow.className = 'msg-row guest-row';
-    guestRow.style.alignItems = 'flex-end';
-    guestRow.innerHTML = `
-        <div class="msg-name">${guestName}</div>
-        <div class="msg guest">${selected.question}</div>
-    `;
-    container.appendChild(guestRow);
-
-    // Scroll smoothly to bottom
-    setTimeout(() => container.scrollTop = container.scrollHeight, 50);
-
-    // 3. Show Typing Indicator
-    const typingRow = document.createElement('div');
-    typingRow.className = 'msg-row bot-row';
-    typingRow.id = 'typing-indicator';
-    typingRow.innerHTML = `
-        <div class="msg-name">Harvy & Christine</div>
-        <div class="msg bot">
-            <div class="typing-dots"><span></span><span></span><span></span></div>
-        </div>
-    `;
-    container.appendChild(typingRow);
-    
-    setTimeout(() => container.scrollTop = container.scrollHeight, 50);
-
-    // 4. Answer with delay
-    setTimeout(() => {
-        const indicator = document.getElementById('typing-indicator');
-        if(indicator) indicator.remove();
-
-        const botRow = document.createElement('div');
-        botRow.className = 'msg-row bot-row';
-        botRow.innerHTML = `
-            <div class="msg-name">Harvy & Christine</div>
-            <div class="msg bot" style="text-align: left;">${selected.answer}</div>
-        `;
-        container.appendChild(botRow);
-        
-        // Final smooth scroll to ensure the whole answer is visible
-        setTimeout(() => container.scrollTop = container.scrollHeight, 50);
-        
-        document.getElementById('chat-footer').style.display = 'block';
-    }, 1200);
-}
-
-function resetChat() {
-    const container = document.getElementById('conversation-container');
-    document.getElementById('chat-footer').style.display = 'none';
-
-    // Append a new prompt and a NEW class-based list
-    const promptRow = document.createElement('div');
-    promptRow.className = 'msg-row bot-row';
-    promptRow.innerHTML = `
-        <div class="msg-name">Harvy & Christine</div>
-        <div class="msg bot">Anything else you'd like to know?</div>
-        <div class="faq-options-list" style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 10px; width: 100%;"></div>
-    `;
-    container.appendChild(promptRow);
-    
-    // Re-render buttons into the NEW list we just created
-    renderFAQButtons(); 
-    
-    // Scroll to show the new options
-    setTimeout(() => container.scrollTop = container.scrollHeight, 50);
-}
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        // Grab the current parameters (e.g., "?id=4RDB55&v=pl")
-        const currentParams = window.location.search;
-        
-        // If there are parameters, let's attach them to your links
-        if (currentParams) {
-            // Find specific links that leave the main page
-            const linksToUpdate = document.querySelectorAll(
-                'a[href="index.html"], a[href="seat-finder.html"], a[href="floor-plan.html"]'
-            );
-            
-            linksToUpdate.forEach(link => {
-                // Get the original link destination (e.g., "seat-finder.html")
-                const originalHref = link.getAttribute('href');
-                
-                // Make sure we don't accidentally double-add parameters
-                if (originalHref && !originalHref.includes('?')) {
-                    // Combine them! Result: "seat-finder.html?id=4RDB55&v=pl"
-                    link.setAttribute('href', originalHref + currentParams);
-                }
-            });
-        }
-    });
-</script>
 <i class="fa fa-2x fa-angle-down text-white scroll-to-bottom"></i>
 <a href="#" class="btn btn-lg btn-outline-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
@@ -2394,7 +1279,529 @@ function resetChat() {
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="lib/isotope/isotope.pkgd.min.js"></script>
     <script src="lib/lightbox/js/lightbox.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+        // =========================================
+        // HEARTS & SPARKLES ANIMATIONS
+        // =========================================
+        function createHearts() {
+            const containers = document.querySelectorAll('.glitter-container');
+            const heartSVG = `
+                <svg viewBox="0 0 32 32">
+                    <path d="M16 28.5L14.1 26.75C7.35 20.65 3 16.7 3 11.85 3 7.85 6.15 4.7 10.15 4.7c2.25 0 4.45 1.05 5.85 2.7 1.4-1.65 3.6-2.7 5.85-2.7 4 0 7.15 3.15 7.15 7.15 0 4.85-4.35 8.8-11.1 14.9L16 28.5z"/>
+                </svg>
+            `;
+            containers.forEach(container => {
+                if (container.querySelectorAll('.heart-element').length > 0) return;
+                for (let i = 0; i < 6; i++) {
+                    const heartWrap = document.createElement('div');
+                    heartWrap.className = 'heart-element';
+                    heartWrap.innerHTML = heartSVG;
+                    const colors = ['#C0C0C0', '#ffb3c1', '#ffffff', '#e0e0e0'];
+                    heartWrap.style.fill = colors[i % colors.length];
+                    heartWrap.style.left = '45%';
+                    heartWrap.style.top = '20%';
+                    const driftX = (Math.random() * 100 - 50) + 'px'; 
+                    const rotation = (Math.random() * 120 - 60) + 'deg';
+                    heartWrap.style.setProperty('--drift-x', driftX);
+                    heartWrap.style.setProperty('--rot', rotation);
+                    heartWrap.style.animationDelay = (i * 0.7) + 's';
+                    container.appendChild(heartWrap);
+                }
+            });
+        }
+        window.addEventListener('load', createHearts);
 
+        function createSparkle() {
+            const container = document.getElementById('sparkle-container');
+            if (!container) return;
+            if (container.getElementsByClassName('sparkle').length > 25) return;
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            const size = Math.random() * 6 + 4 + 'px';
+            sparkle.style.width = size;
+            sparkle.style.height = size;
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.top = Math.random() * 100 + '%';
+            const xEnd = (Math.random() - 0.5) * 80 + 'px';
+            const yEnd = - (Math.random() * 50 + 30) + 'px';
+            sparkle.style.setProperty('--x-end', xEnd);
+            sparkle.style.setProperty('--y-end', yEnd);
+            sparkle.style.animationDuration = Math.random() * 1.5 + 1 + 's';
+            container.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 2500);
+        }
+        setInterval(createSparkle, 150);
+
+        // =========================================
+        // AUDIO & CAROUSEL LOGIC
+        // =========================================
+        const audioPlayer = document.getElementById('audioPlayer');
+        const playBtn = document.getElementById('playBtn');
+
+        function toggleAudio() {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                playBtn.classList.add('playing');
+            } else {
+                audioPlayer.pause();
+                playBtn.classList.remove('playing');
+            }
+        }
+
+        if(playBtn) {
+            playBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleAudio();
+            });
+        }
+
+        $(document).ready(function() {
+            $('#header-carousel').carousel({ interval: 5000, pause: false });
+        });
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const home = document.getElementById('home');
+                if(home) home.classList.remove('initial-load');
+            }, 3000);
+        });
+
+        document.addEventListener('click', () => { 
+            if(audioPlayer && audioPlayer.paused) {
+                audioPlayer.play().then(() => {
+                    if(playBtn) playBtn.classList.add('playing');
+                }).catch(() => {});
+            }
+        }, { once: true });
+
+        // =========================================
+        // UI INTERACTIONS (Flip Cards & Story)
+        // =========================================
+        function toggleFlip(cardInner) {
+            cardInner.classList.toggle('is-flipped');
+            if (cardInner.classList.contains('is-flipped')) {
+                const backElement = cardInner.querySelector('.flip-back');
+                if (backElement) {
+                    setTimeout(() => { backElement.scrollTop = 0; }, 100);
+                }
+            }
+        }
+
+        function showStory(id, el) {
+            document.querySelectorAll('.nav-node').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+            document.querySelectorAll('.story-pane').forEach(p => p.classList.remove('active'));
+            document.getElementById('pane-' + id).classList.add('active');
+            const content = document.querySelector('#pane-' + id + ' .pane-content');
+            if(content) content.scrollTop = 0;
+        }
+
+        // =========================================
+        // COUNTDOWN TIMER
+        // =========================================
+        function updateCountdown() {
+            const targetDate = new Date("June 12, 2026 14:00:00 GMT+0800").getTime();
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            if (diff <= 0) {
+                document.querySelector('.countdown-timer-bottom').innerHTML = "<h4>Today is the Day!</h4>";
+                return;
+            }
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.querySelectorAll('.days').forEach(el => el.innerText = d.toString().padStart(2, '0'));
+            document.querySelectorAll('.hours').forEach(el => el.innerText = h.toString().padStart(2, '0'));
+            document.querySelectorAll('.minutes').forEach(el => el.innerText = m.toString().padStart(2, '0'));
+            document.querySelectorAll('.seconds').forEach(el => el.innerText = s.toString().padStart(2, '0'));
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // =========================================
+        // RSVP & URL PARAMETERS LOGIC
+        // =========================================
+        let officialAllowance = 0;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const inviteId = urlParams.get('id'); 
+            const mask = urlParams.get('v'); 
+
+            const maskMap = { 'st': 0, 'pl': 1, 'ex': 2, 'tr': 3, 'qu': 4, 'mx': 5 };
+            let urlCount = maskMap[mask] || 0;
+            const dynamicContainer = document.getElementById('dynamic-guest-fields');
+            const submitBtn = document.getElementById('submit-btn');
+
+            if (urlCount > 0 && dynamicContainer) {
+                document.getElementById('allowance-display').style.display = 'block';
+                document.getElementById('guest-count-val').textContent = urlCount;
+                let html = '';
+                for (let i = 1; i <= urlCount; i++) {
+                    html += `
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label>Additional Guest ${i} Name</label>
+                            <input type="text" name="Additional_Guest_${i}" class="rsvp-input" placeholder="Enter guest name" required>
+                        </div>`;
+                }
+                dynamicContainer.innerHTML = html;
+            }
+
+            if (inviteId) {
+                document.getElementById('invite-code').value = inviteId;
+                google.script.run.withSuccessHandler(function(data) {
+                    if (data && data.valid) {
+                        document.getElementById('full-name').value = data.name;
+                        officialAllowance = parseInt(data.allowance) || 0;
+
+                        if (urlCount > officialAllowance) {
+                            urlCount = officialAllowance; 
+                            if (urlCount === 0) {
+                                dynamicContainer.innerHTML = '';
+                                document.getElementById('allowance-display').style.display = 'none';
+                            } else {
+                                let secureHtml = '';
+                                for (let i = 1; i <= urlCount; i++) {
+                                    secureHtml += `
+                                        <div class="form-group" style="margin-top: 15px;">
+                                            <label>Additional Guest ${i} Name</label>
+                                            <input type="text" name="Additional_Guest_${i}" class="rsvp-input" placeholder="Enter guest name" required>
+                                        </div>`;
+                                }
+                                dynamicContainer.innerHTML = secureHtml;
+                                document.getElementById('guest-count-val').textContent = urlCount;
+                            }
+                        }
+                    } else {
+                        Swal.fire({
+                            title: 'INVALID INVITE',
+                            text: 'This invite code is incorrect or already used. Please contact Harvy or Christine.',
+                            icon: 'error',
+                            confirmButtonColor: '#1a2a44'
+                        });
+                        submitBtn.disabled = true;
+                        submitBtn.innerText = "INVALID ACCESS";
+                    }
+                }).getInviteDetails(inviteId);
+            }
+        });
+
+        const notifyCheckbox = document.getElementById('notify-opt-in');
+        if(notifyCheckbox) {
+            notifyCheckbox.addEventListener('change', function() {
+                const emailGroup = document.getElementById('email-group');
+                const emailInput = document.getElementById('guest-email');
+                if(this.checked) {
+                    emailGroup.style.display = 'block';
+                    emailInput.required = true;
+                } else {
+                    emailGroup.style.display = 'none';
+                    emailInput.required = false;
+                    emailInput.value = '';
+                }
+            });
+        }
+            
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzGsgIl759jiq7vTrnkbvzkv_WabI1pjA9tGgMu8Zw8uEQYCFw4V_sDO_os7xG837sC1g/exec';
+        const rsvpForm = document.getElementById('rsvp-form');
+
+        rsvpForm.addEventListener('submit', e => {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submit-btn');
+            const attendance = document.getElementById('attendance-select').value;
+            btn.disabled = true;
+            btn.innerText = "SENDING...";
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(rsvpForm)})
+            .then(res => res.json())
+            .then(data => {
+                if (data.result === "success") {
+                    if (attendance === "Yes") {
+                        const mainGuest = document.getElementById('full-name').value || "Guest";
+                        const inviteCodeUsed = document.getElementById('invite-code').value || "N/A";
+                        
+                        let additionalGuestsHtml = '';
+                        let totalAdmit = 1;
+                        const additionalInputs = document.querySelectorAll('input[name^="Additional_Guest_"]');
+                        
+                        if (additionalInputs.length > 0) {
+                            let guestNames = [];
+                            additionalInputs.forEach(input => {
+                                if(input.value.trim() !== '') {
+                                    guestNames.push(input.value.trim());
+                                    totalAdmit++;
+                                }
+                            });
+                            
+                            if (guestNames.length > 0) {
+                                additionalGuestsHtml = `
+                                    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e2e8f0;">
+                                        <span style="font-size: 0.55rem; color: #888; letter-spacing: 1px; text-transform: uppercase;">Plus Guests</span><br>
+                                        <strong style="font-size: 0.85rem; color: #1a2a44; line-height: 1.4; text-transform: uppercase;">
+                                            ${guestNames.join('<br>')}
+                                        </strong>
+                                    </div>
+                                `;
+                            }
+                        }
+
+                        Swal.fire({
+                            html: `
+                            <div style="padding: 0; text-align: left; font-family: 'Montserrat', sans-serif; position: relative;">
+                                <div style="padding: 40px 25px 20px 25px; background: #ffffff; border-radius: 12px 12px 0 0;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #1a2a44; padding-bottom: 10px; margin-bottom: 20px;">
+                                        <h3 style="color: #1a2a44; font-family: 'Playfair Display', serif; font-weight: 900; letter-spacing: 1px; margin: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+                                            <i class="fas fa-ticket-alt" style="color: #d4af37;"></i> VIP GUEST PASS
+                                        </h3>
+                                        <div style="text-align: right; background: #1a2a44; color: #d4af37; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 0.7rem; letter-spacing: 2px;">
+                                            ADMIT: ${totalAdmit}
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin: 25px 0;">
+                                        <div style="text-align: center; width: 35%;">
+                                            <i class="fas fa-church" style="font-size: 1.4rem; color: #1a2a44; margin-bottom: 5px;"></i><br>
+                                            <span style="font-size: 0.75rem; font-weight: 900; color: #1a2a44; letter-spacing: 1px;">CEREMONY</span><br>
+                                            <span style="font-size: 0.55rem; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Redemptorist Church</span>
+                                        </div>
+                                        <div style="width: 30%; text-align: center; color: #1a2a44; position: relative;">
+                                            <div style="position: absolute; top: 40%; left: -5px; right: -5px; border-top: 2px dashed #cbd5e1; z-index: 1;"></div>
+                                            <div style="background: #ffffff; padding: 0 8px; position: relative; z-index: 2; display: inline-block;">
+                                                <svg width="32" height="22" viewBox="0 0 50 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M2,12 L30,12 L33,18 L48,18 L48,25 L2,25 Z" fill="#1a2a44"/>
+                                                    <rect x="2" y="8" width="28" height="3" fill="#d4af37"/>
+                                                    <rect x="5" y="14" width="6" height="4" fill="#ffffff" rx="1"/>
+                                                    <rect x="13" y="14" width="6" height="4" fill="#ffffff" rx="1"/>
+                                                    <rect x="21" y="14" width="6" height="4" fill="#ffffff" rx="1"/>
+                                                    <rect x="33" y="18" width="6" height="3" fill="#ffffff" rx="1"/>
+                                                    <circle cx="12" cy="25" r="4" fill="#ffffff" stroke="#1a2a44" stroke-width="2"/>
+                                                    <circle cx="38" cy="25" r="4" fill="#ffffff" stroke="#1a2a44" stroke-width="2"/>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div style="text-align: center; width: 35%;">
+                                            <i class="fas fa-glass-cheers" style="font-size: 1.4rem; color: #1a2a44; margin-bottom: 5px;"></i><br>
+                                            <span style="font-size: 0.75rem; font-weight: 900; color: #1a2a44; letter-spacing: 1px;">RECEPTION</span><br>
+                                            <span style="font-size: 0.55rem; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Waterfront Hotel</span>
+                                        </div>
+                                    </div>
+                                    <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 5px;">
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <div style="flex: 1;">
+                                                <span style="font-size: 0.55rem; color: #888; letter-spacing: 1px; text-transform: uppercase;">Lead Guest</span><br>
+                                                <strong style="font-size: 1rem; color: #1a2a44; text-transform: uppercase;">${mainGuest}</strong>
+                                            </div>
+                                            <div style="text-align: right;">
+                                                <span style="font-size: 0.55rem; color: #888; letter-spacing: 1px; text-transform: uppercase;">Date & Time</span><br>
+                                                <strong style="font-size: 0.85rem; color: #d4af37;">JUN 12, 2026</strong><br>
+                                                <strong style="font-size: 0.85rem; color: #1a2a44;">02:00 PM</strong>
+                                            </div>
+                                        </div>
+                                        ${additionalGuestsHtml}
+                                    </div>
+                                </div>
+                                <div style="position: relative; border-top: 2px dashed #cbd5e1; margin: 0 15px;"></div>
+                                <div style="padding: 20px 25px 25px 25px; background: #ffffff; text-align: center; border-radius: 0 0 12px 12px;">
+                                    <div style="height: 40px; width: 100%; background: repeating-linear-gradient(90deg, #1a2a44 0, #1a2a44 2px, transparent 2px, transparent 4px, #1a2a44 4px, #1a2a44 5px, transparent 5px, transparent 8px, #1a2a44 8px, #1a2a44 12px, transparent 12px, transparent 14px); margin-bottom: 12px; opacity: 0.85; border-radius: 2px;"></div>
+                                    <p style="font-size: 0.9rem; color: #1a2a44; font-weight: 900; letter-spacing: 3px; margin: 0 0 8px 0; text-transform: uppercase;">
+                                        ${inviteCodeUsed}
+                                    </p>
+                                    <p style="font-size: 0.7rem; color: #888; font-style: italic; margin-bottom: 15px;">
+                                        Screenshot this pass to save your spot!
+                                    </p>
+                                </div>
+                            </div>
+                            `,
+                            showConfirmButton: false,
+                            showCloseButton: true,
+                            customClass: { popup: 'vip-modal-custom' }
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'THANK YOU',
+                            text: "We are sorry you can't make it, but we appreciate you letting us know!",
+                            icon: 'info',
+                            confirmButtonText: 'CLOSE',
+                            confirmButtonColor: '#1a2a44'
+                        });
+                    }
+                    rsvpForm.reset();
+                } else if (data.result === "duplicate") {
+                    Swal.fire({
+                        title: 'ALREADY REGISTERED',
+                        text: data.name ? `The name "${data.name.toUpperCase()}" is already registered on our list.` : 'One of the names submitted is already registered.',
+                        icon: 'warning',
+                        confirmButtonColor: '#1a2a44'
+                    });
+                } else {
+                    Swal.fire({ title: 'ERROR', text: data.error || 'Something went wrong.', icon: 'error', confirmButtonColor: '#1a2a44' });
+                }
+                btn.disabled = false;
+                btn.innerText = "SEND RSVP";
+            })
+            .catch(err => {
+                Swal.fire({ title: 'ERROR', text: 'Please try again.', icon: 'error', confirmButtonColor: '#1a2a44' });
+                btn.disabled = false;
+                btn.innerText = "SEND RSVP";
+            });
+        });
+
+        const showSeatFinder = true; 
+        if (showSeatFinder) {
+            document.getElementById('seat-finder-container').style.display = 'flex';
+        }
+
+        // =========================================
+        // LINK PARAMETER PERSISTENCE
+        // =========================================
+        document.addEventListener("DOMContentLoaded", () => {
+            const currentParams = window.location.search;
+            if (currentParams) {
+                const linksToUpdate = document.querySelectorAll('a[href="index.html"], a[href="seat-finder.html"], a[href="floor-plan.html"]');
+                linksToUpdate.forEach(link => {
+                    const originalHref = link.getAttribute('href');
+                    if (originalHref && !originalHref.includes('?')) {
+                        link.setAttribute('href', originalHref + currentParams);
+                    }
+                });
+            }
+        });
+
+        // =========================================
+        // CHATBOT LOGIC
+        // =========================================
+        let weddingFAQs = [];
+
+        window.onscroll = function() {
+            var bubble = document.getElementById("chat-bubble");
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                bubble.style.display = "flex";
+            } else {
+                bubble.style.display = "none";
+                document.getElementById("chat-window").style.display = "none";
+            }
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const guestName = urlParams.get('n');
+            if (guestName) {
+                document.getElementById('welcome-message').innerHTML = `Hi, <strong>${guestName}</strong>! I'm the digital assistant for Harvy & Christine. How can I help you today?`;
+            }
+        });
+
+        function toggleChat() {
+            const win = document.getElementById('chat-window');
+            const tooltip = document.getElementById('chat-tooltip');
+            const badge = document.getElementById('chat-badge');
+            
+            if (win.style.display === 'none' || win.style.display === '') {
+                win.style.display = 'flex';
+                if (tooltip) tooltip.style.display = 'none'; 
+                if (badge) { badge.style.removeProperty('display'); badge.style.display = 'none'; }
+                if (weddingFAQs.length === 0) loadFAQs();
+            } else {
+                win.style.display = 'none';
+            }
+        }
+
+        function loadFAQs() {
+            const optionsContainer = document.getElementById('faq-options-list');
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbzGsgIl759jiq7vTrnkbvzkv_WabI1pjA9tGgMu8Zw8uEQYCFw4V_sDO_os7xG837sC1g/exec';
+            document.getElementById('faq-loading-msg').innerText = "Loading questions...";
+
+            window.handleFAQResponse = function(data) {
+                weddingFAQs = data || [];
+                renderFAQButtons();
+                const loader = document.getElementById('faq-script-loader');
+                if(loader) loader.remove();
+            };
+
+            const script = document.createElement('script');
+            script.id = 'faq-script-loader';
+            script.src = scriptUrl + '?action=getFAQs&callback=handleFAQResponse&_=' + new Date().getTime();
+            script.onerror = function() {
+                document.getElementById('faq-loading-msg').innerHTML = '<span style="color:red;">Connection Error.</span><br><button onclick="loadFAQs()" style="background:none; border:none; color:#1a2a44; text-decoration:underline; font-size:0.7rem; cursor:pointer;">Try Again</button>';
+            };
+            document.body.appendChild(script);
+        }
+
+        function renderFAQButtons() {
+            const lists = document.querySelectorAll('.faq-options-list');
+            const container = lists[lists.length - 1]; 
+            
+            if (!container) return;
+            if (weddingFAQs.length === 0) {
+                container.innerHTML = '<p style="font-size:0.75rem; color:#888;">No questions found.</p>';
+                return;
+            }
+
+            let html = '';
+            weddingFAQs.forEach((item, index) => {
+                html += `<button class="faq-choice-btn" onclick="sendGuestMessage(${index}, this)">${item.question}</button>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function sendGuestMessage(index, btnElement) {
+            const container = document.getElementById('conversation-container');
+            const selected = weddingFAQs[index];
+
+            if (btnElement) {
+                btnElement.closest('.faq-options-list').style.display = 'none';
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const guestName = urlParams.get('n') || "Guest"; 
+
+            const guestRow = document.createElement('div');
+            guestRow.className = 'msg-row guest-row';
+            guestRow.style.alignItems = 'flex-end';
+            guestRow.innerHTML = `<div class="msg-name">${guestName}</div><div class="msg guest">${selected.question}</div>`;
+            container.appendChild(guestRow);
+
+            setTimeout(() => container.scrollTop = container.scrollHeight, 50);
+
+            const typingRow = document.createElement('div');
+            typingRow.className = 'msg-row bot-row';
+            typingRow.id = 'typing-indicator';
+            typingRow.innerHTML = `<div class="msg-name">Harvy & Christine</div><div class="msg bot"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
+            container.appendChild(typingRow);
+            
+            setTimeout(() => container.scrollTop = container.scrollHeight, 50);
+
+            setTimeout(() => {
+                const indicator = document.getElementById('typing-indicator');
+                if(indicator) indicator.remove();
+
+                const botRow = document.createElement('div');
+                botRow.className = 'msg-row bot-row';
+                botRow.innerHTML = `<div class="msg-name">Harvy & Christine</div><div class="msg bot" style="text-align: left;">${selected.answer}</div>`;
+                container.appendChild(botRow);
+                
+                setTimeout(() => container.scrollTop = container.scrollHeight, 50);
+                document.getElementById('chat-footer').style.display = 'block';
+            }, 1200);
+        }
+
+        function resetChat() {
+            const container = document.getElementById('conversation-container');
+            document.getElementById('chat-footer').style.display = 'none';
+
+            const promptRow = document.createElement('div');
+            promptRow.className = 'msg-row bot-row';
+            promptRow.innerHTML = `<div class="msg-name">Harvy & Christine</div><div class="msg bot">Anything else you'd like to know?</div><div class="faq-options-list" style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 10px; width: 100%;"></div>`;
+            container.appendChild(promptRow);
+            
+            renderFAQButtons(); 
+            setTimeout(() => container.scrollTop = container.scrollHeight, 50);
+        }
+    </script>
     <script src="js/main.js"></script>
 </body>
 </html>
