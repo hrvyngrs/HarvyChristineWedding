@@ -3,145 +3,463 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inquire | H&C Digital Wedding Services</title>
+    <title>H&C Digital Services | Bespoke Event Websites</title>
     
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,600&display=swap" rel="stylesheet"> 
     
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         :root {
             --navy: #0a192f;
+            --navy-light: #112240;
             --gold: #d4af37;
+            --gold-light: #f3e5ab;
             --silver: #C0C0C0;
             --bg-light: #fdfbf7;
             --text-dark: #1a2a44;
             --text-muted: #707b7c;
         }
 
-        body {
-            font-family: 'Lato', sans-serif;
-            background-color: var(--bg-light);
-            background-image: radial-gradient(circle at center, rgba(212, 175, 55, 0.05) 0%, transparent 100%);
+        * {
             margin: 0;
-            color: var(--text-dark);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        /* Minimalist Header */
-        header {
-            background: var(--navy);
-            padding: 20px 40px;
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- Navigation --- */
+        nav {
+            background-color: var(--navy);
+            padding: 20px 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        .brand-logo {
+        .logo {
             font-family: 'Playfair Display', serif;
             color: var(--gold);
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
             text-decoration: none;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
 
-        .back-link {
-            color: #ffffff;
+        .nav-links a {
+            color: white;
             text-decoration: none;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.8rem;
+            margin-left: 30px;
+            font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: color 0.3s ease;
+            transition: color 0.3s;
         }
 
-        .back-link:hover {
+        .nav-links a:hover {
             color: var(--gold);
         }
 
-        /* Main Container */
-        .main-wrapper {
+        /* --- Hero Section --- */
+        .hero {
+            background: linear-gradient(rgba(10, 25, 47, 0.85), rgba(10, 25, 47, 0.95)), url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            color: var(--gold);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+            font-weight: 300;
+        }
+
+        .btn-primary {
+            background-color: var(--gold);
+            color: var(--navy);
+            padding: 15px 40px;
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--gold-light);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        /* --- Common Section Titles --- */
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            color: var(--navy);
+        }
+        .section-subtitle {
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .gold-divider {
+            width: 60px;
+            height: 2px;
+            background: var(--gold);
+            margin: 0 auto 40px;
+        }
+
+        /* --- Interactive Demos Section --- */
+        .demo-section {
+            padding: 100px 20px;
+            background-color: var(--navy);
+            color: white;
+            text-align: center;
+        }
+
+        .demo-section .section-title { color: var(--gold); }
+        .demo-section .section-subtitle { color: var(--silver); }
+        .demo-section .gold-divider { background: white; opacity: 0.5; }
+
+        .demo-grid {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .demo-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            padding: 40px 30px;
             flex: 1;
+            min-width: 300px;
+            max-width: 350px;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .demo-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .demo-icon { font-size: 3.5rem; margin-bottom: 20px; }
+        .demo-card h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 15px; color: white; }
+        .demo-card p { font-size: 0.95rem; color: var(--silver); margin-bottom: 30px; flex-grow: 1; line-height: 1.7; }
+
+        .btn-demo {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 12px 25px;
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            transition: all 0.3s;
+            margin-top: auto;
+        }
+
+        .btn-demo:hover { background: var(--gold); color: var(--navy); }
+
+        /* --- How It Works (Timeline) --- */
+        .timeline-section {
+            padding: 100px 20px;
+            background-color: var(--bg-light);
+            text-align: center;
+        }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .timeline-step {
+            padding: 30px;
+            position: relative;
+        }
+
+        .step-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: rgba(212, 175, 55, 0.2);
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+
+        .timeline-step h3 {
+            font-size: 1.2rem;
+            color: var(--navy);
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .timeline-step p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- Services / Packages Section --- */
+        .packages-section {
+            padding: 100px 20px;
+            text-align: center;
+            background-color: #ffffff;
+        }
+
+        .pricing-grid {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .pricing-card {
+            background: var(--bg-light);
+            border-radius: 8px;
+            padding: 50px 30px;
+            flex: 1;
+            min-width: 320px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--navy-light);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pricing-card:hover { transform: translateY(-10px); }
+
+        .pricing-card.popular {
+            border-top: 5px solid var(--gold);
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.15);
+            z-index: 2;
+            background: #ffffff;
+        }
+
+        .pricing-card.popular:hover { transform: scale(1.05) translateY(-10px); }
+
+        .package-name { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--navy); margin-bottom: 15px; }
+        .package-price { font-size: 2.8rem; font-weight: 700; color: var(--gold); margin-bottom: 30px; }
+        .package-price span { font-size: 1rem; color: #888; font-weight: 400; }
+
+        .features-list { list-style: none; margin-bottom: 40px; text-align: left; flex-grow: 1; }
+        .features-list li { margin-bottom: 15px; font-size: 0.95rem; padding-left: 25px; position: relative; color: #555; }
+        .features-list li::before { content: '✓'; color: var(--gold); position: absolute; left: 0; font-weight: bold; }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--navy);
+            border: 2px solid var(--navy);
+            padding: 15px 30px;
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border-radius: 4px;
+            transition: all 0.3s;
+            margin-top: auto;
+            text-align: center;
+        }
+
+        .btn-outline:hover { background: var(--navy); color: white; }
+
+        /* A La Carte Add-ons */
+        .add-ons {
+            max-width: 800px;
+            margin: 60px auto 0;
+            text-align: left;
+            background: var(--bg-light);
+            padding: 30px 40px;
+            border-radius: 8px;
+            border-left: 4px solid var(--gold);
+        }
+        .add-ons h4 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--navy); margin-bottom: 15px; }
+        .add-ons ul { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .add-ons li { font-size: 0.95rem; color: #555; }
+        .add-ons li strong { color: var(--navy); }
+
+        /* --- Meet the Founders --- */
+        .founders-section {
+            padding: 100px 20px;
+            background-color: var(--navy);
+            color: white;
+            display: flex;
+            justify-content: center;
+        }
+
+        .founders-container {
+            max-width: 1000px;
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .founders-text { flex: 1; }
+        .founders-text h2 { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--gold); margin-bottom: 20px; }
+        .founders-text p { font-size: 1.05rem; color: var(--silver); margin-bottom: 20px; line-height: 1.8; }
+        
+        .founders-image {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid var(--gold);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .founders-image div {
+            width: 100%;
+            height: 300px;
+            background: #112240;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--silver);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+        }
+
+        /* --- FAQ Section --- */
+        .faq-section {
+            padding: 100px 20px;
+            background-color: #ffffff;
+            text-align: center;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        details {
+            background: var(--bg-light);
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border: 1px solid #eee;
+            overflow: hidden;
+        }
+
+        summary {
+            padding: 20px;
+            font-weight: 600;
+            color: var(--navy);
+            cursor: pointer;
+            list-style: none;
+            position: relative;
+            font-size: 1.05rem;
+        }
+
+        summary::-webkit-details-marker { display: none; }
+        summary::after {
+            content: '+';
+            position: absolute;
+            right: 20px;
+            color: var(--gold);
+            font-size: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        details[open] summary::after { content: '-'; }
+
+        details p {
+            padding: 0 20px 20px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* --- Inquiry Form Section --- */
+        .inquiry-section {
+            padding: 100px 20px;
+            background-image: radial-gradient(circle at center, rgba(212, 175, 55, 0.05) 0%, transparent 100%);
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 50px 20px;
         }
 
         .inquiry-card {
             background: #ffffff;
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             border-radius: 8px;
             border-top: 6px solid var(--gold);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
-            padding: 50px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+            padding: 60px 50px;
             box-sizing: border-box;
         }
 
-        .inquiry-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .inquiry-header h1 {
-            font-family: 'Playfair Display', serif;
-            color: var(--navy);
-            font-size: 2.8rem;
-            margin: 0 0 10px 0;
-        }
-
-        .inquiry-header p {
-            color: var(--text-muted);
-            font-size: 1rem;
-            margin: 0;
-            letter-spacing: 1px;
-        }
-
-        .gold-divider {
-            width: 60px;
-            height: 2px;
-            background: var(--gold);
-            margin: 20px auto;
-        }
-
-        /* Form Styling */
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            text-align: left;
-            margin-bottom: 20px;
-        }
-
-        .form-grid .form-group {
-            margin-bottom: 0;
-        }
+        .inquiry-header { text-align: center; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px; }
+        .form-group { text-align: left; margin-bottom: 25px; }
+        .form-grid .form-group { margin-bottom: 0; }
 
         .form-group label {
             display: block;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             color: var(--navy);
-            margin-bottom: 8px;
-            font-weight: 600;
+            margin-bottom: 10px;
+            font-weight: 700;
         }
 
         .form-input {
             width: 100%;
-            padding: 14px 15px;
+            padding: 15px 18px;
             border: 1px solid #d5d8dc;
             border-radius: 4px;
             font-family: 'Lato', sans-serif;
@@ -156,25 +474,21 @@
             border-color: var(--gold);
             background: #fff;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
         }
 
-        textarea.form-input {
-            resize: vertical;
-            min-height: 120px;
-        }
+        textarea.form-input { resize: vertical; min-height: 140px; }
 
-        /* Submit Button */
         .btn-submit {
             width: 100%;
             background: var(--navy);
             color: #ffffff;
             border: none;
-            padding: 18px;
+            padding: 20px;
             margin-top: 10px;
             border-radius: 4px;
             font-family: 'Montserrat', sans-serif;
-            font-size: 1rem;
+            font-size: 1.1rem;
             letter-spacing: 3px;
             text-transform: uppercase;
             font-weight: bold;
@@ -190,33 +504,35 @@
             transform: translateY(-2px);
         }
 
-        /* Footer */
+        /* --- Footer --- */
         footer {
+            background-color: var(--navy);
+            color: white;
             text-align: center;
-            padding: 30px;
-            color: var(--text-muted);
-            font-size: 0.8rem;
+            padding: 40px 20px;
+        }
+
+        footer p {
+            opacity: 0.7;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
             letter-spacing: 1px;
         }
 
-        /* Responsive */
+        /* --- Responsive --- */
         @media (max-width: 768px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-                gap: 0;
-            }
-            .form-grid .form-group {
-                margin-bottom: 20px;
-            }
-            .inquiry-card {
-                padding: 30px 20px;
-            }
-            .inquiry-header h1 {
-                font-size: 2.2rem;
-            }
+            .hero h1 { font-size: 3rem; }
+            .pricing-card.popular { transform: scale(1); z-index: 1;}
+            .pricing-card.popular:hover { transform: translateY(-10px); }
+            .nav-links { display: none; } 
+            .founders-container { flex-direction: column; }
+            .add-ons ul { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; gap: 0; }
+            .form-grid .form-group { margin-bottom: 25px; }
+            .inquiry-card { padding: 40px 25px; }
         }
         
-        /* SweetAlert Customization to match theme */
+        /* SweetAlert Customization */
         .swal2-popup {
             font-family: 'Lato', sans-serif !important;
             border-top: 6px solid #d4af37 !important;
@@ -230,17 +546,189 @@
 </head>
 <body>
 
-    <header>
-        <a href="index.html" class="brand-logo">H & C</a>
-        <a href="index.html" class="back-link"><i class="fas fa-arrow-left mr-2"></i> Back to Home</a>
+    <nav>
+        <a href="#" class="logo">H&C Digital</a>
+        <div class="nav-links">
+            <a href="#how-it-works">Process</a>
+            <a href="#portfolio">Portfolio</a>
+            <a href="#services">Packages</a>
+            <a href="#about">About</a>
+            <a href="#contact">Inquire</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>Bespoke Digital Experiences</h1>
+        <p>Elevate your special day with premium e-invites, interactive event websites, and intelligent guest management systems.</p>
+        <a href="#portfolio" class="btn-primary">View Portfolio</a>
     </header>
 
-    <div class="main-wrapper">
+    <section id="how-it-works" class="timeline-section">
+        <h2 class="section-title">The Process</h2>
+        <p class="section-subtitle">Seamless from start to finish</p>
+        <div class="gold-divider"></div>
+
+        <div class="timeline-grid">
+            <div class="timeline-step">
+                <div class="step-number">01</div>
+                <h3>Discovery</h3>
+                <p>Fill out our inquiry form. We'll connect to discuss your event's theme, color motif, and specific digital needs.</p>
+            </div>
+            <div class="timeline-step">
+                <div class="step-number">02</div>
+                <h3>Design & Build</h3>
+                <p>We engineer your custom digital envelope, event website, and backend management system.</p>
+            </div>
+            <div class="timeline-step">
+                <div class="step-number">03</div>
+                <h3>Refinement</h3>
+                <p>You review the site. We tweak the aesthetics, photos, and copy until it perfectly matches your vision.</p>
+            </div>
+            <div class="timeline-step">
+                <div class="step-number">04</div>
+                <h3>Launch</h3>
+                <p>Your site goes live! You get full access to the VIP Admin Dashboard to manage your RSVPs and floor plans.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" class="demo-section">
+        <h2 class="section-title">Experience the Magic</h2>
+        <p class="section-subtitle">Take our interactive features for a spin</p>
+        <div class="gold-divider"></div>
+
+        <div class="demo-grid">
+            <div class="demo-card">
+                <div class="demo-icon">✉️</div>
+                <h3>The Digital Envelope</h3>
+                <p>Experience the thrill of opening a physical invitation right on your screen. Complete with customized guest names and a wax seal animation.</p>
+                <a href="demo/index.html?n=Special+Guest" target="_blank" class="btn-demo">Open Invite</a>
+            </div>
+
+            <div class="demo-card">
+                <div class="demo-icon">💻</div>
+                <h3>The Premium Website</h3>
+                <p>Explore a full, multi-page wedding website. Features an interactive scrapbook, live countdown, animated photo gallery, and maps integration.</p>
+                <a href="demo/main.html" target="_blank" class="btn-demo">View Website</a>
+            </div>
+
+            <div class="demo-card">
+                <div class="demo-icon">⚙️</div>
+                <h3>VIP Admin Dashboard</h3>
+                <p>Take control behind the scenes. Manage RSVPs in real-time, generate custom invite links, and design your venue with our floor plan builder.</p>
+                <a href="demo/admin.html" target="_blank" class="btn-demo">Try Dashboard</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="packages-section">
+        <h2 class="section-title">Our Digital Packages</h2>
+        <p class="section-subtitle">Tailored solutions for weddings, debuts, and corporate events</p>
+        <div class="gold-divider"></div>
+
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3 class="package-name">The Digital Invite</h3>
+                <div class="package-price">₱3,500<span> / event</span></div>
+                <ul class="features-list">
+                    <li>Interactive Envelope Opening Animation</li>
+                    <li>Personalized Guest Greeting ("Hi, Name!")</li>
+                    <li>Digital Save-The-Date Card</li>
+                    <li>Basic RSVP Form</li>
+                    <li>Mobile Responsive Design</li>
+                    <li>3 Months Web Hosting</li>
+                </ul>
+                <a href="#contact" class="btn-outline">Inquire Now</a>
+            </div>
+
+            <div class="pricing-card popular">
+                <h3 class="package-name">The Premium Suite</h3>
+                <div class="package-price">₱10,000<span> / event</span></div>
+                <ul class="features-list">
+                    <li><strong>Everything in Digital Invite, plus:</strong></li>
+                    <li>Full Multi-Section Website</li>
+                    <li>"Our Story" Scrapbook Interface</li>
+                    <li>Animated Photo Gallery</li>
+                    <li>Event Itinerary & Live Maps Integration</li>
+                    <li>Dress Code & Gift Guide Section</li>
+                    <li>Live Countdown Timer</li>
+                    <li>6 Months Web Hosting</li>
+                </ul>
+                <a href="#contact" class="btn-primary" style="margin-top: auto; text-align: center;">Most Popular</a>
+            </div>
+
+            <div class="pricing-card">
+                <h3 class="package-name">The Ultimate VIP</h3>
+                <div class="package-price">₱25,000<span> / event</span></div>
+                <ul class="features-list">
+                    <li><strong>Everything in Premium, plus:</strong></li>
+                    <li>Custom Admin Dashboard for the Couple</li>
+                    <li>Drag & Drop Floor Plan Builder</li>
+                    <li>Live Seating Chart Management</li>
+                    <li>Automated VIP Guest Pass Emails (PDF)</li>
+                    <li>AI Chatbot Assistant for Guest FAQs</li>
+                    <li>QR Code Generation for Gifts</li>
+                    <li>12 Months Web Hosting</li>
+                </ul>
+                <a href="#contact" class="btn-outline">Book Consultation</a>
+            </div>
+        </div>
+
+        <div class="add-ons">
+            <h4>A La Carte Add-Ons</h4>
+            <ul>
+                <li><strong>Custom Domain Name</strong> (e.g., yournames.com)</li>
+                <li><strong>Additional Web Hosting</strong> (Per 6 months)</li>
+                <li><strong>Matching Physical Invitation Design</strong> (Print-ready PDF)</li>
+                <li><strong>Live Event Photo Wall Integration</strong></li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="about" class="founders-section">
+        <div class="founders-container">
+            <div class="founders-text">
+                <h2>Engineered for Excellence</h2>
+                <p>H&C Digital Services was born out of a real need. While planning our own wedding, we realized the standard digital invites on the market just weren't enough.</p>
+                <p>With a background in Industrial Engineering, Harvy set out to build a comprehensive, elegant, and highly efficient system from the ground up to manage everything from RSVPs to dynamic floor plans. What started as a personal project quickly became a powerful tool.</p>
+                <p>Today, Harvy and Christine share this bespoke platform with other couples to ensure their special day is flawless, organized, and unforgettable.</p>
+            </div>
+            <div class="founders-image">
+                <div>[ Insert Photo of Harvy & Christine ]</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="gold-divider"></div>
+
+        <div class="faq-container">
+            <details>
+                <summary>How long does it take to build our website?</summary>
+                <p>Depending on the package selected and how quickly you can provide us with your photos and event details, we typically deliver the first draft within 7 to 14 business days.</p>
+            </details>
+            <details>
+                <summary>Can we use our own custom domain name?</summary>
+                <p>Yes! Custom domains (e.g., www.johnandjane.com) are available as an A La Carte add-on. Otherwise, you will receive a clean, customized sub-link on our secure hosting platform.</p>
+            </details>
+            <details>
+                <summary>What happens to the website after the event?</summary>
+                <p>Each package comes with a set amount of hosting time (3, 6, or 12 months). After this period, the website will be taken offline. You can always choose to extend your hosting for a small yearly fee to keep your memories alive.</p>
+            </details>
+            <details>
+                <summary>Do I need technical skills to use the VIP Dashboard?</summary>
+                <p>Not at all! We built the VIP Admin Dashboard specifically to be user-friendly. Managing your guest list and dragging-and-dropping tables on the floor plan builder is as easy as using a smartphone app.</p>
+            </details>
+        </div>
+    </section>
+
+    <section id="contact" class="inquiry-section">
         <div class="inquiry-card">
             <div class="inquiry-header">
-                <h1>Let's Build Your Story</h1>
+                <h2 class="section-title" style="font-size: 2.8rem; margin-bottom:0;">Let's Build Your Story</h2>
                 <div class="gold-divider"></div>
-                <p>We craft bespoke, highly-functional digital experiences for your special day. Tell us about your vision below.</p>
+                <p style="color: var(--text-muted); font-size: 1.05rem;">We craft bespoke, highly-functional digital experiences for your special day. Tell us about your vision below.</p>
             </div>
 
             <form id="inquiry-form">
@@ -270,8 +758,9 @@
                     <label>Package of Interest</label>
                     <select class="form-input" name="Package" required>
                         <option value="" disabled selected>Select a package...</option>
-                        <option value="Basic">The Basic Package (Essential Hub & Standard RSVP)</option>
-                        <option value="Premium">The Premium Package (Bespoke Digital Experience & Full Admin Panel)</option>
+                        <option value="The Digital Invite">The Digital Invite (₱3,500 - Basic Envelope & RSVP)</option>
+                        <option value="The Premium Suite">The Premium Suite (₱10,000 - Full Interactive Website)</option>
+                        <option value="The Ultimate VIP">The Ultimate VIP (₱25,000 - Website + Full Admin Dashboard)</option>
                         <option value="Custom">I'm not sure yet / Custom Request</option>
                     </select>
                 </div>
@@ -284,10 +773,12 @@
                 <button type="submit" class="btn-submit" id="submit-btn">Send Inquiry</button>
             </form>
         </div>
-    </div>
+    </section>
 
     <footer>
-        © 2026 H&C Bespoke Digital Wedding Services.
+        <h2 style="font-family: 'Playfair Display', serif; color: var(--gold); margin-bottom: 15px; font-size: 1.8rem;">H&C Digital</h2>
+        <p>&copy; 2026 H&C Bespoke Digital Wedding Services. Engineering Elegant Solutions.</p>
+    </footer>
 
     <script>
         document.getElementById('inquiry-form').addEventListener('submit', function(e) {
@@ -297,13 +788,11 @@
             btn.innerText = "SENDING...";
             btn.disabled = true;
 
-            // FormSubmit URL pointing to your email
             const formSubmitURL = 'https://formsubmit.co/ajax/pidlaoanharvy@gmail.com'; 
             const formData = new FormData(this);
 
-            // Optional FormSubmit configurations
             formData.append("_subject", "New Wedding Website Inquiry!");
-            formData.append("_captcha", "false"); // Disables the visual captcha
+            formData.append("_captcha", "false"); 
 
             fetch(formSubmitURL, { 
                 method: 'POST', 
@@ -327,22 +816,21 @@
                 btn.disabled = false;
             });
 
-            // Success Function
             function showSuccess() {
                 Swal.fire({
                     title: 'Inquiry Received!',
                     text: "Thank you for reaching out. We will review your details and get back to you with a personalized quote shortly.",
                     icon: 'success',
                     confirmButtonColor: '#0a192f',
-                    confirmButtonText: 'Return to Home',
+                    confirmButtonText: 'Awesome',
                     allowOutsideClick: false
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = 'index.html'; 
+                        document.getElementById('inquiry-form').reset();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
                     }
                 });
 
-                document.getElementById('inquiry-form').reset();
                 btn.innerText = "Send Inquiry";
                 btn.disabled = false;
             }

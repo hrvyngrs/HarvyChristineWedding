@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inquire | H&C Digital Wedding Services</title>
+    
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet"> 
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        :root {
+            --navy: #0a192f;
+            --gold: #d4af37;
+            --silver: #C0C0C0;
+            --bg-light: #fdfbf7;
+            --text-dark: #1a2a44;
+            --text-muted: #707b7c;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-light);
+            background-image: radial-gradient(circle at center, rgba(212, 175, 55, 0.05) 0%, transparent 100%);
+            margin: 0;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Minimalist Header */
+        header {
+            background: var(--navy);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .brand-logo {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .back-link {
+            color: #ffffff;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--gold);
+        }
+
+        /* Main Container */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 20px;
+        }
+
+        .inquiry-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 800px;
+            border-radius: 8px;
+            border-top: 6px solid var(--gold);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+            padding: 50px;
+            box-sizing: border-box;
+        }
+
+        .inquiry-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .inquiry-header h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+            font-size: 2.8rem;
+            margin: 0 0 10px 0;
+        }
+
+        .inquiry-header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .gold-divider {
+            width: 60px;
+            height: 2px;
+            background: var(--gold);
+            margin: 20px auto;
+        }
+
+        /* Form Styling */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .form-grid .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--navy);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid #d5d8dc;
+            border-radius: 4px;
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            color: #333;
+            background: #f8f9f9;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            border-color: var(--gold);
+            background: #fff;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            width: 100%;
+            background: var(--navy);
+            color: #ffffff;
+            border: none;
+            padding: 18px;
+            margin-top: 10px;
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .btn-submit:hover {
+            background: var(--gold);
+            color: var(--navy);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .form-grid .form-group {
+                margin-bottom: 20px;
+            }
+            .inquiry-card {
+                padding: 30px 20px;
+            }
+            .inquiry-header h1 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        /* SweetAlert Customization to match theme */
+        .swal2-popup {
+            font-family: 'Lato', sans-serif !important;
+            border-top: 6px solid #d4af37 !important;
+            border-radius: 8px !important;
+        }
+        .swal2-title {
+            font-family: 'Playfair Display', serif !important;
+            color: #0a192f !important;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="brand-logo">H & C</a>
+        <a href="index.html" class="back-link"><i class="fas fa-arrow-left mr-2"></i> Back to Home</a>
+    </header>
+
+    <div class="main-wrapper">
+        <div class="inquiry-card">
+            <div class="inquiry-header">
+                <h1>Let's Build Your Story</h1>
+                <div class="gold-divider"></div>
+                <p>We craft bespoke, highly-functional digital experiences for your special day. Tell us about your vision below.</p>
+            </div>
+
+            <form id="inquiry-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Couple's Names</label>
+                        <input type="text" class="form-input" name="Couples_Names" placeholder="e.g., John & Jane" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Wedding Date (Tentative)</label>
+                        <input type="date" class="form-input" name="Wedding_Date" required>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" class="form-input" name="Email" placeholder="your@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" class="form-input" name="Phone" placeholder="(Optional)">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Package of Interest</label>
+                    <select class="form-input" name="Package" required>
+                        <option value="" disabled selected>Select a package...</option>
+                        <option value="Basic">The Basic Package (Essential Hub & Standard RSVP)</option>
+                        <option value="Premium">The Premium Package (Bespoke Digital Experience & Full Admin Panel)</option>
+                        <option value="Custom">I'm not sure yet / Custom Request</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tell us more about your vision</label>
+                    <textarea class="form-input" name="Message" placeholder="Themes, specific features needed, venue details, or any questions you have for us..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit" id="submit-btn">Send Inquiry</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        © 2026 H&C Bespoke Digital Wedding Services.
+
+    <script>
+        document.getElementById('inquiry-form').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            
+            const btn = document.getElementById('submit-btn');
+            btn.innerText = "SENDING...";
+            btn.disabled = true;
+
+            // FormSubmit URL pointing to your email
+            const formSubmitURL = 'https://formsubmit.co/ajax/pidlaoanharvy@gmail.com'; 
+            const formData = new FormData(this);
+
+            // Optional FormSubmit configurations
+            formData.append("_subject", "New Wedding Website Inquiry!");
+            formData.append("_captcha", "false"); // Disables the visual captcha
+
+            fetch(formSubmitURL, { 
+                method: 'POST', 
+                headers: {
+                    'Accept': 'application/json'
+                },
+                body: formData 
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success === "true" || data.success === true) {
+                    showSuccess();
+                } else {
+                    throw new Error("Service returned an error.");
+                }
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+                btn.innerText = "Send Inquiry";
+                btn.disabled = false;
+            });
+
+            // Success Function
+            function showSuccess() {
+                Swal.fire({
+                    title: 'Inquiry Received!',
+                    text: "Thank you for reaching out. We will review your details and get back to you with a personalized quote shortly.",
+                    icon: 'success',
+                    confirmButtonColor: '#0a192f',
+                    confirmButtonText: 'Return to Home',
+                    allowOutsideClick: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'index.html'; 
+                    }
+                });
+
+                document.getElementById('inquiry-form').reset();
+                btn.innerText = "Send Inquiry";
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

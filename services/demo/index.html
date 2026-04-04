@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wedding Times - Full Edition</title>
+    <style>
+        :root {
+            --navy: #001f3f;
+            --navy-dark: #001226;
+            --silver: #C0C0C0; 
+            --silver-bright: #e0e0e0;
+            --news-paper: #f4f1ea; 
+            --ink: #1a1a1a;
+            --bg-color: #fdfbf7; 
+            --invite-bg: #BDBDBD;
+            --invite-text: #001f3f;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            background-color: #f4e8d1;
+            background-image: 
+                radial-gradient(circle at center, rgba(255, 255, 255, 0.4) 0%, rgba(200, 170, 130, 0.8) 100%),
+                url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14 16H9v-2h5V9.87a4 4 0 1 1 2 0V14h5v2h-5v15.95A10 10 0 0 0 23.66 27l-3.46-2 8.2-2.2-2.9 5a12 12 0 0 1-21 0l-2.89-5 8.2 2.2-3.47 2A10 10 0 0 0 16 31.95V16zm40 40h-5v-2h5v-4.13a4 4 0 1 1 2 0V54h5v2h-5v15.95A10 10 0 0 0 63.66 67l-3.47-2 8.2-2.2-2.88 5a12 12 0 0 1-21.02 0l-2.88-5 8.2 2.2-3.47 2A10 10 0 0 0 56 71.95V56zm-36 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm40-40a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM15 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm40 40a2 2 0 1 0 0-4 2 2 0 0 0 0 4z' fill='%238b7355' fill-opacity='0.15' fill-rule='evenodd'/%3E%3C/svg%3E");
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            transition: opacity 3s cubic-bezier(0.4, 0, 0.2, 1), background-color 3s ease, filter 3s ease;
+        }
+
+        /* Heart Effect Styles */
+        .heart {
+            position: absolute;
+            color: #d63031;
+            font-size: 18px;
+            pointer-events: none;
+            z-index: 5; 
+            animation: flyOutSideward 3s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes flyOutSideward {
+            0% { transform: translate(0, 0) scale(0.5) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translate(var(--drift), -400px) scale(1.2) rotate(var(--rotation)); opacity: 0; }
+        }
+
+        @keyframes envelopeFlyOut {
+            0% { transform: scale(1) rotate(0deg) translate(0, 0); }
+            25% { transform: scale(1.05) rotate(-4deg) translate(-20px, 10px); }
+            100% { transform: scale(0.15) rotate(40deg) translate(180vw, -100vh); }
+        }
+
+        .envelope-thrown {
+            animation: envelopeFlyOut 2.5s forwards cubic-bezier(0.645, 0.045, 0.355, 1);
+            pointer-events: none !important;
+        }
+
+        .tap-indicator {
+            position: absolute;
+            top: -70px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 500;
+            transition: opacity 0.8s ease;
+            pointer-events: none;
+        }
+        
+        .tap-text {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 0.85rem;
+            color: var(--navy-dark);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: pulse 2.5s infinite ease-in-out;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.98); }
+            50% { opacity: 0.8; transform: scale(1.02); }
+        }
+
+        .tap-items-view {
+            position: absolute;
+            bottom: 30px; 
+            left: 50%;
+            transform: translate(-50%, 10px); 
+            border: 1px solid var(--silver);
+            border-radius: 20px;
+            padding: 5px 22px;
+            color: var(--silver-bright);
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            z-index: 450; 
+            pointer-events: none;
+            opacity: 0; 
+            transition: opacity 1.5s cubic-bezier(0.23, 1, 0.32, 1) 1.5s, transform 1.5s cubic-bezier(0.23, 1, 0.32, 1) 1.5s;
+            white-space: nowrap;
+            background: rgba(0, 31, 63, 0.2);
+        }
+
+        #landing { 
+            position: relative;
+            width: 100%;
+            max-width: 600px; 
+            height: 100vh; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scene {
+            position: relative;
+            width: 100%;
+            height: 450px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #envelope-wrapper {
+            position: relative;
+            width: 450px;
+            height: 280px; 
+            perspective: 2000px;
+            z-index: 200;
+            transform-origin: center top; 
+            transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .envelope-back {
+            position: absolute;
+            inset: 0;
+            background-color: var(--navy-dark);
+            border-radius: 4px;
+            z-index: 1;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+        }
+
+        /* --- Fixed Envelope Flap --- */
+        #flap {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; 
+            height: 205px;
+            background-color: var(--navy-dark);
+            clip-path: polygon(0 0, 100% 0, 100% 48%, 50% 100%, 0 48%);
+            z-index: 400; 
+            transform-origin: top;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.6s, z-index 0.1s 0.6s; 
+            cursor: pointer;
+        }
+
+        #flap::after {
+            content: "❈"; 
+            position: absolute;
+            top: 60px; 
+            left: 50%;
+            transform: translateX(-50%);
+            color: #D4AF37; /* Updated emblem color to match gold edges */
+            font-size: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+            pointer-events: none;
+        }
+        /* --------------------------- */
+
+        .envelope-front-v {
+            position: absolute;
+            bottom: 0; width: 100%; height: 100%;
+            background-color: var(--navy);
+            z-index: 300; 
+            clip-path: polygon(0% 35%, 50% 68%, 100% 35%, 100% 100%, 0% 100%);
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            padding-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        .card-container {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            bottom: 10px;
+            display: flex;
+            justify-content: center; 
+            align-items: flex-end;
+            z-index: 50; 
+            opacity: 0;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0s, opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        #envelope-wrapper.open #flap { 
+            transform: rotateX(180deg); 
+            z-index: 10; 
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0s, z-index 0.1s 0.4s;
+        }
+        #envelope-wrapper.open .card-container {
+            opacity: 1;
+            transform: translateY(-135px); 
+            pointer-events: all;
+            transition: transform 0.9s cubic-bezier(0.19, 1, 0.22, 1) 0.5s, opacity 0.5s ease 0.5s;
+        }
+        
+        #envelope-wrapper.open .tap-items-view {
+            opacity: 1;
+            transform: translate(-50%, 0px);
+        }
+
+        .card { 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+            border-radius: 2px; 
+            background: white; 
+            position: relative;
+            transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), z-index 0.2s;
+            cursor: pointer;
+        }
+
+        #card-photo { 
+            width: 210px; height: 275px; 
+            background: var(--navy-dark);
+            transform: rotate(-4deg); 
+            padding: 15px; 
+            margin-right: -105px; 
+            z-index: 51; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid var(--silver);
+            box-sizing: border-box;
+            color: var(--silver);
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .silver-border-inner {
+            position: absolute;
+            inset: 8px;
+            border: 1.5px solid var(--silver);
+            pointer-events: none;
+        }
+
+        .silver-ornament { position: absolute; font-size: 20px; line-height: 1; color: var(--silver); }
+        .top-left { top: 12px; left: 12px; }
+        .top-right { top: 12px; right: 12px; transform: scaleX(-1); }
+        .bottom-left { bottom: 12px; left: 12px; transform: scaleY(-1); }
+        .bottom-right { bottom: 12px; right: 12px; transform: scale(-1); }
+
+        .display-1 { font-family: 'Cursive', 'Brush Script MT', serif; font-size: 1.6rem; margin: 10px 0; color: white; }
+        .announcement-wrapper { display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 5px; margin-top: -10px; }
+        .accent-line { height: 1px; width: 20px; background: var(--silver); }
+        .announcement-text { font-size: 0.55rem; letter-spacing: 1.5px; text-transform: uppercase; font-family: 'Georgia', serif;}
+
+        .wedding-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 5px; }
+        .side-block { display: flex; flex-direction: column; align-items: center; width: 50px; }
+        .bold-silver-line { height: 2px; width: 100%; background: var(--silver); }
+        .side-text { font-size: 0.5rem; padding: 2px 0; font-weight: bold; color: var(--silver-bright); }
+        
+        .center-stack { display: flex; flex-direction: column; align-items: center; padding: 0 5px; border-left: 1px solid var(--silver); border-right: 1px solid var(--silver); }
+        .month { font-size: 0.6rem; font-weight: bold; color: var(--silver-bright); }
+        .day { font-size: 1.2rem; font-weight: bold; line-height: 1; color: white; }
+        .year { font-size: 0.6rem; color: var(--silver-bright); }
+
+        #card-news {
+            width: 230px; height: 360px; 
+            background-color: var(--news-paper);
+            transform: rotate(2deg); 
+            padding: 15px;
+            z-index: 52;
+            box-sizing: border-box;
+            display: flex; flex-direction: column;
+            color: var(--ink);
+        }
+
+        #card-invite {
+            position: absolute;
+            width: 240px; 
+            min-height: 160px;
+            background-color: var(--invite-bg);
+            bottom: -40px; 
+            left: 50%;
+            margin-left: -120px;
+            z-index: 55;
+            transform: rotate(-6deg); 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid var(--navy);
+            padding: 15px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        #card-invite .invite-text { 
+            font-family: 'Times New Roman', serif; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            font-size: 1.2rem; 
+            letter-spacing: 1px; 
+            color: var(--navy); 
+            width: 100%; 
+            line-height: 1.2;
+        }
+
+        #card-invite .seat-allocation {
+            font-size: 0.75rem;
+            margin-top: 10px;
+            color: var(--navy-dark);
+            font-family: 'Georgia', serif;
+            border-top: 1px solid var(--navy);
+            padding-top: 10px;
+        }
+
+        .btn-enter-card {
+            position: relative;
+            margin-top: 18px;
+            background: var(--navy);
+            color: #fff;
+            border: 1px solid var(--silver);
+            padding: 12px 28px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+
+        .btn-enter-card:hover {
+            background: var(--navy-dark);
+            padding: 12px 35px;
+            color: var(--silver-bright);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.35);
+        }
+
+        #card-photo.expanded, #card-news.expanded, #card-invite.expanded { z-index: 1000 !important; }
+        #card-photo.expanded { transform: translate(60px, -45px) rotate(0deg) scale(1.22); }
+        #card-news.expanded { transform: translate(-60px, -35px) rotate(0deg) scale(1.18); }
+        #card-invite.expanded { transform: translate(0, -210px) rotate(0deg) scale(1.55); }
+
+        .news-top-bar { display: flex; justify-content: space-between; font-size: 0.5rem; border-bottom: 1.5px solid #000; padding-bottom: 3px; text-transform: uppercase; }
+        .masthead-title { font-family: 'Old English Text MT', serif; font-size: 1.7rem; text-align: center; margin: 5px 0; }
+        .news-date-bar { display: flex; justify-content: space-between; font-size: 0.45rem; border-top: 1px solid #000; border-bottom: 2.5px double #000; padding: 2px 0; margin-bottom: 10px; }
+        .news-headline { font-size: 1.9rem; font-weight: 900; line-height: 0.9; margin: 0 0 10px 0; text-transform: uppercase; text-align: center; border-bottom: 1.5px solid #000; padding-bottom: 8px; color: var(--ink); }
+        .news-content { font-size: 0.65rem; line-height: 1.4; text-align: justify; color: var(--ink); }
+        .rsvp-note-box { margin-top: auto; border: 1px dashed #000; padding: 6px; font-size: 0.55rem; font-style: italic; text-align: center; font-weight: bold; text-transform: uppercase;}
+        .hashtag-box { border: 1.5px solid #000; padding: 4px; text-align: center; font-family: monospace; font-size: 0.55rem; font-weight: bold; margin-top: 8px; }
+
+        #formContainer { 
+            position: absolute;
+            bottom: 5vh;
+            width: 100%; 
+            display: none; 
+            opacity: 0; 
+            transition: opacity 1.2s ease;
+            text-align: center; 
+            z-index: 3000;
+        }
+
+        @media (max-width: 500px) {
+            #envelope-wrapper { width: 320px; height: 260px; } 
+            
+            #flap { height: 190px; } 
+            #flap::after { top: 55px; font-size: 40px; }
+
+            #card-photo { margin-right: -130px; }
+            #card-invite { width: 200px; min-height: 140px; bottom: -30px; margin-left: -100px; }
+            #card-invite.expanded { transform: translate(0, -150px) scale(1.65) !important; }
+        }
+    </style>
+</head>
+<body>
+<div id="landing">
+    <div class="scene">
+        <div id="envelope-wrapper">
+            <div id="indicator" class="tap-indicator">
+                <div class="tap-text">Tap to Open</div>
+                <div style="font-size: 20px; color: var(--navy-dark); opacity: 0.6;">▼</div>
+            </div>
+
+            <div id="flap" onclick="toggleEnvelope()" role="button" aria-label="Open Envelope">
+                <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute; top:0; left:0; pointer-events:none;">
+                    <defs>
+                        <linearGradient id="gold-foil-flap" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#C5A059" />
+                            <stop offset="50%" stop-color="#F3E5AB" />
+                            <stop offset="100%" stop-color="#C5A059" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="0,0 100,0 100,48 50,100 0,48" stroke="url(#gold-foil-flap)" stroke-width="8" fill="none" vector-effect="non-scaling-stroke"/>
+                </svg>
+            </div>
+            <div class="envelope-back"></div>
+            
+            <div class="card-container">
+                <div class="card" id="card-photo" onclick="toggleCard(this)">
+                    <div class="silver-border-inner"></div>
+                    <div class="silver-ornament top-left">❦</div>
+                    <div class="silver-ornament top-right">❦</div>
+                    <div class="silver-ornament bottom-left">❦</div>
+                    <div class="silver-ornament bottom-right">❦</div>
+                    
+                    <div class="announcement-wrapper">
+                        <div class="accent-line"></div>
+                        <span class="announcement-text">YOU ARE INVITED TO THE WEDDING OF</span>
+                        <div class="accent-line"></div>
+                    </div>
+
+                    <h1 class="display-1">Harvy & Christine</h1>
+                    
+                    <div class="wedding-container">
+                        <div class="side-block">
+                            <div class="bold-silver-line"></div>
+                            <div class="side-text">FRIDAY</div>
+                            <div class="bold-silver-line"></div>
+                        </div>
+                        <div class="center-stack">
+                            <div class="month">JUNE</div>
+                            <div class="day">12</div>
+                            <div class="year">2026</div>
+                        </div>
+                        <div class="side-block">
+                            <div class="bold-silver-line"></div>
+                            <div class="side-text">AT 2:00 PM</div>
+                            <div class="bold-silver-line"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card" id="card-news" onclick="toggleCard(this)">
+                    <div class="news-top-bar"><span>SUNNY - 30°C</span><span>CEBU, PH</span></div>
+                    <h2 class="masthead-title">The Wedding Times</h2>
+                    <div class="news-date-bar"><span>VOL. 1 ... NO. 01</span><span>JUNE 12, 2026</span></div>
+                    <h1 class="news-headline">SAVE<br>THE DATE</h1>
+                    <div class="news-content">
+                        <strong>Harvy & Christine</strong> are officially set to tie the knot. This special edition marks the beginning of their journey. Friends and family are invited to witness this long-awaited union.
+                    </div>
+                    <div class="rsvp-note-box">Note: Wedding details are on the next page. Respond to RSVP at the bottom.</div>
+                    <div class="hashtag-box">#TineFoundHerHarvyEverAfter</div>
+                </div>
+
+                <div class="card" id="card-invite" onclick="toggleCard(this)">
+                    <div id="guest-display" class="invite-text">Hi, Name</div>
+                    <div id="allocation-box" class="seat-allocation">We can't wait to celebrate our special day with you!</div>
+                    <button class="btn-enter-card" onclick="enterSite()">Enter Website</button>
+                </div>
+            </div>
+            
+            <div class="envelope-front-v">
+                <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute; top:0; left:0; pointer-events:none;">
+                    <defs>
+                        <linearGradient id="gold-foil-pocket" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#C5A059" />
+                            <stop offset="50%" stop-color="#F3E5AB" />
+                            <stop offset="100%" stop-color="#C5A059" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="0,35 50,68 100,35 100,100 0,100" stroke="url(#gold-foil-pocket)" stroke-width="8" fill="none" vector-effect="non-scaling-stroke"/>
+                </svg>
+            </div>
+            <div class="tap-items-view">TAP ITEMS TO VIEW</div>
+        </div>
+    </div>
+
+    <div id="formContainer">
+        <div id="message"></div>
+    </div>
+</div>
+
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+
+const hiddenGuestCode = urlParams.get('v'); 
+const nameParam = urlParams.get('n'); 
+
+const unmask = { 
+    'st': 0, 
+    'pl': 1, 
+    'ex': 2, 
+    'tr': 3, 
+    'qu': 4, 
+    'mx': 5 
+};
+
+let guestLimit = "0"; 
+if (hiddenGuestCode !== null && unmask[hiddenGuestCode] !== undefined) {
+    guestLimit = unmask[hiddenGuestCode].toString(); 
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const display = document.getElementById('guest-display');
+    const allocationBox = document.getElementById('allocation-box');
+
+    if (display) {
+        display.innerText = nameParam ? "Hi, " + decodeURIComponent(nameParam) : "Hi, Special Guest!";
+    }
+
+    if (allocationBox) {
+        if (guestLimit && guestLimit !== "0") {
+            allocationBox.innerHTML = `You have (<span>${guestLimit}</span>) additional seat allocated.`;
+        } else {
+            allocationBox.innerText = "We can't wait to celebrate our special day with you!";
+        }
+    }
+});
+
+    function createHearts() {
+        const scene = document.querySelector('.scene');
+        for (let i = 0; i < 20; i++) {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerText = '❤';
+            
+            const drift = (Math.random() * 300 - 150) + 'px';
+            const rotation = (Math.random() * 90 - 45) + 'deg';
+            
+            heart.style.setProperty('--drift', drift);
+            heart.style.setProperty('--rotation', rotation);
+            heart.style.left = (Math.random() * 40 + 30) + '%';
+            heart.style.top = '50%';
+            heart.style.animationDelay = (Math.random() * 1.2) + 's';
+            
+            scene.appendChild(heart);
+            setTimeout(() => heart.remove(), 3500);
+        }
+    }
+
+    function toggleEnvelope() {
+        const wrapper = document.getElementById('envelope-wrapper');
+        const form = document.getElementById('formContainer');
+        const indicator = document.getElementById('indicator');
+        
+        if (!wrapper.classList.contains('open')) {
+            wrapper.classList.add('open');
+            setTimeout(createHearts, 300); 
+            if(indicator) indicator.style.opacity = '0';
+            setTimeout(() => {
+                form.style.display = 'block';
+                setTimeout(() => { form.style.opacity = '1'; }, 50);
+            }, 1500);
+        }
+    }
+
+    function toggleCard(card) {
+        if (!document.getElementById('envelope-wrapper').classList.contains('open')) return;
+        const isExpanded = card.classList.contains('expanded');
+        document.querySelectorAll('.card').forEach(c => c.classList.remove('expanded'));
+        if (!isExpanded) { card.classList.add('expanded'); }
+    }
+
+function buildURL(base, anchor = "") {
+    let currentParams = window.location.search; 
+    return base + currentParams + anchor;
+}
+
+    function enterSite() {
+        const wrapper = document.getElementById('envelope-wrapper');
+        const itemsView = document.querySelector('.tap-items-view');
+        const form = document.getElementById('formContainer');
+        
+        document.querySelectorAll('.card').forEach(c => c.classList.remove('expanded'));
+
+        if(itemsView) itemsView.style.opacity = '0';
+        if(form) form.style.opacity = '0';
+
+        wrapper.classList.remove('open');
+
+        setTimeout(() => {
+            wrapper.classList.add('envelope-thrown');
+            document.body.style.filter = "blur(20px)"; 
+            document.body.style.backgroundColor = "white";
+            document.body.style.opacity = '0';
+        }, 1500); 
+
+        setTimeout(() => { 
+            window.location.href = buildURL("main.html"); 
+        }, 3800);
+    }
+</script>
+</body>
+</html>
