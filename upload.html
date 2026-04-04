@@ -43,7 +43,7 @@
         .btn-gold { background: var(--gold); color: white; }
         .btn-outline { background: transparent; border: 2px solid var(--navy); color: var(--navy); }
 
-        /* --- Landscape Photo Booth Slideshow --- */
+        /* --- Overlays --- */
         #slideshow-overlay, #album-overlay {
             display: none;
             position: fixed;
@@ -55,22 +55,24 @@
             align-items: center;
         }
 
-        #album-overlay { background: var(--paper); overflow-y: auto; cursor: default; flex-direction: column; align-items: center; padding: 80px 0; }
+        #album-overlay { 
+            background: var(--paper); 
+            overflow-y: auto; 
+            cursor: default; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 80px 0;
+            justify-content: flex-start; /* FIX: Allows scrolling on mobile */
+        }
 
-        .close-slideshow {
+        .close-slideshow, .close-album {
             position: absolute; top: 20px; right: 20px; color: #ffffff;
             background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2);
             border-radius: 50%; width: 44px; height: 44px; font-size: 1.3rem;
             cursor: pointer; z-index: 10001; opacity: 0; transition: 0.4s;
         }
         #slideshow-overlay.show-controls .close-slideshow { opacity: 1; }
-
-        .close-album {
-            position: absolute; top: 20px; right: 20px; color: var(--navy);
-            background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.1);
-            border-radius: 50%; width: 44px; height: 44px; font-size: 1.3rem;
-            cursor: pointer; z-index: 10001;
-        }
+        .close-album { color: var(--navy); opacity: 1; background: rgba(0,0,0,0.05); }
 
         /* Album Grid */
         .album-grid {
@@ -123,21 +125,11 @@
 
         .slideshow-empty { color: #fff; position: absolute; top: 50%; width: 100%; text-align: center; z-index: 5; }
 
-        /* Footer Tooltip Style */
-        .inquiry-bubble {
-            position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
-            background: var(--navy); color: white; padding: 4px 8px; border-radius: 4px;
-            font-size: 0.6rem; white-space: nowrap; opacity: 0; visibility: hidden;
-            transition: 0.3s; margin-bottom: 5px;
-        }
-        .inquiry-wrapper:hover .inquiry-bubble { opacity: 1; visibility: visible; }
-
         @media (max-width: 768px) {
             .logo-names { font-size: 2.2rem; }
             .frame-header { height: 70px; }
             #photo-frame { width: 100vw; height: 100vh; border-radius: 0; padding: 0; }
             #slide-message { font-size: 0.9rem; }
-            .frame-header::before, .frame-header::after, .frame-footer::before, .frame-footer::after { width: 15px; height: 15px; }
             .album-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
@@ -201,8 +193,6 @@
                 <div style="display: flex; gap: 12px; margin-top: 4px; align-items: center;">
                     <a href="mailto:pidlaoanharvy@gmail.com" style="color: inherit; opacity: 0.6;"><i class="fas fa-envelope"></i></a>
                     <a href="https://instagram.com/hrvyngrs" target="_blank" style="color: inherit; opacity: 0.6;"><i class="fab fa-instagram"></i></a>
-                    <a href="https://facebook.com/hrvyngrs" target="_blank" style="color: inherit; opacity: 0.6;"><i class="fab fa-facebook"></i></a>
-                    <a href="https://linkedin.com/in/pidlaoanharvy" target="_blank" style="color: inherit; opacity: 0.6;"><i class="fab fa-linkedin"></i></a>
                 </div>
             </div>
         </div>
@@ -293,7 +283,7 @@
                 Swal.fire({ icon: 'success', title: 'Posted!', confirmButtonColor: '#001f3f' });
                 document.getElementById('photo-upload-form').reset();
                 resetImage();
-                btn.disabled = false; btn.innerText = "Post to Slideshow";
+                btn.disabled = false; btn.innerText = "Upload Photo";
                 fetchPhotos(); 
             });
         });
@@ -321,7 +311,6 @@
                 
                 document.getElementById('slide-name').innerText = "CAPTURED BY " + photo.name;
                 const msgEl = document.getElementById('slide-message');
-                const captionEl = document.getElementById('slide-caption');
                 
                 if (photo.message && photo.message.trim() !== "") { 
                     msgEl.innerText = photo.message; 
@@ -329,7 +318,7 @@
                 } else { 
                     msgEl.style.display = 'none'; 
                 }
-                captionEl.style.display = 'block';
+                document.getElementById('slide-caption').style.display = 'block';
                 
                 currentIndex++; 
             };
