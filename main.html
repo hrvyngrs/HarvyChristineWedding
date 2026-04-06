@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Pidlaoan & Corsino's Wedding</title>
+    <title>The Wedding Times - H&C Edition</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Harvy & Christine's Wedding" name="keywords">
     <meta content="Harvy & Christine's Wedding" name="description">
@@ -322,25 +322,153 @@
         }
 
         /* =========================================
-           RSVP & MODAL
+           RSVP & MODAL STYLE
            ========================================= */
-        .rsvp-section { max-width: 480px; margin: 40px auto; padding: 50px 40px; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); border-top: 6px solid #1a2a44; text-align: center; font-family: 'Lato', sans-serif; color: #1a2a44; }
-        .rsvp-section h2 { font-family: 'Playfair Display', serif; font-size: 2.6rem; margin-bottom: 8px; color: #1a2a44; letter-spacing: 1px; }
-        .rsvp-section p.subtitle { font-style: italic; margin-bottom: 35px; color: #707b7c; font-weight: 300; }
-        .form-group { text-align: left; margin-bottom: 25px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 400; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: #1a2a44; }
-        .rsvp-input { width: 100%; padding: 14px; border: 1px solid #d5d8dc; border-radius: 4px; box-sizing: border-box; font-size: 1rem; background-color: #f8f9f9; transition: all 0.3s ease; }
-        .rsvp-input:focus { border-color: #1a2a44; background-color: #fff; outline: none; }
-        .rsvp-input[readonly] { background-color: #f2f4f4; color: #7f8c8d; cursor: not-allowed; border-style: dashed; }
-        .policy-group { display: flex; align-items: flex-start; gap: 10px; text-align: left; margin-bottom: 25px; font-size: 0.9rem; }
-        .policy-group input { margin-top: 4px; }
-        .policy-link { color: #1a2a44; text-decoration: underline; font-weight: 400; }
-        #submit-btn { background: #1a2a44; color: #ffffff; border: none; padding: 16px; width: 100%; border-radius: 4px; cursor: pointer; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; transition: background 0.3s; }
-        #submit-btn:hover { background: #2c3e50; }
-        .nav-links { margin-top: 30px; display: flex; gap: 10px; justify-content: center; }
-        .nav-btn { flex: 1; padding: 12px; background: #f8f9f9; color: #1a2a44; border: 1px solid #d5d8dc; text-decoration: none; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; transition: all 0.3s; }
-        .nav-btn:hover { background: #d5d8dc; color: #1a2a44; }
-        .allowance-text { font-size: 0.8rem; color: #707b7c; margin-top: -15px; margin-bottom: 20px; text-align: left; font-style: italic; }
+        .rsvp-section { 
+        max-width: 480px; 
+        margin: 40px auto; 
+        padding: 50px 40px; 
+        background: #ffffff; 
+        border-radius: 12px; 
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); 
+        border-top: 6px solid #1a2a44; 
+        text-align: center; 
+        font-family: 'Lato', sans-serif; 
+        color: #1a2a44; 
+    }
+
+    .rsvp-section h2 { 
+        font-family: 'Playfair Display', serif; 
+        font-size: 2.6rem; 
+        margin-bottom: 8px; 
+        color: #1a2a44; 
+        letter-spacing: 1px; 
+    }
+
+    .rsvp-section p.subtitle { 
+        font-style: italic; 
+        margin-bottom: 35px; 
+        color: #707b7c; 
+        font-weight: 300; 
+    }
+
+    .form-group { 
+        text-align: left; 
+        margin-bottom: 22px; 
+    }
+
+    .form-group label { 
+        display: block; 
+        margin-bottom: 8px; 
+        font-weight: 700; 
+        font-size: 0.75rem; 
+        text-transform: uppercase; 
+        letter-spacing: 1.5px; 
+        color: #1a2a44; 
+    }
+
+    .rsvp-input { 
+        width: 100%; 
+        padding: 14px; 
+        border: 1px solid #d5d8dc; 
+        border-radius: 6px; 
+        box-sizing: border-box; 
+        font-size: 1rem; 
+        background-color: #fcfcfc; 
+        transition: all 0.2s ease-in-out; 
+    }
+
+    .rsvp-input:hover {
+        border-color: #bdc3c7;
+    }
+
+    .rsvp-input:focus { 
+        border-color: #1a2a44; 
+        background-color: #fff; 
+        outline: none; 
+        box-shadow: 0 0 0 3px rgba(26, 42, 68, 0.1);
+    }
+
+    .rsvp-input[readonly] { 
+        background-color: #f2f4f4; 
+        color: #95a5a6; 
+        cursor: not-allowed; 
+        border: 1px dashed #d5d8dc; 
+    }
+
+    .policy-group { 
+        display: flex; 
+        align-items: flex-start; 
+        gap: 12px; 
+        text-align: left; 
+        margin-bottom: 25px; 
+        font-size: 0.9rem; 
+        line-height: 1.4;
+    }
+
+    .policy-group input[type="checkbox"] { 
+        margin-top: 3px; 
+        cursor: pointer;
+        width: 16px;
+        height: 16px;
+    }
+
+    .policy-link { 
+        color: #1a2a44; 
+        text-decoration: underline; 
+        font-weight: 600; 
+    }
+
+    #submit-btn { 
+        background: #1a2a44; 
+        color: #ffffff; 
+        border: none; 
+        padding: 18px; 
+        width: 100%; 
+        border-radius: 6px; 
+        cursor: pointer; 
+        font-size: 0.95rem; 
+        font-weight: 600;
+        letter-spacing: 2px; 
+        text-transform: uppercase; 
+        transition: all 0.3s transform ease; 
+    }
+
+    #submit-btn:hover { 
+        background: #2c3e50; 
+    }
+
+    #submit-btn:active {
+        transform: scale(0.98);
+    }
+
+    .nav-links { margin-top: 30px; display: flex; gap: 10px; justify-content: center; }
+
+    .nav-btn { 
+        flex: 1; 
+        padding: 12px; 
+        background: #f8f9f9; 
+        color: #1a2a44; 
+        border: 1px solid #d5d8dc; 
+        text-decoration: none; 
+        font-size: 0.75rem; 
+        text-transform: uppercase; 
+        letter-spacing: 1px; 
+        border-radius: 4px; 
+        transition: all 0.3s; 
+    }
+
+    .nav-btn:hover { background: #e5e8e8; border-color: #1a2a44; }
+
+    .allowance-text { 
+        font-size: 0.85rem; 
+        color: #27ae60; /* Changed to a subtle success green */
+        margin-top: -15px; 
+        margin-bottom: 20px; 
+        text-align: left; 
+        font-style: italic; 
+        font-weight: 500;
+    }
         
         div.swal2-popup.vip-modal-custom { padding: 0 !important; border-radius: 12px !important; width: 90% !important; max-width: 420px !important; background: #ffffff !important; border: 2px solid #1a2a44 !important; box-shadow: 0 15px 35px rgba(0,0,0,0.2) !important; -ms-overflow-style: none !important; scrollbar-width: none !important; }
         div.swal2-popup.vip-modal-custom .swal2-html-container { margin: 0 !important; padding: 0 !important; overflow: hidden !important; }
@@ -383,7 +511,7 @@
 <body>
 
 <nav class="navbar fixed-top shadow-sm navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-lg-5">
-    <a href="index.html" class="navbar-brand d-block d-lg-none">
+    <a href="index" class="navbar-brand d-block d-lg-none">
         <h1 class="font-secondary text-white mb-n2 glitter-container">
             <span class="glitter-text">H & C</span>
         </h1>
@@ -398,7 +526,7 @@
             <a href="#story" class="nav-item nav-link">Our Story</a>
             <a href="#gallery" class="nav-item nav-link">Gallery</a>
         </div>
-        <a href="index.html" class="navbar-brand mx-5 d-none d-lg-block">
+        <a href="index" class="navbar-brand mx-5 d-none d-lg-block">
             <h1 class="font-secondary text-white mb-n2 glitter-container">
                 <span class="glitter-text">H & C</span>
             </h1>
@@ -488,10 +616,14 @@
 
 <div class="container-fluid py-5" id="about">
         <div class="container text-center">
-        <div class="section-title mb-4">
-            <h1 class="font-secondary display-4 mb-2" style="color: #1a2a44; font-size: 5.5rem;">About Us</h1>
+        <div class="section-title text-center mb-5">
+            <h1 class="font-secondary display-4 mb-2" style="color: #1a2a44; font-size: 5.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">About Us</h1>
+            <div class="divider-heart">
+                <div class="line"></div>
+                <i class="fas fa-heart" style="color: #d4af37;"></i>
+                <div class="line"></div>
+            </div>
         </div>
-
         <div class="row">
             <div class="col-md-6 scrapbook-flip-card">
                 <div class="scrapbook-flip-inner" onclick="toggleFlip(this)">
@@ -550,11 +682,16 @@
 
     <div class="container-fluid py-5" id="story" style="background: #ffffff; margin: 100px 0;">
     <div class="container text-center">
-        <div class="section-title mb-4">
-            <h1 class="font-secondary display-4 mb-2" style="color: #1a2a44; font-size: 5.5rem;">Our Story</h1>
+        <div class="section-title text-center mb-5">
+            <h1 class="font-secondary display-4 mb-2" style="color: #1a2a44; font-size: 5.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">Our Story</h1>
             <h6 class="text-uppercase text-primary" style="letter-spacing: 3px; color: #d4af37 !important; font-size: 0.7rem;">Tap to see our journey</h6>
-        </div>
+            <div class="divider-heart mt-3">
+                <div class="line"></div>
+                <i class="fas fa-heart" style="color: #d4af37;"></i>
+                <div class="line"></div>
             </div>
+        </div>
+        </div>
         <div class="compact-nav-wrapper">
             <div class="nav-gold-line"></div>
             <div class="nav-icons">
@@ -640,10 +777,15 @@
 
     <div class="container-fluid bg-gallery" id="gallery" style="padding: 120px 0; margin: 90px 0;">
         <div class="container text-center">
-        <div class="section-title mb-4">
-            <h1 class="font-secondary display-4 mb-2" style="color: white; font-size: 5.5rem;">Just the Two of Us</h1>
+        <div class="section-title text-center mb-5">
+            <h1 class="font-secondary display-4 mb-2" style="color: white; font-size: 5.5rem; text-shadow: 2px 2px 8px rgba(0,0,0,0.3);">Just the Two of Us</h1>
+            <div class="divider-heart">
+                <div class="line" style="border-top-color: rgba(255,255,255,0.5);"></div>
+                <i class="fas fa-heart" style="color: #d4af37;"></i>
+                <div class="line" style="border-top-color: rgba(255,255,255,0.5);"></div>
+            </div>
         </div>
-    </div><br/><br/><br/><br/>
+        </div><br/><br/><br/><br/>
         <div class="owl-carousel gallery-carousel">
             <div class="gallery-item">
                 <img class="img-fluid w-100" src="img/gallery/1.jpg" alt="">
@@ -686,9 +828,15 @@
     <div class="container-fluid py-5" id="event">
     <div class="container py-5">
             <div class="container text-center">
-        <div class="section-title mb-4">
-            <h1 class="font-secondary display-4 mb-2" style="color: #1a2a44; font-size: 5.5rem;">The Wedding Day</h1>
-        </div></div>
+        <div class="section-title text-center mb-5">
+            <h1 class="font-secondary display-4 mb-2" style="color: #1a2a44; font-size: 5.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">The Wedding Day</h1>
+            <div class="divider-heart">
+                <div class="line"></div>
+                <i class="fas fa-heart" style="color: #d4af37;"></i>
+                <div class="line"></div>
+            </div>
+        </div>
+        </div>
 
         <div class="row justify-content-center mb-5">
     <div class="col-md-8 text-center">
@@ -984,10 +1132,15 @@
 
     <div class="container-fluid py-5" id="dressgift">
                 <div class="container text-center">
-        <div class="section-title mb-4">
-            <h1 class="font-secondary display-4 mb-2" style="color: #1a2a44; font-size: 5.5rem;">What to wear?</h1>
+        <div class="section-title text-center mb-5">
+            <h1 class="font-secondary display-4 mb-2" style="color: #1a2a44; font-size: 5.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">What to wear?</h1>
+            <div class="divider-heart">
+                <div class="line"></div>
+                <i class="fas fa-heart" style="color: #d4af37;"></i>
+                <div class="line"></div>
+            </div>
         </div>
-    </div>
+        </div>
 
     <div class="text-center mx-auto mb-5" style="max-width: 800px;">
         <p class="text-primary mb-3" style="letter-spacing: 1px;">
@@ -1111,7 +1264,7 @@
             <ul style="list-style: disc; text-align: left; display: inline-block; margin: 1rem auto 2rem; padding-left: 1.2rem; max-width: 800px;">
                 <li><b>NO CHILDREN ALLOWED:</b> <i>We love your little ones dearly; however, to maintain a calm, safe, and enjoyable atmosphere, we are unable to accommodate children at both the ceremony and reception.</i></li>
                 <li style="margin-top: 1rem;"><b>STRICTLY NO PLUS ONE:</b> <i>Due to limited seating, we can only accommodate guests who have received an invitation. We sincerely appreciate your understanding.</i></li>
-                <li style="margin-top: 1rem;"><b>RSVP IS REQUIRED:</b> <i>Please confirm your attendance through the RSVP link on or before May 31, 2026.</i></li>
+                <li style="margin-top: 1rem;"><b>RSVP IS REQUIRED:</b> <i>Please confirm your attendance through the RSVP below on or before May 31, 2026.</i></li>
                 <li style="margin-top: 1rem;"><b>RESERVED SEATING:</b> <i>To ensure a seamless program flow, seating will be assigned. We kindly ask guests to follow the arrangement prepared.</i></li>
             </ul>
 
@@ -1126,12 +1279,12 @@
     
     <form id="rsvp-form">
         <div class="form-group">
-            <label>Invite Code</label>
-            <input type="text" name="Invite Code" id="invite-code" class="rsvp-input" placeholder="Validating code..." readonly required>
+            <label for="invite-code">Invite Code</label>
+            <input type="text" name="Invite Code" id="invite-code" class="rsvp-input" placeholder="Invalid Code" readonly required>
         </div>
 
         <div class="form-group">
-            <label>Full Name</label>
+            <label for="full-name">Full Name</label>
             <input type="text" name="Full Name" id="full-name" class="rsvp-input" placeholder="Enter name" required>
         </div>
 
@@ -1140,7 +1293,7 @@
         </div>
 
         <div class="form-group">
-            <label>Attendance</label>
+            <label for="attendance-select">Attendance</label>
             <select name="Attendance" id="attendance-select" class="rsvp-input" required>
                 <option value="" disabled selected>Will you attend?</option>
                 <option value="Yes">Joyfully Accepts</option>
@@ -1158,29 +1311,33 @@
                 <option value="Bride">Bride</option>
             </select>
         </div>
-        <div class="form-group" style="margin-bottom: 10px;">
+
+        <div class="form-group" style="margin-bottom: 15px;">
             <div class="policy-group" style="margin-bottom: 5px;">
                 <input type="checkbox" id="notify-opt-in" name="Notify_Opt_In" value="Yes">
-                <label for="notify-opt-in" style="text-transform: none; letter-spacing: normal; font-size: 0.85rem;">
+                <label for="notify-opt-in" style="text-transform: none; letter-spacing: normal; font-size: 0.85rem; cursor: pointer;">
                     Notify me 7 days before the wedding with my assigned seating.
                 </label>
             </div>
         </div>
+
         <div class="form-group" id="email-group" style="display: none; margin-bottom: 25px;">
-            <label>Email Address</label>
+            <label for="guest-email">Email Address</label>
             <input type="email" name="Email" id="guest-email" class="rsvp-input" placeholder="Enter your email address">
         </div>
+
         <div class="policy-group">
             <input type="checkbox" id="policy-agreement" required>
-            <label for="policy-agreement" style="text-transform: none; letter-spacing: normal; font-size: 0.85rem;">
+            <label for="policy-agreement" style="text-transform: none; letter-spacing: normal; font-size: 0.85rem; cursor: pointer;">
                 I agree to the <a href="#rsvp" class="policy-link">Wedding Guest Policies</a>.
             </label>
         </div>
+
         <button type="submit" id="submit-btn">Send RSVP</button>
     </form>
 
     <div class="nav-links" id="seat-finder-container" style="display: none;">
-        <a href="seat-finder.html" class="nav-btn">Seat Finder</a>
+        <a href="seat-finder" class="nav-btn">Seat Finder</a>
     </div>
 </div>
 
@@ -1542,7 +1699,7 @@
                             if (guestNames.length > 0) {
                                 additionalGuestsHtml = `
                                     <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e2e8f0;">
-                                        <span style="font-size: 0.55rem; color: #888; letter-spacing: 1px; text-transform: uppercase;">Plus Guests</span><br>
+                                        <span style="font-size: 0.55rem; color: #888; letter-spacing: 1px; text-transform: uppercase;">Plus Guest(s)</span><br>
                                         <strong style="font-size: 0.85rem; color: #1a2a44; line-height: 1.4; text-transform: uppercase;">
                                             ${guestNames.join('<br>')}
                                         </strong>
@@ -1557,7 +1714,7 @@
                                 <div style="padding: 40px 25px 20px 25px; background: #ffffff; border-radius: 12px 12px 0 0;">
                                     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #1a2a44; padding-bottom: 10px; margin-bottom: 20px;">
                                         <h3 style="color: #1a2a44; font-family: 'Playfair Display', serif; font-weight: 900; letter-spacing: 1px; margin: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
-                                            <i class="fas fa-ticket-alt" style="color: #d4af37;"></i> VIP GUEST PASS
+                                            <i class="fas fa-ticket-alt" style="color: #d4af37;"></i> GUEST PASS
                                         </h3>
                                         <div style="text-align: right; background: #1a2a44; color: #d4af37; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 0.7rem; letter-spacing: 2px;">
                                             ADMIT: ${totalAdmit}
@@ -1587,13 +1744,13 @@
                                         <div style="text-align: center; width: 35%;">
                                             <i class="fas fa-glass-cheers" style="font-size: 1.4rem; color: #1a2a44; margin-bottom: 5px;"></i><br>
                                             <span style="font-size: 0.75rem; font-weight: 900; color: #1a2a44; letter-spacing: 1px;">RECEPTION</span><br>
-                                            <span style="font-size: 0.55rem; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Waterfront Hotel</span>
+                                            <span style="font-size: 0.55rem; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Waterfront Cebu Hotel & Casino</span>
                                         </div>
                                     </div>
                                     <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 5px;">
                                         <div style="display: flex; justify-content: space-between;">
                                             <div style="flex: 1;">
-                                                <span style="font-size: 0.55rem; color: #888; letter-spacing: 1px; text-transform: uppercase;">Lead Guest</span><br>
+                                                <span style="font-size: 0.55rem; color: #888; letter-spacing: 1px; text-transform: uppercase;">Primary Guest</span><br>
                                                 <strong style="font-size: 1rem; color: #1a2a44; text-transform: uppercase;">${mainGuest}</strong>
                                             </div>
                                             <div style="text-align: right;">
@@ -1611,9 +1768,14 @@
                                     <p style="font-size: 0.9rem; color: #1a2a44; font-weight: 900; letter-spacing: 3px; margin: 0 0 8px 0; text-transform: uppercase;">
                                         ${inviteCodeUsed}
                                     </p>
-                                    <p style="font-size: 0.7rem; color: #888; font-style: italic; margin-bottom: 15px;">
-                                        Screenshot this pass to save your spot!
-                                    </p>
+                                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px dashed #e2e8f0; text-align: center;">
+    <p style="margin: 0 0 5px 0; font-size: 0.7rem; color: #1a2a44; font-weight: 900; letter-spacing: 1px;">
+        <i class="fas fa-mobile-alt" style="color: #d4af37; margin-right: 5px; font-size: 0.8rem;"></i> IMPORTANT NOTE
+    </p>
+    <p style="margin: 0; font-size: 0.65rem; color: #666; font-style: italic; line-height: 1.5;">
+        This Guest Pass serves as your official entry.<br>Kindly take a screenshot and present it to our door attendants.
+    </p>
+</div>
                                 </div>
                             </div>
                             `,
