@@ -58,6 +58,7 @@
         #album-overlay { 
             background: var(--paper); 
             overflow-y: auto; 
+            -webkit-overflow-scrolling: touch; /* FIX: Added for smoother mobile scrolling */
             cursor: default; 
             flex-direction: column; 
             align-items: center; 
@@ -360,13 +361,22 @@
                 const directImageUrl = "https://lh3.googleusercontent.com/d/" + fileId;
                 const item = document.createElement('div');
                 item.className = 'album-item';
-                item.innerHTML = `<img src="${directImageUrl}" loading="lazy"><a href="${directImageUrl}" target="_blank" download="wedding.jpg" class="dl-icon"><i class="fas fa-download"></i></a>`;
+                // FIX: Wrapped the img in an <a> tag to open the full picture in a new tab when clicked.
+                item.innerHTML = `<a href="${directImageUrl}" target="_blank" style="display:block; width:100%; height:100%;"><img src="${directImageUrl}" loading="lazy"></a><a href="${directImageUrl}" target="_blank" download="wedding.jpg" class="dl-icon"><i class="fas fa-download"></i></a>`;
                 grid.appendChild(item);
             });
         }
 
-        function openAlbum() { document.getElementById('album-overlay').style.display = 'flex'; fetchPhotos(); }
-        function closeAlbum() { document.getElementById('album-overlay').style.display = 'none'; }
+        function openAlbum() { 
+            document.body.style.overflow = 'hidden'; // FIX: Prevents background from scrolling
+            document.getElementById('album-overlay').style.display = 'flex'; 
+            fetchPhotos(); 
+        }
+        
+        function closeAlbum() { 
+            document.body.style.overflow = ''; // FIX: Restores background scrolling
+            document.getElementById('album-overlay').style.display = 'none'; 
+        }
 
         fetchPhotos();
         setInterval(fetchPhotos, 20000);
