@@ -58,12 +58,11 @@
         #album-overlay { 
             background: var(--paper); 
             overflow-y: auto; 
-            -webkit-overflow-scrolling: touch; /* FIX: Added for smoother mobile scrolling */
+            -webkit-overflow-scrolling: touch; 
+            overscroll-behavior: contain; /* FIX: Stops scroll from bleeding into background */
             cursor: default; 
-            flex-direction: column; 
-            align-items: center; 
             padding: 80px 0;
-            justify-content: flex-start; /* FIX: Allows scrolling on mobile */
+            /* Flex properties removed because they break scrolling on mobile */
         }
 
         .close-slideshow, .close-album {
@@ -80,6 +79,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             gap: 15px; width: 90%; max-width: 1000px;
+            margin: 0 auto; /* FIX: Centers the grid now that we aren't using flexbox */
         }
         .album-item { position: relative; aspect-ratio: 1; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background: #eee; }
         .album-item img { width: 100%; height: 100%; object-fit: cover; }
@@ -361,20 +361,25 @@
                 const directImageUrl = "https://lh3.googleusercontent.com/d/" + fileId;
                 const item = document.createElement('div');
                 item.className = 'album-item';
-                // FIX: Wrapped the img in an <a> tag to open the full picture in a new tab when clicked.
+                // Kept the image wrap from previous fix so guests can click to view before saving
                 item.innerHTML = `<a href="${directImageUrl}" target="_blank" style="display:block; width:100%; height:100%;"><img src="${directImageUrl}" loading="lazy"></a><a href="${directImageUrl}" target="_blank" download="wedding.jpg" class="dl-icon"><i class="fas fa-download"></i></a>`;
                 grid.appendChild(item);
             });
         }
 
         function openAlbum() { 
-            document.body.style.overflow = 'hidden'; // FIX: Prevents background from scrolling
-            document.getElementById('album-overlay').style.display = 'flex'; 
+            // FIX: Lock BOTH html and body overflow to stop Safari from bleeding the scroll 
+            document.documentElement.style.overflow = 'hidden'; 
+            document.body.style.overflow = 'hidden'; 
+            // FIX: Change to 'block' instead of 'flex' so mobile browsers track the scroll height correctly
+            document.getElementById('album-overlay').style.display = 'block'; 
             fetchPhotos(); 
         }
         
         function closeAlbum() { 
-            document.body.style.overflow = ''; // FIX: Restores background scrolling
+            // FIX: Clean up BOTH html and body overflow
+            document.documentElement.style.overflow = ''; 
+            document.body.style.overflow = ''; 
             document.getElementById('album-overlay').style.display = 'none'; 
         }
 
