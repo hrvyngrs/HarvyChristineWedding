@@ -47,7 +47,7 @@
         #slideshow-overlay, #album-overlay {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0; left: 0; right: 0; bottom: 0; /* Pinned to corners for mobile */
             background: #000;
             z-index: 9999;
             cursor: pointer;
@@ -59,10 +59,9 @@
             background: var(--paper); 
             overflow-y: auto; 
             -webkit-overflow-scrolling: touch; 
-            overscroll-behavior: contain; /* FIX: Stops scroll from bleeding into background */
+            overscroll-behavior: contain; /* Prevents mobile scroll bleeding */
             cursor: default; 
-            padding: 80px 0;
-            /* Flex properties removed because they break scrolling on mobile */
+            padding: 80px 0 150px 0; /* Extra bottom padding so last row is visible */
         }
 
         .close-slideshow, .close-album {
@@ -79,11 +78,11 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             gap: 15px; width: 90%; max-width: 1000px;
-            margin: 0 auto; /* FIX: Centers the grid now that we aren't using flexbox */
+            margin: 0 auto;
         }
         .album-item { position: relative; aspect-ratio: 1; border-radius: 4px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background: #eee; }
         .album-item img { width: 100%; height: 100%; object-fit: cover; }
-        .dl-icon { position: absolute; bottom: 10px; right: 10px; background: var(--gold); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 0.8rem; }
+        .dl-icon { position: absolute; bottom: 10px; right: 10px; background: var(--gold); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 0.8rem; z-index: 2; }
 
         /* The Premium Landscape Frame */
         #photo-frame {
@@ -226,9 +225,14 @@
         <button class="close-album" onclick="closeAlbum()"><i class="fas fa-times"></i></button>
         <div style="text-align: center; margin-bottom: 30px;">
             <h2 style="font-family: 'Great Vibes', cursive; font-size: 3rem; color: var(--navy); margin: 0;">Wedding Album</h2>
-            <p style="font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold);">Tap to save your favorites</p>
+            <p style="font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold);">Tap to view • Click icon to save</p>
         </div>
         <div class="album-grid" id="album-grid"></div>
+    </div>
+
+    <div id="lightbox-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); z-index: 10005; cursor: pointer; justify-content: center; align-items: center;" onclick="closeLightbox()">
+        <button style="position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); color: white; width: 44px; height: 44px; border-radius: 50%; font-size: 1.3rem; cursor: pointer; z-index: 10006;"><i class="fas fa-times"></i></button>
+        <img id="lightbox-img" src="" style="max-width: 95vw; max-height: 85vh; object-fit: contain; border-radius: 4px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
     </div>
 
     <script>
@@ -326,6 +330,71 @@
             tempLoader.src = directImageUrl;
         }
 
+        // --- NEW LIGHTBOX & DOWNLOAD FUNCTIONS --- //
+        function openLightbox(imgSrc) {
+            document.getElementById('lightbox-img').src = imgSrc;
+            document.getElementById('lightbox-overlay').style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox-overlay').style.display = 'none';
+            document.getElementById('lightbox-img').src = ''; 
+        }
+
+        function forceDownload(event, url, filename) {
+            // Stop the click from triggering the Lightbox image view
+            if (event) event.stopPropagation(); 
+
+            // Fetch forces a true local download instead of a new tab
+            fetch(url)
+                .then(response => response.blob())
+                .then(blob => {
+                    const blobUrl = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = blobUrl;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(blobUrl);
+                    document.body.removeChild(a);
+                })
+                .catch(() => {
+                    // Fallback just in case browser blocks the download
+                    window.open(url, '_blank');
+                });
+        }
+        // ---------------------------------------- //
+
+        function renderAlbum() {
+            const grid = document.getElementById('album-grid');
+            grid.innerHTML = '';
+            photosArray.forEach((photo, index) => {
+                let fileId = photo.url.match(/id=([a-zA-Z0-9_-]+)/)?.[1] || photo.url.split('/').pop().split('?')[0];
+                const directImageUrl = "https://lh3.googleusercontent.com/d/" + fileId;
+                const item = document.createElement('div');
+                item.className = 'album-item';
+                
+                const uploaderName = photo.name ? photo.name : "Guest";
+                
+                // HTML includes the image wrapped in a Lightbox trigger, the name tag, and the download button
+                item.innerHTML = `
+                    <div onclick="openLightbox('${directImageUrl}')" style="display:block; width:100%; height:100%; cursor:pointer;">
+                        <img src="${directImageUrl}" loading="lazy">
+                    </div>
+                    
+                    <div style="position: absolute; bottom: 10px; left: 10px; background: rgba(0, 31, 63, 0.85); color: white; padding: 5px 10px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; letter-spacing: 1px; max-width: calc(100% - 60px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none;">
+                        <i class="fas fa-user" style="margin-right: 5px; opacity: 0.8;"></i> ${uploaderName}
+                    </div>
+
+                    <button onclick="forceDownload(event, '${directImageUrl}', 'HC-Wedding-Photo-${index + 1}.jpg')" class="dl-icon" style="border:none; cursor:pointer; z-index: 2;">
+                        <i class="fas fa-download"></i>
+                    </button>
+                `;
+                grid.appendChild(item);
+            });
+        }
+
         function fetchPhotos() {
             const script = document.createElement('script');
             script.src = scriptURL + '?action=getPhotos&callback=handlePhotosUpdate&_=' + new Date().getTime();
@@ -353,31 +422,14 @@
             slideshowInterval = null;
         }
 
-        function renderAlbum() {
-            const grid = document.getElementById('album-grid');
-            grid.innerHTML = '';
-            photosArray.forEach(photo => {
-                let fileId = photo.url.match(/id=([a-zA-Z0-9_-]+)/)?.[1] || photo.url.split('/').pop().split('?')[0];
-                const directImageUrl = "https://lh3.googleusercontent.com/d/" + fileId;
-                const item = document.createElement('div');
-                item.className = 'album-item';
-                // Kept the image wrap from previous fix so guests can click to view before saving
-                item.innerHTML = `<a href="${directImageUrl}" target="_blank" style="display:block; width:100%; height:100%;"><img src="${directImageUrl}" loading="lazy"></a><a href="${directImageUrl}" target="_blank" download="wedding.jpg" class="dl-icon"><i class="fas fa-download"></i></a>`;
-                grid.appendChild(item);
-            });
-        }
-
         function openAlbum() { 
-            // FIX: Lock BOTH html and body overflow to stop Safari from bleeding the scroll 
             document.documentElement.style.overflow = 'hidden'; 
             document.body.style.overflow = 'hidden'; 
-            // FIX: Change to 'block' instead of 'flex' so mobile browsers track the scroll height correctly
             document.getElementById('album-overlay').style.display = 'block'; 
             fetchPhotos(); 
         }
         
         function closeAlbum() { 
-            // FIX: Clean up BOTH html and body overflow
             document.documentElement.style.overflow = ''; 
             document.body.style.overflow = ''; 
             document.getElementById('album-overlay').style.display = 'none'; 

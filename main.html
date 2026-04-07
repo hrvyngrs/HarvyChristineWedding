@@ -1413,7 +1413,7 @@
         
         <div class="msg-row bot-row">
             <div class="msg-name" style="text-align: left;">Harvy & Christine</div>
-            <div class="msg bot" style="text-align: left;" id="welcome-message">Hi! I'm the digital assistant for Harvy & Christine. How can I help you today?</div>
+            <div class="msg bot" style="text-align: left;" id="welcome-message">Hi! I'm the digital assistant for Harvy & Christine. Please select a category below to explore our FAQs.</div>
         </div>
         
         <div class="faq-options-list" style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 5px; width: 100%;">
@@ -1903,16 +1903,93 @@
                 return;
             }
 
+            // Extract unique categories, defaulting to 'General' if left blank
+            const categories = [...new Set(weddingFAQs.map(item => item.category || "General"))];
+
             let html = '';
+            if (categories.length > 1) {
+                // Centered divider for categories
+                html += `<div style="display: flex; align-items: center; width: 100%; margin: 10px 0 15px 0;">
+                            <div style="flex: 1; height: 1px; background: #ddd;"></div>
+                            <span style="padding: 0 10px; font-size: 0.65rem; font-weight: bold; color: #888; text-transform: uppercase; letter-spacing: 1.5px;">Select a Topic</span>
+                            <div style="flex: 1; height: 1px; background: #ddd;"></div>
+                         </div>`;
+                
+                // Show category folders
+                categories.forEach(cat => {
+                    html += `<button class="faq-choice-btn" style="border-color:#1a2a44; font-weight:bold; width:100%; margin-bottom:5px;" onclick="showCategoryQuestions('${cat}', this)">📁 ${cat}</button>`;
+                });
+            } else {
+                // Centered divider for questions
+                html += `<div style="display: flex; align-items: center; width: 100%; margin: 10px 0 15px 0;">
+                            <div style="flex: 1; height: 1px; background: #ddd;"></div>
+                            <span style="padding: 0 10px; font-size: 0.65rem; font-weight: bold; color: #888; text-transform: uppercase; letter-spacing: 1.5px;">Select a Question</span>
+                            <div style="flex: 1; height: 1px; background: #ddd;"></div>
+                         </div>`;
+                
+                weddingFAQs.forEach((item, index) => {
+                    html += `<button class="faq-choice-btn" style="width:100%; margin-bottom:5px;" onclick="sendGuestMessage(${index}, this)">${item.question}</button>`;
+                });
+            }
+            container.innerHTML = html;
+            
+            // Hide footer while selecting a category
+            document.getElementById('chat-footer').style.display = 'none';
+        }
+
+        window.showCategoryQuestions = function(category, btnElement) {
+            const container = btnElement.closest('.faq-options-list');
+            
+            // Centered divider for the selected category using your gold theme color
+            let html = `<div style="display: flex; align-items: center; width: 100%; margin: 10px 0 15px 0;">
+                            <div style="flex: 1; height: 1px; background: #d4af37;"></div>
+                            <span style="padding: 0 10px; font-size: 0.7rem; font-weight: 900; color: #1a2a44; text-transform: uppercase; letter-spacing: 1px;">📁 ${category}</span>
+                            <div style="flex: 1; height: 1px; background: #d4af37;"></div>
+                        </div>`;
+            
             weddingFAQs.forEach((item, index) => {
-                html += `<button class="faq-choice-btn" onclick="sendGuestMessage(${index}, this)">${item.question}</button>`;
+                if ((item.category || "General") === category) {
+                    html += `<button class="faq-choice-btn" style="width:100%; margin-bottom:5px;" onclick="sendGuestMessage(${index}, this)">${item.question}</button>`;
+                }
             });
             container.innerHTML = html;
-        }
+
+            // Show footer with the "Back to Categories" button
+            const footer = document.getElementById('chat-footer');
+            footer.innerHTML = `<button onclick="renderFAQButtons()" style="background: none; border: 1px solid #1a2a44; color: #1a2a44; padding: 6px 18px; border-radius: 20px; font-size: 0.75rem; cursor: pointer; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s;">← Back to Categories</button>`;
+            footer.style.display = 'block';
+        };
+
+        window.showCategoryQuestions = function(category, btnElement) {
+            const container = btnElement.closest('.faq-options-list');
+            
+            // Centered divider for the selected category, styled to match "SELECT A TOPIC"
+            let html = `<div style="display: flex; align-items: center; width: 100%; margin: 10px 0 15px 0;">
+                            <div style="flex: 1; height: 1px; background: #ddd;"></div>
+                            <span style="padding: 0 10px; font-size: 0.65rem; font-weight: bold; color: #888; text-transform: uppercase; letter-spacing: 1.5px;">📁 ${category}</span>
+                            <div style="flex: 1; height: 1px; background: #ddd;"></div>
+                        </div>`;
+            
+            weddingFAQs.forEach((item, index) => {
+                if ((item.category || "General") === category) {
+                    html += `<button class="faq-choice-btn" style="width:100%; margin-bottom:5px;" onclick="sendGuestMessage(${index}, this)">${item.question}</button>`;
+                }
+            });
+            container.innerHTML = html;
+
+            // Show footer with the "Back to Categories" button
+            const footer = document.getElementById('chat-footer');
+            footer.innerHTML = `<button onclick="renderFAQButtons()" style="background: none; border: 1px solid #1a2a44; color: #1a2a44; padding: 6px 18px; border-radius: 20px; font-size: 0.75rem; cursor: pointer; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s;">← Back to Categories</button>`;
+            footer.style.display = 'block';
+        };
 
         function sendGuestMessage(index, btnElement) {
             const container = document.getElementById('conversation-container');
+            const footer = document.getElementById('chat-footer');
             const selected = weddingFAQs[index];
+
+            // Hide the footer immediately when a question is clicked
+            footer.style.display = 'none';
 
             if (btnElement) {
                 btnElement.closest('.faq-options-list').style.display = 'none';
@@ -1947,7 +2024,10 @@
                 container.appendChild(botRow);
                 
                 setTimeout(() => container.scrollTop = container.scrollHeight, 50);
-                document.getElementById('chat-footer').style.display = 'block';
+                
+                // Swap the footer button to "Ask Another Question" and show it
+                footer.innerHTML = `<button onclick="resetChat()" style="background: none; border: 1px solid #d4af37; color: #d4af37; padding: 6px 18px; border-radius: 20px; font-size: 0.75rem; cursor: pointer; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Ask Another Question</button>`;
+                footer.style.display = 'block';
             }, 1200);
         }
 
