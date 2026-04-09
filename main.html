@@ -729,7 +729,13 @@
                                     Christine came straight from school that day, carrying a large shoulder bag. Noticing it, Harvy couldn’t resist breaking the tension with a joke asking if she was already planning to move in since it looked like she had packed all her belongings with her. That playful remark sparked laughter, instantly easing their nerves and breaking the ice.
                                     <br/><br/>
                                     Since November 2016, Harvy patiently courted Christine, expressing his love through small gestures and heartfelt moments that made her feel truly special. At the <strong>USJR campus</strong> - the very place where their story began and where they first caught glimpses of each other. Harvy prepared a heartfelt surprise: 101 reasons why he loved her, carefully written and placed inside a jar. That simple yet deeply meaningful gesture marked the start of a beautiful journey together. From that day forward, their bond only grew stronger, eventually leading them to the wedding day they now joyfully share with family and friends.
-                                </p>
+                                <div class="text-right mt-3">
+    <span onclick="showStory(2, document.querySelectorAll('.nav-node')[1])" 
+          style="cursor: pointer; color: #d4af37; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;">
+        Continue to 2024 <i class="fas fa-arrow-right ml-1"></i>
+    </span>
+</div></p>
+
                             </div>
                         </div>
                     </div>
@@ -749,7 +755,12 @@
                                     On <strong>November 9, 2024</strong>, the magic came to life at Puka Beach, with the sun casting its warm glow over the white sand and gentle waves rolling in around them. Surrounded by loved ones and the natural beauty of the moment, Harvy asked Christine to spend the rest of her life with him.
                                     <br/><br/>
                                     It was a moment filled with love, laughter, and unforgettable memories—the beginning of a brand‑new chapter in their story and the start of forever.
-                                </p>
+                                <div class="text-right mt-3">
+    <span onclick="showStory(3, document.querySelectorAll('.nav-node')[2])" 
+          style="cursor: pointer; color: #d4af37; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;">
+        Continue to 2026 <i class="fas fa-arrow-right ml-1"></i>
+    </span>
+</div></p>
                             </div>
                         </div>
                     </div>
@@ -910,6 +921,22 @@
             </div>
         </div>
     </div>
+</div>
+<div class="col-12 mt-4 text-center">
+    <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 15px;">
+        <div style="height: 1px; background: #d4af37; width: 60px;"></div>
+        <i class="fas fa-car" style="color: #1a2a44; font-size: 1.2rem;"></i>
+        <div style="height: 1px; background: #d4af37; width: 60px;"></div>
+    </div>
+    <p class="text-muted mb-3" style="font-size: 0.9rem; max-width: 500px; margin: 0 auto;">
+        The reception is just a short 10-15 minute drive from the church. Click below for the best route.
+    </p>
+    <a href="https://www.google.com/maps/dir/Redemptorist+Church+-+Our+Mother+of+Perpetual+Help,+Cebu+City/Waterfront+Cebu+City+Hotel+%26+Casino,+Cebu+City" 
+       target="_blank" rel="noopener noreferrer"
+       class="btn rounded-pill py-3 px-5" 
+       style="background: #1a2a44; color: #ffffff; border: 1px solid #1a2a44; font-family: 'Montserrat', sans-serif; letter-spacing: 2px; text-transform: uppercase; font-size: 0.85rem; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+       <i class="fas fa-map-marked-alt mr-2" style="color: #d4af37;"></i> Navigate to Reception
+    </a>
 </div>
     </div>
 </div>
@@ -1960,29 +1987,6 @@
             footer.style.display = 'block';
         };
 
-        window.showCategoryQuestions = function(category, btnElement) {
-            const container = btnElement.closest('.faq-options-list');
-            
-            // Centered divider for the selected category, styled to match "SELECT A TOPIC"
-            let html = `<div style="display: flex; align-items: center; width: 100%; margin: 10px 0 15px 0;">
-                            <div style="flex: 1; height: 1px; background: #ddd;"></div>
-                            <span style="padding: 0 10px; font-size: 0.65rem; font-weight: bold; color: #888; text-transform: uppercase; letter-spacing: 1.5px;">📁 ${category}</span>
-                            <div style="flex: 1; height: 1px; background: #ddd;"></div>
-                        </div>`;
-            
-            weddingFAQs.forEach((item, index) => {
-                if ((item.category || "General") === category) {
-                    html += `<button class="faq-choice-btn" style="width:100%; margin-bottom:5px;" onclick="sendGuestMessage(${index}, this)">${item.question}</button>`;
-                }
-            });
-            container.innerHTML = html;
-
-            // Show footer with the "Back to Categories" button
-            const footer = document.getElementById('chat-footer');
-            footer.innerHTML = `<button onclick="renderFAQButtons()" style="background: none; border: 1px solid #1a2a44; color: #1a2a44; padding: 6px 18px; border-radius: 20px; font-size: 0.75rem; cursor: pointer; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s;">← Back to Categories</button>`;
-            footer.style.display = 'block';
-        };
-
         function sendGuestMessage(index, btnElement) {
             const container = document.getElementById('conversation-container');
             const footer = document.getElementById('chat-footer');
@@ -2043,6 +2047,16 @@
             renderFAQButtons(); 
             setTimeout(() => container.scrollTop = container.scrollHeight, 50);
         }
+
+        // Force mobile hamburger menu to close after clicking a link
+        document.querySelectorAll('.navbar-nav .nav-link').forEach(function(link) {
+            link.addEventListener('click', function() {
+                var navbarCollapse = document.getElementById('navbarCollapse');
+                if (navbarCollapse.classList.contains('show')) {
+                    document.querySelector('.navbar-toggler').click();
+                }
+            });
+        });
     </script>
     <script src="js/main.js"></script>
 </body>
