@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Wedding Times - H&C Edition</title>
-    <link rel="prefetch" href="main">
     <style>
         :root {
             --navy: #001f3f;
@@ -106,6 +105,7 @@
             transition: opacity 1.5s cubic-bezier(0.23, 1, 0.32, 1) 1.5s, transform 1.5s cubic-bezier(0.23, 1, 0.32, 1) 1.5s;
             white-space: nowrap;
             background: rgba(0, 31, 63, 0.4);
+            /* UPDATE: Added text shadow for readability */
             text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
         }
 
@@ -152,6 +152,7 @@
             position: absolute;
             top: 0; left: 0;
             width: 100%; 
+            /* UPDATE: Increased height from 205px to 230px for a larger tap target */
             height: 230px;
             background-color: var(--navy-dark);
             clip-path: polygon(0 0, 100% 0, 100% 48%, 50% 100%, 0 48%);
@@ -269,6 +270,7 @@
         .wedding-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 5px; }
         .side-block { display: flex; flex-direction: column; align-items: center; width: 50px; }
         .bold-silver-line { height: 2px; width: 100%; background: var(--silver); }
+        /* UPDATE: Added text shadow to silver text for better contrast */
         .side-text, .month, .year { font-size: 0.5rem; padding: 2px 0; font-weight: bold; color: var(--silver-bright); text-shadow: 1px 1px 2px rgba(0,0,0,0.8); }
         
         .center-stack { display: flex; flex-direction: column; align-items: center; padding: 0 5px; border-left: 1px solid var(--silver); border-right: 1px solid var(--silver); }
@@ -375,14 +377,14 @@
         }
 
         @media (max-width: 500px) {
-            #envelope-wrapper { width: 90vw; max-width: 320px; height: 260px; } 
+            #envelope-wrapper { width: 320px; height: 260px; } 
             
             #flap { height: 190px; } 
             #flap::after { top: 55px; font-size: 40px; }
 
-            #card-photo { margin-right: -30vw; }
-            #card-invite { width: 60vw; min-width: 200px; min-height: 140px; bottom: -30px; margin-left: -30vw; }
-            #card-invite.expanded { transform: translate(0, -150px) scale(1.4) !important; }
+            #card-photo { margin-right: -130px; }
+            #card-invite { width: 200px; min-height: 140px; bottom: -30px; margin-left: -100px; }
+            #card-invite.expanded { transform: translate(0, -150px) scale(1.65) !important; }
         }
     </style>
 </head>
@@ -395,7 +397,7 @@
                 <div style="font-size: 20px; color: var(--navy-dark); opacity: 0.6;">▼</div>
             </div>
 
-            <div id="flap" onclick="toggleEnvelope()" onkeydown="if(event.key === 'Enter') toggleEnvelope()" role="button" aria-label="Open Envelope" tabindex="0">
+            <div id="flap" onclick="toggleEnvelope()" role="button" aria-label="Open Envelope">
                 <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute; top:0; left:0; pointer-events:none;">
                     <defs>
                         <linearGradient id="gold-foil-flap" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -485,114 +487,105 @@
 </div>
 
 <script>
-const urlParams = new URLSearchParams(window.location.search);
+    // ==========================================
+    // PASTE YOUR LIVE GOOGLE APPS SCRIPT URL HERE
+    // ==========================================
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzGsgIl759jiq7vTrnkbvzkv_WabI1pjA9tGgMu8Zw8uEQYCFw4V_sDO_os7xG837sC1g/exec";
 
-const hiddenGuestCode = urlParams.get('v'); 
-const nameParam = urlParams.get('n'); 
-
-const unmask = { 
-    'st': 0, 
-    'pl': 1, 
-    'ex': 2, 
-    'tr': 3, 
-    'qu': 4, 
-    'mx': 5 
-};
-
-let guestLimit = "0"; 
-if (hiddenGuestCode !== null && unmask[hiddenGuestCode] !== undefined) {
-    guestLimit = unmask[hiddenGuestCode].toString(); 
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    const display = document.getElementById('guest-display');
-    const allocationBox = document.getElementById('allocation-box');
-    const enterBtn = document.querySelector('.btn-enter-card');
-
-    if (display) {
-        display.innerText = nameParam ? "Hi, " + decodeURIComponent(nameParam) : "Hi, Special Guest!";
-    }
-
-    if (allocationBox) {
-        if (guestLimit && guestLimit !== "0") {
-            allocationBox.innerHTML = `You have (<span>${guestLimit}</span>) additional seat allocated.`;
-        } else {
-            allocationBox.innerText = "We can't wait to celebrate our special day with you!";
-        }
-    }
-
+    const urlParams = new URLSearchParams(window.location.search);
+    const hiddenGuestCode = urlParams.get('v'); 
+    const nameParam = urlParams.get('n'); 
     const inviteId = urlParams.get('id');
-    if (inviteId) {
+
+    const unmask = { 
+        'st': 0, 'pl': 1, 'ex': 2, 'tr': 3, 'qu': 4, 'mx': 5 
+    };
+
+    let guestLimit = "0"; 
+    if (hiddenGuestCode !== null && unmask[hiddenGuestCode] !== undefined) {
+        guestLimit = unmask[hiddenGuestCode].toString(); 
+    }
+
+    function triggerHardBlock(title, message) {
+        document.body.innerHTML = `
+            <div style="height: 100vh; width: 100vw; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #001f3f; color: white; text-align: center; padding: 20px; font-family: 'Georgia', serif; box-sizing: border-box; margin: 0;">
+                <div style="border: 2px solid #d4af37; padding: 40px 20px; border-radius: 10px; background: rgba(255,255,255,0.05); max-width: 500px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                    <div style="font-size: 40px; margin-bottom: 15px;">🔒</div>
+                    <h1 style="color: #d4af37; font-size: 2.2rem; margin: 0 0 15px 0; font-family: 'Times New Roman', serif; text-transform: uppercase;">${title}</h1>
+                    <p style="opacity: 0.9; line-height: 1.6; font-size: 0.95rem; margin: 0;">${message}</p>
+                </div>
+            </div>
+        `;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // 1. STRICT BLOCK: NO CODE PROVIDED
+        if (!inviteId) {
+            triggerHardBlock("Access Denied", "You need a valid, unique invitation link to view this website.");
+            return;
+        }
+
+        const display = document.getElementById('guest-display');
+        const allocationBox = document.getElementById('allocation-box');
+        const enterBtn = document.querySelector('.btn-enter-card');
+
+        if (display) {
+            display.innerText = nameParam ? "Hi, " + decodeURIComponent(nameParam) : "Hi, Special Guest!";
+        }
+
+        if (allocationBox) {
+            if (guestLimit && guestLimit !== "0") {
+                allocationBox.innerHTML = `You have (<span>${guestLimit}</span>) additional seat allocated.`;
+            } else {
+                allocationBox.innerText = "We can't wait to celebrate our special day with you!";
+            }
+        }
+
         if (enterBtn) {
             enterBtn.innerText = "VERIFYING...";
             enterBtn.style.pointerEvents = "none";
             enterBtn.style.opacity = "0.7";
         }
 
-        if (typeof google !== 'undefined' && google.script && google.script.run) {
-            google.script.run
-                .withSuccessHandler(function(data) {
-                    if (data && data.valid) {
-                        if (enterBtn) {
-                            enterBtn.innerText = "Enter Website";
-                            enterBtn.style.pointerEvents = "auto";
-                            enterBtn.style.opacity = "1";
-                        }
-                    } else {
-                        if (display) {
-                            display.innerText = "LINK EXPIRED";
-                            display.style.color = "#d63031"; 
-                        }
-                        if (allocationBox) {
-                            allocationBox.innerHTML = "This invitation has already been used to RSVP.<br><br>Please contact Harvy or Christine if you need to update your details.";
-                            allocationBox.style.color = "#001f3f";
-                        }
-                        if (enterBtn) {
-                            enterBtn.innerText = "ACCESS DENIED";
-                            enterBtn.style.background = "#d63031"; 
-                            enterBtn.style.borderColor = "#d63031";
-                            enterBtn.onclick = null; 
-                        }
-                    }
-                })
-                .withFailureHandler(function(error) {
+        // 2. EXTERNAL API CALL: Fetch validation from Google Apps Script
+        fetch(`${SCRIPT_URL}?action=verifyInvite&id=${inviteId}`)
+            .then(response => {
+                if (!response.ok) throw new Error("Network response was not ok");
+                return response.json();
+            })
+            .then(data => {
+                if (data && data.valid) {
+                    // CODE IS VALID - Allow entry
                     if (enterBtn) {
-                        enterBtn.innerText = "ERROR - TRY AGAIN";
-                        enterBtn.style.background = "#d63031";
+                        enterBtn.innerText = "Enter Website";
                         enterBtn.style.pointerEvents = "auto";
                         enterBtn.style.opacity = "1";
                     }
-                    console.error("Verification Error:", error);
-                    alert("Could not verify code. Please check your internet or contact Harvy. Error: " + error.message);
-                })
-                .getInviteDetails(inviteId);
-        } else {
-            // Failsafe in case the environment is tested locally outside of Google Apps Script
-            if (enterBtn) {
-                enterBtn.innerText = "Enter Website (Offline Mode)";
-                enterBtn.style.pointerEvents = "auto";
-                enterBtn.style.opacity = "1";
-            }
-        }
-    }
-});
+                } else {
+                    // CODE IS USED OR FAKE - Block access
+                    triggerHardBlock("Link Expired", "This invitation link has already been used to RSVP, or is no longer valid.<br><br>Please contact Harvy or Christine.");
+                }
+            })
+            .catch(error => {
+                triggerHardBlock("System Error", "Could not connect to the database. Please check your internet connection.");
+                console.error("Verification Error:", error);
+            });
+    });
 
+    // --- Envelope Animations ---
     function createHearts() {
         const scene = document.querySelector('.scene');
         for (let i = 0; i < 20; i++) {
             const heart = document.createElement('div');
             heart.classList.add('heart');
             heart.innerText = '❤';
-            
             const drift = (Math.random() * 300 - 150) + 'px';
             const rotation = (Math.random() * 90 - 45) + 'deg';
-            
             heart.style.setProperty('--drift', drift);
             heart.style.setProperty('--rotation', rotation);
             heart.style.left = (Math.random() * 40 + 30) + '%';
             heart.style.top = '50%';
             heart.style.animationDelay = (Math.random() * 1.2) + 's';
-            
             scene.appendChild(heart);
             setTimeout(() => heart.remove(), 3500);
         }
@@ -621,10 +614,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!isExpanded) { card.classList.add('expanded'); }
     }
 
-function buildURL(base, anchor = "") {
-    let currentParams = window.location.search; 
-    return base + currentParams + anchor;
-}
+    function buildURL(base, anchor = "") {
+        let currentParams = window.location.search; 
+        // Ensure this points to the external path of your main site
+        return base + ".html" + currentParams + anchor;
+    }
 
     function enterSite() {
         const wrapper = document.getElementById('envelope-wrapper');
