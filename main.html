@@ -1610,453 +1610,455 @@
         // =========================================
         // RSVP & URL PARAMETERS LOGIC
         // =========================================
-        let officialAllowance = 0;
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzGsgIl759jiq7vTrnkbvzkv_WabI1pjA9tGgMu8Zw8uEQYCFw4V_sDO_os7xG837sC1g/exec";
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const inviteId = urlParams.get('id');
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const inviteId = urlParams.get('id'); 
-            const mask = urlParams.get('v'); 
+    // =========================================
+    // RSVP & ALLOWANCE LOGIC (API FETCH)
+    // =========================================
+    // =========================================
+    // RSVP & ALLOWANCE LOGIC (API FETCH)
+    // =========================================
+    document.addEventListener('DOMContentLoaded', () => {
+        const dynamicContainer = document.getElementById('dynamic-guest-fields');
+        const rsvpSection = document.querySelector('.rsvp-section'); // Target the whole form container
 
-            const maskMap = { 'st': 0, 'pl': 1, 'ex': 2, 'tr': 3, 'qu': 4, 'mx': 5 };
-            let urlCount = maskMap[mask] || 0;
-            const dynamicContainer = document.getElementById('dynamic-guest-fields');
-            const submitBtn = document.getElementById('submit-btn');
-
-            if (urlCount > 0 && dynamicContainer) {
-                document.getElementById('allowance-display').style.display = 'block';
-                document.getElementById('guest-count-val').textContent = urlCount;
-                let html = '';
-                for (let i = 1; i <= urlCount; i++) {
-                    html += `
-                        <div class="form-group" style="margin-top: 15px;">
-                            <label>Additional Guest ${i} Name</label>
-                            <input type="text" name="Additional_Guest_${i}" class="rsvp-input" placeholder="Enter guest name" required>
-                        </div>`;
-                }
-                dynamicContainer.innerHTML = html;
-            }
-
-            if (inviteId) {
-                document.getElementById('invite-code').value = inviteId;
-                google.script.run.withSuccessHandler(function(data) {
+        if (inviteId) {
+            const inviteCodeInput = document.getElementById('invite-code');
+            if (inviteCodeInput) inviteCodeInput.value = inviteId;
+            
+            // Use fetch since it's outside GAS
+            fetch(`${SCRIPT_URL}?action=verifyInvite&id=${inviteId}`)
+                .then(response => {
+                    if (!response.ok) throw new Error("Network error");
+                    return response.json();
+                })
+                .then(data => {
                     if (data && data.valid) {
-                        document.getElementById('full-name').value = data.name;
-                        officialAllowance = parseInt(data.allowance) || 0;
-
-                        if (urlCount > officialAllowance) {
-                            urlCount = officialAllowance; 
-                            if (urlCount === 0) {
-                                dynamicContainer.innerHTML = '';
-                                document.getElementById('allowance-display').style.display = 'none';
-                            } else {
-                                let secureHtml = '';
-                                for (let i = 1; i <= urlCount; i++) {
-                                    secureHtml += `
-                                        <div class="form-group" style="margin-top: 15px;">
-                                            <label>Additional Guest ${i} Name</label>
-                                            <input type="text" name="Additional_Guest_${i}" class="rsvp-input" placeholder="Enter guest name" required>
-                                        </div>`;
-                                }
-                                dynamicContainer.innerHTML = secureHtml;
-                                document.getElementById('guest-count-val').textContent = urlCount;
-                            }
-                        }
-                    } else {
-                        Swal.fire({
-                            title: 'INVALID INVITE',
-                            text: 'This invite code is incorrect or already used. Please contact Harvy or Christine.',
-                            icon: 'error',
-                            confirmButtonColor: '#1a2a44'
-                        });
-                        submitBtn.disabled = true;
-                        submitBtn.innerText = "INVALID ACCESS";
-                    }
-                }).getInviteDetails(inviteId);
-            }
-        });
-
-        const notifyCheckbox = document.getElementById('notify-opt-in');
-        if(notifyCheckbox) {
-            notifyCheckbox.addEventListener('change', function() {
-                const emailGroup = document.getElementById('email-group');
-                const emailInput = document.getElementById('guest-email');
-                if(this.checked) {
-                    emailGroup.style.display = 'block';
-                    emailInput.required = true;
-                } else {
-                    emailGroup.style.display = 'none';
-                    emailInput.required = false;
-                    emailInput.value = '';
-                }
-            });
-        }
-            
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzGsgIl759jiq7vTrnkbvzkv_WabI1pjA9tGgMu8Zw8uEQYCFw4V_sDO_os7xG837sC1g/exec';
-        const rsvpForm = document.getElementById('rsvp-form');
-
-        rsvpForm.addEventListener('submit', e => {
-            e.preventDefault();
-            
-            const btn = document.getElementById('submit-btn');
-            const attendance = document.getElementById('attendance-select').value;
-            btn.disabled = true;
-            btn.innerText = "SENDING...";
-
-            fetch(scriptURL, { method: 'POST', body: new FormData(rsvpForm)})
-            .then(res => res.json())
-            .then(data => {
-                if (data.result === "success") {
-                    if (attendance === "Yes") {
-                        const mainGuest = document.getElementById('full-name').value || "Guest";
-                        const inviteCodeUsed = document.getElementById('invite-code').value || "N/A";
+                        // REMOVED: Auto-filling the name. The guest will now type it manually.
                         
-                        let additionalGuestsHtml = '';
-                        let totalAdmit = 1;
-                        const additionalInputs = document.querySelectorAll('input[name^="Additional_Guest_"]');
-                        
-                        if (additionalInputs.length > 0) {
-                            let guestNames = [];
-                            additionalInputs.forEach(input => {
-                                if(input.value.trim() !== '') {
-                                    guestNames.push(input.value.trim());
-                                    totalAdmit++;
-                                }
-                            });
+                        // Get the STRICT allowance from the database
+                        let officialAllowance = parseInt(data.allowance) || 0;
+
+                        // Build the exact number of extra fields
+                        if (officialAllowance > 0 && dynamicContainer) {
+                            document.getElementById('allowance-display').style.display = 'block';
+                            document.getElementById('guest-count-val').textContent = officialAllowance;
                             
-                            if (guestNames.length > 0) {
-                                additionalGuestsHtml = `
-                                    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e2e8f0;">
-                                        <span style="font-size: 0.55rem; color: #888; letter-spacing: 1px; text-transform: uppercase;">Plus Guest(s)</span><br>
-                                        <strong style="font-size: 0.85rem; color: #1a2a44; line-height: 1.4; text-transform: uppercase;">
-                                            ${guestNames.join('<br>')}
-                                        </strong>
-                                    </div>
-                                `;
+                            let secureHtml = '';
+                            for (let i = 1; i <= officialAllowance; i++) {
+                                secureHtml += `
+                                    <div class="form-group" style="margin-top: 15px;">
+                                        <label>Additional Guest ${i} Name</label>
+                                        <input type="text" name="Additional_Guest_${i}" class="rsvp-input" placeholder="Enter guest name" required>
+                                    </div>`;
                             }
+                            dynamicContainer.innerHTML = secureHtml;
+                        } else {
+                            if(dynamicContainer) dynamicContainer.innerHTML = '';
+                            const allowanceDisplay = document.getElementById('allowance-display');
+                            if(allowanceDisplay) allowanceDisplay.style.display = 'none';
                         }
-
-                        Swal.fire({
-                            html: `
-                            <div style="padding: 0; text-align: left; font-family: 'Montserrat', sans-serif; position: relative;">
-                                <div style="padding: 40px 25px 20px 25px; background: #ffffff; border-radius: 12px 12px 0 0;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #1a2a44; padding-bottom: 10px; margin-bottom: 20px;">
-                                        <h3 style="color: #1a2a44; font-family: 'Playfair Display', serif; font-weight: 900; letter-spacing: 1px; margin: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
-                                            <i class="fas fa-ticket-alt" style="color: #d4af37;"></i> GUEST PASS
-                                        </h3>
-                                        <div style="text-align: right; background: #1a2a44; color: #d4af37; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 0.7rem; letter-spacing: 2px;">
-                                            ADMIT: ${totalAdmit}
-                                        </div>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin: 25px 0;">
-                                        <div style="text-align: center; width: 35%;">
-                                            <i class="fas fa-church" style="font-size: 1.4rem; color: #1a2a44; margin-bottom: 5px;"></i><br>
-                                            <span style="font-size: 0.75rem; font-weight: 900; color: #1a2a44; letter-spacing: 1px;">CEREMONY</span><br>
-                                            <span style="font-size: 0.55rem; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Redemptorist Church</span>
-                                        </div>
-                                        <div style="width: 30%; text-align: center; color: #1a2a44; position: relative;">
-                                            <div style="position: absolute; top: 40%; left: -5px; right: -5px; border-top: 2px dashed #cbd5e1; z-index: 1;"></div>
-                                            <div style="background: #ffffff; padding: 0 8px; position: relative; z-index: 2; display: inline-block;">
-                                                <svg width="32" height="22" viewBox="0 0 50 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M2,12 L30,12 L33,18 L48,18 L48,25 L2,25 Z" fill="#1a2a44"/>
-                                                    <rect x="2" y="8" width="28" height="3" fill="#d4af37"/>
-                                                    <rect x="5" y="14" width="6" height="4" fill="#ffffff" rx="1"/>
-                                                    <rect x="13" y="14" width="6" height="4" fill="#ffffff" rx="1"/>
-                                                    <rect x="21" y="14" width="6" height="4" fill="#ffffff" rx="1"/>
-                                                    <rect x="33" y="18" width="6" height="3" fill="#ffffff" rx="1"/>
-                                                    <circle cx="12" cy="25" r="4" fill="#ffffff" stroke="#1a2a44" stroke-width="2"/>
-                                                    <circle cx="38" cy="25" r="4" fill="#ffffff" stroke="#1a2a44" stroke-width="2"/>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div style="text-align: center; width: 35%;">
-                                            <i class="fas fa-glass-cheers" style="font-size: 1.4rem; color: #1a2a44; margin-bottom: 5px;"></i><br>
-                                            <span style="font-size: 0.75rem; font-weight: 900; color: #1a2a44; letter-spacing: 1px;">RECEPTION</span><br>
-                                            <span style="font-size: 0.55rem; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Waterfront Cebu Hotel & Casino</span>
-                                        </div>
-                                    </div>
-                                    <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 5px;">
-                                        <div style="display: flex; justify-content: space-between;">
-                                            <div style="flex: 1;">
-                                                <span style="font-size: 0.55rem; color: #888; letter-spacing: 1px; text-transform: uppercase;">Primary Guest</span><br>
-                                                <strong style="font-size: 1rem; color: #1a2a44; text-transform: uppercase;">${mainGuest}</strong>
-                                            </div>
-                                            <div style="text-align: right;">
-                                                <span style="font-size: 0.55rem; color: #888; letter-spacing: 1px; text-transform: uppercase;">Date & Time</span><br>
-                                                <strong style="font-size: 0.85rem; color: #d4af37;">JUN 12, 2026</strong><br>
-                                                <strong style="font-size: 0.85rem; color: #1a2a44;">02:00 PM</strong>
-                                            </div>
-                                        </div>
-                                        ${additionalGuestsHtml}
-                                    </div>
-                                </div>
-                                <div style="position: relative; border-top: 2px dashed #cbd5e1; margin: 0 15px;"></div>
-                                <div style="padding: 20px 25px 25px 25px; background: #ffffff; text-align: center; border-radius: 0 0 12px 12px;">
-                                    <div style="height: 40px; width: 100%; background: repeating-linear-gradient(90deg, #1a2a44 0, #1a2a44 2px, transparent 2px, transparent 4px, #1a2a44 4px, #1a2a44 5px, transparent 5px, transparent 8px, #1a2a44 8px, #1a2a44 12px, transparent 12px, transparent 14px); margin-bottom: 12px; opacity: 0.85; border-radius: 2px;"></div>
-                                    <p style="font-size: 0.9rem; color: #1a2a44; font-weight: 900; letter-spacing: 3px; margin: 0 0 8px 0; text-transform: uppercase;">
-                                        ${inviteCodeUsed}
-                                    </p>
-                                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px dashed #e2e8f0; text-align: center;">
-    <p style="margin: 0 0 5px 0; font-size: 0.7rem; color: #1a2a44; font-weight: 900; letter-spacing: 1px;">
-        <i class="fas fa-mobile-alt" style="color: #d4af37; margin-right: 5px; font-size: 0.8rem;"></i> IMPORTANT NOTE
-    </p>
-    <p style="margin: 0; font-size: 0.65rem; color: #666; font-style: italic; line-height: 1.5;">
-        This Guest Pass serves as your official entry.<br>Kindly take a screenshot and present it to our door attendants.
-    </p>
-</div>
-                                </div>
-                            </div>
-                            `,
-                            showConfirmButton: false,
-                            showCloseButton: true,
-                            customClass: { popup: 'vip-modal-custom' }
-                        });
                     } else {
-                        Swal.fire({
-                            title: 'THANK YOU',
-                            text: "We are sorry you can't make it, but we appreciate you letting us know!",
-                            icon: 'info',
-                            confirmButtonText: 'CLOSE',
-                            confirmButtonColor: '#1a2a44'
-                        });
+                        // Invalid or Used Code: Close the form and show "Already Submitted"
+                        if (rsvpSection) {
+                            rsvpSection.innerHTML = `
+                                <div style="padding: 30px 10px; text-align: center;">
+                                    <i class="fas fa-check-circle" style="color: #27ae60; font-size: 3rem; margin-bottom: 15px;"></i>
+                                    <h3 style="color: #1a2a44; font-family: 'Playfair Display', serif;">Already Submitted</h3>
+                                    <p style="color: #707b7c; font-size: 0.95rem; line-height: 1.6;">
+                                        This invitation code has already been used to submit an RSVP.<br><br>
+                                        If you need to update your attendance or seating details, please contact the coordinator or the couple.
+                                    </p>
+                                </div>
+                            `;
+                        }
                     }
-                    rsvpForm.reset();
-                } else if (data.result === "duplicate") {
+                })
+                .catch(error => {
                     Swal.fire({
-                        title: 'ALREADY REGISTERED',
-                        text: data.name ? `The name "${data.name.toUpperCase()}" is already registered on our list.` : 'One of the names submitted is already registered.',
-                        icon: 'warning',
+                        title: 'SYSTEM ERROR',
+                        text: 'Could not connect to the database. Please check your connection.',
+                        icon: 'error',
                         confirmButtonColor: '#1a2a44'
                     });
-                } else {
-                    Swal.fire({ title: 'ERROR', text: data.error || 'Something went wrong.', icon: 'error', confirmButtonColor: '#1a2a44' });
-                }
-                btn.disabled = false;
-                btn.innerText = "SEND RSVP";
-            })
-            .catch(err => {
-                Swal.fire({ title: 'ERROR', text: 'Please try again.', icon: 'error', confirmButtonColor: '#1a2a44' });
-                btn.disabled = false;
-                btn.innerText = "SEND RSVP";
-            });
-        });
-
-        const showSeatFinder = true; 
-        if (showSeatFinder) {
-            document.getElementById('seat-finder-container').style.display = 'flex';
+                    console.error("Verification Error:", error);
+                });
+        } else {
+            // No Code Provided: Close the form and show "Invalid Code"
+            if (rsvpSection) {
+                rsvpSection.innerHTML = `
+                    <div style="padding: 30px 10px; text-align: center;">
+                        <i class="fas fa-exclamation-circle" style="color: #d63031; font-size: 3rem; margin-bottom: 15px;"></i>
+                        <h3 style="color: #1a2a44; font-family: 'Playfair Display', serif;">Invalid Code</h3>
+                        <p style="color: #707b7c; font-size: 0.95rem; line-height: 1.6;">
+                            No valid invitation code was found.<br><br>
+                            Please contact the coordinator or the couple for assistance.
+                        </p>
+                    </div>
+                `;
+            }
         }
+    });
 
-        // =========================================
-        // LINK PARAMETER PERSISTENCE
-        // =========================================
-        document.addEventListener("DOMContentLoaded", () => {
-            const currentParams = window.location.search;
-            if (currentParams) {
-                const linksToUpdate = document.querySelectorAll('a[href="index.html"], a[href="seat-finder.html"], a[href="floor-plan.html"]');
-                linksToUpdate.forEach(link => {
-                    const originalHref = link.getAttribute('href');
-                    if (originalHref && !originalHref.includes('?')) {
-                        link.setAttribute('href', originalHref + currentParams);
+    const notifyCheckbox = document.getElementById('notify-opt-in');
+    if(notifyCheckbox) {
+        notifyCheckbox.addEventListener('change', function() {
+            const emailGroup = document.getElementById('email-group');
+            const emailInput = document.getElementById('guest-email');
+            if(this.checked) {
+                emailGroup.style.display = 'block';
+                emailInput.required = true;
+            } else {
+                emailGroup.style.display = 'none';
+                emailInput.required = false;
+                emailInput.value = '';
+            }
+        });
+    }
+        
+    const rsvpForm = document.getElementById('rsvp-form');
+
+    rsvpForm.addEventListener('submit', e => {
+        e.preventDefault();
+        
+        const btn = document.getElementById('submit-btn');
+        const attendance = document.getElementById('attendance-select').value;
+        btn.disabled = true;
+        btn.innerText = "SENDING...";
+
+        fetch(SCRIPT_URL, { method: 'POST', body: new FormData(rsvpForm)})
+        .then(res => res.json())
+        .then(data => {
+            if (data.result === "success") {
+                if (attendance === "Yes") {
+                    const mainGuest = document.getElementById('full-name').value || "Guest";
+                    const inviteCodeUsed = document.getElementById('invite-code').value || "N/A";
+                    
+                    let additionalGuestsHtml = '';
+                    let totalAdmit = 1;
+                    const additionalInputs = document.querySelectorAll('input[name^="Additional_Guest_"]');
+                    
+                    if (additionalInputs.length > 0) {
+                        let guestNames = [];
+                        additionalInputs.forEach(input => {
+                            if(input.value.trim() !== '') {
+                                guestNames.push(input.value.trim());
+                                totalAdmit++;
+                            }
+                        });
+                        
+                        if (guestNames.length > 0) {
+                            additionalGuestsHtml = `
+                                <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e2e8f0;">
+                                    <span style="font-size: 0.55rem; color: #888; letter-spacing: 1px; text-transform: uppercase;">Plus Guest(s)</span><br>
+                                    <strong style="font-size: 0.85rem; color: #1a2a44; line-height: 1.4; text-transform: uppercase;">
+                                        ${guestNames.join('<br>')}
+                                    </strong>
+                                </div>
+                            `;
+                        }
                     }
+
+                    Swal.fire({
+                        html: `
+                        <div style="padding: 0; text-align: left; font-family: 'Montserrat', sans-serif; position: relative;">
+                            <div style="padding: 40px 25px 20px 25px; background: #ffffff; border-radius: 12px 12px 0 0;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #1a2a44; padding-bottom: 10px; margin-bottom: 20px;">
+                                    <h3 style="color: #1a2a44; font-family: 'Playfair Display', serif; font-weight: 900; letter-spacing: 1px; margin: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+                                        <i class="fas fa-ticket-alt" style="color: #d4af37;"></i> GUEST PASS
+                                    </h3>
+                                    <div style="text-align: right; background: #1a2a44; color: #d4af37; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 0.7rem; letter-spacing: 2px;">
+                                        ADMIT: ${totalAdmit}
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin: 25px 0;">
+                                    <div style="text-align: center; width: 35%;">
+                                        <i class="fas fa-church" style="font-size: 1.4rem; color: #1a2a44; margin-bottom: 5px;"></i><br>
+                                        <span style="font-size: 0.75rem; font-weight: 900; color: #1a2a44; letter-spacing: 1px;">CEREMONY</span><br>
+                                        <span style="font-size: 0.55rem; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Redemptorist Church</span>
+                                    </div>
+                                    <div style="width: 30%; text-align: center; color: #1a2a44; position: relative;">
+                                        <div style="position: absolute; top: 40%; left: -5px; right: -5px; border-top: 2px dashed #cbd5e1; z-index: 1;"></div>
+                                        <div style="background: #ffffff; padding: 0 8px; position: relative; z-index: 2; display: inline-block;">
+                                            <svg width="32" height="22" viewBox="0 0 50 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M2,12 L30,12 L33,18 L48,18 L48,25 L2,25 Z" fill="#1a2a44"/>
+                                                <rect x="2" y="8" width="28" height="3" fill="#d4af37"/>
+                                                <rect x="5" y="14" width="6" height="4" fill="#ffffff" rx="1"/>
+                                                <rect x="13" y="14" width="6" height="4" fill="#ffffff" rx="1"/>
+                                                <rect x="21" y="14" width="6" height="4" fill="#ffffff" rx="1"/>
+                                                <rect x="33" y="18" width="6" height="3" fill="#ffffff" rx="1"/>
+                                                <circle cx="12" cy="25" r="4" fill="#ffffff" stroke="#1a2a44" stroke-width="2"/>
+                                                <circle cx="38" cy="25" r="4" fill="#ffffff" stroke="#1a2a44" stroke-width="2"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div style="text-align: center; width: 35%;">
+                                        <i class="fas fa-glass-cheers" style="font-size: 1.4rem; color: #1a2a44; margin-bottom: 5px;"></i><br>
+                                        <span style="font-size: 0.75rem; font-weight: 900; color: #1a2a44; letter-spacing: 1px;">RECEPTION</span><br>
+                                        <span style="font-size: 0.55rem; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;">Waterfront Cebu Hotel & Casino</span>
+                                    </div>
+                                </div>
+                                <div style="background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 5px;">
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <div style="flex: 1;">
+                                            <span style="font-size: 0.55rem; color: #888; letter-spacing: 1px; text-transform: uppercase;">Primary Guest</span><br>
+                                            <strong style="font-size: 1rem; color: #1a2a44; text-transform: uppercase;">${mainGuest}</strong>
+                                        </div>
+                                        <div style="text-align: right;">
+                                            <span style="font-size: 0.55rem; color: #888; letter-spacing: 1px; text-transform: uppercase;">Date & Time</span><br>
+                                            <strong style="font-size: 0.85rem; color: #d4af37;">JUN 12, 2026</strong><br>
+                                            <strong style="font-size: 0.85rem; color: #1a2a44;">02:00 PM</strong>
+                                        </div>
+                                    </div>
+                                    ${additionalGuestsHtml}
+                                </div>
+                            </div>
+                            <div style="position: relative; border-top: 2px dashed #cbd5e1; margin: 0 15px;"></div>
+                            <div style="padding: 20px 25px 25px 25px; background: #ffffff; text-align: center; border-radius: 0 0 12px 12px;">
+                                <div style="height: 40px; width: 100%; background: repeating-linear-gradient(90deg, #1a2a44 0, #1a2a44 2px, transparent 2px, transparent 4px, #1a2a44 4px, #1a2a44 5px, transparent 5px, transparent 8px, #1a2a44 8px, #1a2a44 12px, transparent 12px, transparent 14px); margin-bottom: 12px; opacity: 0.85; border-radius: 2px;"></div>
+                                <p style="font-size: 0.9rem; color: #1a2a44; font-weight: 900; letter-spacing: 3px; margin: 0 0 8px 0; text-transform: uppercase;">
+                                    ${inviteCodeUsed}
+                                </p>
+                                <div style="margin-top: 20px; padding-top: 15px; border-top: 1px dashed #e2e8f0; text-align: center;">
+                                    <p style="margin: 0 0 5px 0; font-size: 0.7rem; color: #1a2a44; font-weight: 900; letter-spacing: 1px;">
+                                        <i class="fas fa-mobile-alt" style="color: #d4af37; margin-right: 5px; font-size: 0.8rem;"></i> IMPORTANT NOTE
+                                    </p>
+                                    <p style="margin: 0; font-size: 0.65rem; color: #666; font-style: italic; line-height: 1.5;">
+                                        This Guest Pass serves as your official entry.<br>Kindly take a screenshot and present it to our door attendants.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        `,
+                        showConfirmButton: false,
+                        showCloseButton: true,
+                        customClass: { popup: 'vip-modal-custom' }
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'THANK YOU',
+                        text: "We are sorry you can't make it, but we appreciate you letting us know!",
+                        icon: 'info',
+                        confirmButtonText: 'CLOSE',
+                        confirmButtonColor: '#1a2a44'
+                    });
+                }
+                rsvpForm.reset();
+            } else if (data.result === "duplicate") {
+                Swal.fire({
+                    title: 'ALREADY REGISTERED',
+                    text: data.name ? `The name "${data.name.toUpperCase()}" is already registered on our list.` : 'One of the names submitted is already registered.',
+                    icon: 'warning',
+                    confirmButtonColor: '#1a2a44'
                 });
-            }
-        });
-
-        // =========================================
-        // CHATBOT LOGIC
-        // =========================================
-        let weddingFAQs = [];
-
-        window.onscroll = function() {
-            var bubble = document.getElementById("chat-bubble");
-            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-                bubble.style.display = "flex";
             } else {
-                bubble.style.display = "none";
-                document.getElementById("chat-window").style.display = "none";
+                Swal.fire({ title: 'ERROR', text: data.error || 'Something went wrong.', icon: 'error', confirmButtonColor: '#1a2a44' });
             }
+            btn.disabled = false;
+            btn.innerText = "SEND RSVP";
+        })
+        .catch(err => {
+            Swal.fire({ title: 'ERROR', text: 'Please try again.', icon: 'error', confirmButtonColor: '#1a2a44' });
+            btn.disabled = false;
+            btn.innerText = "SEND RSVP";
+        });
+    });
+
+    // =========================================
+    // LINK PARAMETER PERSISTENCE
+    // =========================================
+    document.addEventListener("DOMContentLoaded", () => {
+        const currentParams = window.location.search;
+        if (currentParams) {
+            const linksToUpdate = document.querySelectorAll('a[href="index.html"], a[href="seat-finder.html"], a[href="floor-plan.html"]');
+            linksToUpdate.forEach(link => {
+                const originalHref = link.getAttribute('href');
+                if (originalHref && !originalHref.includes('?')) {
+                    link.setAttribute('href', originalHref + currentParams);
+                }
+            });
+        }
+    });
+
+    // =========================================
+    // CHATBOT LOGIC
+    // =========================================
+    let weddingFAQs = [];
+
+    window.onscroll = function() {
+        var bubble = document.getElementById("chat-bubble");
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            bubble.style.display = "flex";
+        } else {
+            bubble.style.display = "none";
+            document.getElementById("chat-window").style.display = "none";
+        }
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const guestName = urlParams.get('n');
+        if (guestName) {
+            document.getElementById('welcome-message').innerHTML = `Hi, <strong>${guestName}</strong>! I'm the digital assistant for Harvy & Christine. How can I help you today?`;
+        }
+    });
+
+    function toggleChat() {
+        const win = document.getElementById('chat-window');
+        const tooltip = document.getElementById('chat-tooltip');
+        const badge = document.getElementById('chat-badge');
+        
+        if (win.style.display === 'none' || win.style.display === '') {
+            win.style.display = 'flex';
+            if (tooltip) tooltip.style.display = 'none'; 
+            if (badge) { badge.style.removeProperty('display'); badge.style.display = 'none'; }
+            if (weddingFAQs.length === 0) loadFAQs();
+        } else {
+            win.style.display = 'none';
+        }
+    }
+
+    function loadFAQs() {
+        const optionsContainer = document.getElementById('faq-options-list');
+        const scriptUrl = SCRIPT_URL;
+        document.getElementById('faq-loading-msg').innerText = "Loading questions...";
+
+        window.handleFAQResponse = function(data) {
+            weddingFAQs = data || [];
+            renderFAQButtons();
+            const loader = document.getElementById('faq-script-loader');
+            if(loader) loader.remove();
         };
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const guestName = urlParams.get('n');
-            if (guestName) {
-                document.getElementById('welcome-message').innerHTML = `Hi, <strong>${guestName}</strong>! I'm the digital assistant for Harvy & Christine. How can I help you today?`;
-            }
-        });
+        const script = document.createElement('script');
+        script.id = 'faq-script-loader';
+        script.src = scriptUrl + '?action=getFAQs&callback=handleFAQResponse&_=' + new Date().getTime();
+        script.onerror = function() {
+            document.getElementById('faq-loading-msg').innerHTML = '<span style="color:red;">Connection Error.</span><br><button onclick="loadFAQs()" style="background:none; border:none; color:#1a2a44; text-decoration:underline; font-size:0.7rem; cursor:pointer;">Try Again</button>';
+        };
+        document.body.appendChild(script);
+    }
 
-        function toggleChat() {
-            const win = document.getElementById('chat-window');
-            const tooltip = document.getElementById('chat-tooltip');
-            const badge = document.getElementById('chat-badge');
-            
-            if (win.style.display === 'none' || win.style.display === '') {
-                win.style.display = 'flex';
-                if (tooltip) tooltip.style.display = 'none'; 
-                if (badge) { badge.style.removeProperty('display'); badge.style.display = 'none'; }
-                if (weddingFAQs.length === 0) loadFAQs();
-            } else {
-                win.style.display = 'none';
-            }
+    function renderFAQButtons() {
+        const lists = document.querySelectorAll('.faq-options-list');
+        const container = lists[lists.length - 1]; 
+        
+        if (!container) return;
+        if (weddingFAQs.length === 0) {
+            container.innerHTML = '<p style="font-size:0.75rem; color:#888;">No questions found.</p>';
+            return;
         }
 
-        function loadFAQs() {
-            const optionsContainer = document.getElementById('faq-options-list');
-            const scriptUrl = 'https://script.google.com/macros/s/AKfycbzGsgIl759jiq7vTrnkbvzkv_WabI1pjA9tGgMu8Zw8uEQYCFw4V_sDO_os7xG837sC1g/exec';
-            document.getElementById('faq-loading-msg').innerText = "Loading questions...";
+        const categories = [...new Set(weddingFAQs.map(item => item.category || "General"))];
 
-            window.handleFAQResponse = function(data) {
-                weddingFAQs = data || [];
-                renderFAQButtons();
-                const loader = document.getElementById('faq-script-loader');
-                if(loader) loader.remove();
-            };
-
-            const script = document.createElement('script');
-            script.id = 'faq-script-loader';
-            script.src = scriptUrl + '?action=getFAQs&callback=handleFAQResponse&_=' + new Date().getTime();
-            script.onerror = function() {
-                document.getElementById('faq-loading-msg').innerHTML = '<span style="color:red;">Connection Error.</span><br><button onclick="loadFAQs()" style="background:none; border:none; color:#1a2a44; text-decoration:underline; font-size:0.7rem; cursor:pointer;">Try Again</button>';
-            };
-            document.body.appendChild(script);
-        }
-
-        function renderFAQButtons() {
-            const lists = document.querySelectorAll('.faq-options-list');
-            const container = lists[lists.length - 1]; 
-            
-            if (!container) return;
-            if (weddingFAQs.length === 0) {
-                container.innerHTML = '<p style="font-size:0.75rem; color:#888;">No questions found.</p>';
-                return;
-            }
-
-            // Extract unique categories, defaulting to 'General' if left blank
-            const categories = [...new Set(weddingFAQs.map(item => item.category || "General"))];
-
-            let html = '';
-            if (categories.length > 1) {
-                // Centered divider for categories
-                html += `<div style="display: flex; align-items: center; width: 100%; margin: 10px 0 15px 0;">
-                            <div style="flex: 1; height: 1px; background: #ddd;"></div>
-                            <span style="padding: 0 10px; font-size: 0.65rem; font-weight: bold; color: #888; text-transform: uppercase; letter-spacing: 1.5px;">Select a Topic</span>
-                            <div style="flex: 1; height: 1px; background: #ddd;"></div>
-                         </div>`;
-                
-                // Show category folders
-                categories.forEach(cat => {
-                    html += `<button class="faq-choice-btn" style="border-color:#1a2a44; font-weight:bold; width:100%; margin-bottom:5px;" onclick="showCategoryQuestions('${cat}', this)">📁 ${cat}</button>`;
-                });
-            } else {
-                // Centered divider for questions
-                html += `<div style="display: flex; align-items: center; width: 100%; margin: 10px 0 15px 0;">
-                            <div style="flex: 1; height: 1px; background: #ddd;"></div>
-                            <span style="padding: 0 10px; font-size: 0.65rem; font-weight: bold; color: #888; text-transform: uppercase; letter-spacing: 1.5px;">Select a Question</span>
-                            <div style="flex: 1; height: 1px; background: #ddd;"></div>
-                         </div>`;
-                
-                weddingFAQs.forEach((item, index) => {
-                    html += `<button class="faq-choice-btn" style="width:100%; margin-bottom:5px;" onclick="sendGuestMessage(${index}, this)">${item.question}</button>`;
-                });
-            }
-            container.innerHTML = html;
-            
-            // Hide footer while selecting a category
-            document.getElementById('chat-footer').style.display = 'none';
-        }
-
-        window.showCategoryQuestions = function(category, btnElement) {
-            const container = btnElement.closest('.faq-options-list');
-            
-            // Centered divider for the selected category using your gold theme color
-            let html = `<div style="display: flex; align-items: center; width: 100%; margin: 10px 0 15px 0;">
-                            <div style="flex: 1; height: 1px; background: #d4af37;"></div>
-                            <span style="padding: 0 10px; font-size: 0.7rem; font-weight: 900; color: #1a2a44; text-transform: uppercase; letter-spacing: 1px;">📁 ${category}</span>
-                            <div style="flex: 1; height: 1px; background: #d4af37;"></div>
-                        </div>`;
-            
+        let html = '';
+        if (categories.length > 1) {
+            html += `<div style="display: flex; align-items: center; width: 100%; margin: 10px 0 15px 0;">
+                        <div style="flex: 1; height: 1px; background: #ddd;"></div>
+                        <span style="padding: 0 10px; font-size: 0.65rem; font-weight: bold; color: #888; text-transform: uppercase; letter-spacing: 1.5px;">Select a Topic</span>
+                        <div style="flex: 1; height: 1px; background: #ddd;"></div>
+                     </div>`;
+            categories.forEach(cat => {
+                html += `<button class="faq-choice-btn" style="border-color:#1a2a44; font-weight:bold; width:100%; margin-bottom:5px;" onclick="showCategoryQuestions('${cat}', this)">📁 ${cat}</button>`;
+            });
+        } else {
+            html += `<div style="display: flex; align-items: center; width: 100%; margin: 10px 0 15px 0;">
+                        <div style="flex: 1; height: 1px; background: #ddd;"></div>
+                        <span style="padding: 0 10px; font-size: 0.65rem; font-weight: bold; color: #888; text-transform: uppercase; letter-spacing: 1.5px;">Select a Question</span>
+                        <div style="flex: 1; height: 1px; background: #ddd;"></div>
+                     </div>`;
             weddingFAQs.forEach((item, index) => {
-                if ((item.category || "General") === category) {
-                    html += `<button class="faq-choice-btn" style="width:100%; margin-bottom:5px;" onclick="sendGuestMessage(${index}, this)">${item.question}</button>`;
-                }
+                html += `<button class="faq-choice-btn" style="width:100%; margin-bottom:5px;" onclick="sendGuestMessage(${index}, this)">${item.question}</button>`;
             });
-            container.innerHTML = html;
+        }
+        container.innerHTML = html;
+        document.getElementById('chat-footer').style.display = 'none';
+    }
 
-            // Show footer with the "Back to Categories" button
-            const footer = document.getElementById('chat-footer');
-            footer.innerHTML = `<button onclick="renderFAQButtons()" style="background: none; border: 1px solid #1a2a44; color: #1a2a44; padding: 6px 18px; border-radius: 20px; font-size: 0.75rem; cursor: pointer; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s;">← Back to Categories</button>`;
-            footer.style.display = 'block';
-        };
-
-        function sendGuestMessage(index, btnElement) {
-            const container = document.getElementById('conversation-container');
-            const footer = document.getElementById('chat-footer');
-            const selected = weddingFAQs[index];
-
-            // Hide the footer immediately when a question is clicked
-            footer.style.display = 'none';
-
-            if (btnElement) {
-                btnElement.closest('.faq-options-list').style.display = 'none';
+    window.showCategoryQuestions = function(category, btnElement) {
+        const container = btnElement.closest('.faq-options-list');
+        let html = `<div style="display: flex; align-items: center; width: 100%; margin: 10px 0 15px 0;">
+                        <div style="flex: 1; height: 1px; background: #d4af37;"></div>
+                        <span style="padding: 0 10px; font-size: 0.7rem; font-weight: 900; color: #1a2a44; text-transform: uppercase; letter-spacing: 1px;">📁 ${category}</span>
+                        <div style="flex: 1; height: 1px; background: #d4af37;"></div>
+                    </div>`;
+        weddingFAQs.forEach((item, index) => {
+            if ((item.category || "General") === category) {
+                html += `<button class="faq-choice-btn" style="width:100%; margin-bottom:5px;" onclick="sendGuestMessage(${index}, this)">${item.question}</button>`;
             }
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const guestName = urlParams.get('n') || "Guest"; 
-
-            const guestRow = document.createElement('div');
-            guestRow.className = 'msg-row guest-row';
-            guestRow.style.alignItems = 'flex-end';
-            guestRow.innerHTML = `<div class="msg-name">${guestName}</div><div class="msg guest">${selected.question}</div>`;
-            container.appendChild(guestRow);
-
-            setTimeout(() => container.scrollTop = container.scrollHeight, 50);
-
-            const typingRow = document.createElement('div');
-            typingRow.className = 'msg-row bot-row';
-            typingRow.id = 'typing-indicator';
-            typingRow.innerHTML = `<div class="msg-name">Harvy & Christine</div><div class="msg bot"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
-            container.appendChild(typingRow);
-            
-            setTimeout(() => container.scrollTop = container.scrollHeight, 50);
-
-            setTimeout(() => {
-                const indicator = document.getElementById('typing-indicator');
-                if(indicator) indicator.remove();
-
-                const botRow = document.createElement('div');
-                botRow.className = 'msg-row bot-row';
-                botRow.innerHTML = `<div class="msg-name">Harvy & Christine</div><div class="msg bot" style="text-align: left;">${selected.answer}</div>`;
-                container.appendChild(botRow);
-                
-                setTimeout(() => container.scrollTop = container.scrollHeight, 50);
-                
-                // Swap the footer button to "Ask Another Question" and show it
-                footer.innerHTML = `<button onclick="resetChat()" style="background: none; border: 1px solid #d4af37; color: #d4af37; padding: 6px 18px; border-radius: 20px; font-size: 0.75rem; cursor: pointer; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Ask Another Question</button>`;
-                footer.style.display = 'block';
-            }, 1200);
-        }
-
-        function resetChat() {
-            const container = document.getElementById('conversation-container');
-            document.getElementById('chat-footer').style.display = 'none';
-
-            const promptRow = document.createElement('div');
-            promptRow.className = 'msg-row bot-row';
-            promptRow.innerHTML = `<div class="msg-name">Harvy & Christine</div><div class="msg bot">Anything else you'd like to know?</div><div class="faq-options-list" style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 10px; width: 100%;"></div>`;
-            container.appendChild(promptRow);
-            
-            renderFAQButtons(); 
-            setTimeout(() => container.scrollTop = container.scrollHeight, 50);
-        }
-
-        // Force mobile hamburger menu to close after clicking a link
-        document.querySelectorAll('.navbar-nav .nav-link').forEach(function(link) {
-            link.addEventListener('click', function() {
-                var navbarCollapse = document.getElementById('navbarCollapse');
-                if (navbarCollapse.classList.contains('show')) {
-                    document.querySelector('.navbar-toggler').click();
-                }
-            });
         });
+        container.innerHTML = html;
+        const footer = document.getElementById('chat-footer');
+        footer.innerHTML = `<button onclick="renderFAQButtons()" style="background: none; border: 1px solid #1a2a44; color: #1a2a44; padding: 6px 18px; border-radius: 20px; font-size: 0.75rem; cursor: pointer; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s;">← Back to Categories</button>`;
+        footer.style.display = 'block';
+    };
+
+    function sendGuestMessage(index, btnElement) {
+        const container = document.getElementById('conversation-container');
+        const footer = document.getElementById('chat-footer');
+        const selected = weddingFAQs[index];
+        footer.style.display = 'none';
+
+        if (btnElement) {
+            btnElement.closest('.faq-options-list').style.display = 'none';
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const guestName = urlParams.get('n') || "Guest"; 
+
+        const guestRow = document.createElement('div');
+        guestRow.className = 'msg-row guest-row';
+        guestRow.style.alignItems = 'flex-end';
+        guestRow.innerHTML = `<div class="msg-name">${guestName}</div><div class="msg guest">${selected.question}</div>`;
+        container.appendChild(guestRow);
+        setTimeout(() => container.scrollTop = container.scrollHeight, 50);
+
+        const typingRow = document.createElement('div');
+        typingRow.className = 'msg-row bot-row';
+        typingRow.id = 'typing-indicator';
+        typingRow.innerHTML = `<div class="msg-name">Harvy & Christine</div><div class="msg bot"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
+        container.appendChild(typingRow);
+        setTimeout(() => container.scrollTop = container.scrollHeight, 50);
+
+        setTimeout(() => {
+            const indicator = document.getElementById('typing-indicator');
+            if(indicator) indicator.remove();
+
+            const botRow = document.createElement('div');
+            botRow.className = 'msg-row bot-row';
+            botRow.innerHTML = `<div class="msg-name">Harvy & Christine</div><div class="msg bot" style="text-align: left;">${selected.answer}</div>`;
+            container.appendChild(botRow);
+            setTimeout(() => container.scrollTop = container.scrollHeight, 50);
+            
+            footer.innerHTML = `<button onclick="resetChat()" style="background: none; border: 1px solid #d4af37; color: #d4af37; padding: 6px 18px; border-radius: 20px; font-size: 0.75rem; cursor: pointer; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Ask Another Question</button>`;
+            footer.style.display = 'block';
+        }, 1200);
+    }
+
+    function resetChat() {
+        const container = document.getElementById('conversation-container');
+        document.getElementById('chat-footer').style.display = 'none';
+
+        const promptRow = document.createElement('div');
+        promptRow.className = 'msg-row bot-row';
+        promptRow.innerHTML = `<div class="msg-name">Harvy & Christine</div><div class="msg bot">Anything else you'd like to know?</div><div class="faq-options-list" style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 10px; width: 100%;"></div>`;
+        container.appendChild(promptRow);
+        renderFAQButtons(); 
+        setTimeout(() => container.scrollTop = container.scrollHeight, 50);
+    }
+
+    // Force mobile hamburger menu to close after clicking a link
+    document.querySelectorAll('.navbar-nav .nav-link').forEach(function(link) {
+        link.addEventListener('click', function() {
+            var navbarCollapse = document.getElementById('navbarCollapse');
+            if (navbarCollapse.classList.contains('show')) {
+                document.querySelector('.navbar-toggler').click();
+            }
+        });
+    });
     </script>
     <script src="js/main.js"></script>
 </body>
