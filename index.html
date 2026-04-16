@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Wedding Times - H&C Edition</title>
+    <link href="img/favicon.ico" rel="icon">
     <style>
         :root {
             --navy: #001f3f;
@@ -540,7 +541,7 @@
                     
                     // 2. Set the Envelope Name from the Database!
                     if (display) {
-                        display.innerText = "Hi, " + data.name;
+                        display.innerText = "Hi, " + data.name + "!";
                     }
 
                     // 3. Set the envelope text based on database allowance
@@ -630,7 +631,7 @@
 
         setTimeout(() => { 
             window.location.href = buildURL("main"); 
-        }, 1800);
+        }, 2500);
     }
 </script>
 </body>

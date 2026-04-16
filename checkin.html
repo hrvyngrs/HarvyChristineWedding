@@ -577,58 +577,79 @@
         }
 
         window.updateAvailableSeats = function() {
-            const tableNum = document.getElementById('swal-table').value;
-            const seatSelect = document.getElementById('swal-seat');
-            seatSelect.disabled = false;
-            
-            const maxSeats = 12; 
-            const takenSeats = allGuests.filter(g => g.table == tableNum && g.seat && g.seat != 0 && g.seat != '-').map(g => parseInt(g.seat));
-            
-            let seatOptions = '<option value="" disabled selected>Select Available Seat</option>';
-            for(let i = 1; i <= maxSeats; i++) {
-                if(!takenSeats.includes(i)) {
-                    seatOptions += `<option value="${i}">Seat ${i}</option>`;
-                }
-            }
-            seatSelect.innerHTML = seatOptions;
-        };
-
-        function saveSeatAssignment(rowId, guestName, table, seat) {
-            Swal.fire({
-                title: 'Saving Assignment...',
-                allowOutsideClick: false,
-                didOpen: () => Swal.showLoading()
-            });
-            
-            const formData = new FormData();
-            formData.append('action', 'assignSeat');
-            formData.append('rowId', rowId);
-            formData.append('table', table);
-            formData.append('seat', seat);
-            
-            fetch(SCRIPT_URL, { method: 'POST', body: formData })
-                .then(res => res.json())
-                .then(data => {
-                    if(data.result === 'success') {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Seat Assigned Successfully',
-                            confirmButtonText: 'OK',
-                            confirmButtonColor: '#1a2a44'
-                        });
-                        
-                        const idx = allGuests.findIndex(g => g.rowId === rowId);
-                        if(idx !== -1) {
-                            allGuests[idx].table = table;
-                            allGuests[idx].seat = seat;
-                        }
-                        handleSearchInput();
-                    } else {
-                        Swal.fire('Error', data.error, 'error');
-                    }
-                })
-                .catch(() => Swal.fire('Error', 'Connection failed.', 'error'));
+    const tableNum = document.getElementById('swal-table').value;
+    const seatSelect = document.getElementById('swal-seat');
+    
+    if (!tableNum) return;
+    
+    seatSelect.disabled = false;
+    
+    // 1. Get all guests currently assigned to this table
+    const tableGuests = allGuests.filter(g => Number(g.table) === Number(tableNum));
+    
+    // 2. Identify which seats are already taken
+    const takenSeats = tableGuests
+        .filter(g => g.seat && g.seat != 0 && g.seat != '-')
+        .map(g => Number(g.seat));
+    
+    // 3. DYNAMIC LOGIC: Determine max seats based on the Floor Plan data in your Sheet
+    // It looks for the highest seat number already existing in your sheet for this table.
+    // If no seats are assigned yet, it defaults to 10 (you can change this default).
+    const maxSeatsInFloorPlan = takenSeats.length > 0 ? Math.max(...takenSeats) : 10;
+    
+    let seatOptions = '<option value="" disabled selected>Select Available Seat (Limit: ' + maxSeatsInFloorPlan + ')</option>';
+    
+    for(let i = 1; i <= maxSeatsInFloorPlan; i++) {
+        if(!takenSeats.includes(i)) {
+            seatOptions += `<option value="${i}">Seat ${i}</option>`;
+        } else {
+            // We show it but make it unselectable
+            seatOptions += `<option value="${i}" disabled>Seat ${i} (Occupied)</option>`;
         }
+    }
+    
+    seatSelect.innerHTML = seatOptions;
+};
+
+function saveSeatAssignment(rowId, guestName, table, seat) {
+    Swal.fire({
+        title: 'Saving Assignment...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+    });
+    
+    const formData = new FormData();
+    formData.append('action', 'assignSeat');
+    formData.append('rowId', rowId);
+    formData.append('table', table);
+    formData.append('seat', seat);
+    
+    fetch(SCRIPT_URL, { method: 'POST', body: formData })
+        .then(res => res.json())
+        .then(data => {
+            if(data.result === 'success') {
+                // IMPORTANT: Update the local 'allGuests' array so the 
+                // UI reflects the change immediately without a full refresh
+                const idx = allGuests.findIndex(g => Number(g.rowId) === Number(rowId));
+                if(idx !== -1) {
+                    allGuests[idx].table = table;
+                    allGuests[idx].seat = seat;
+                }
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Seat Assigned Successfully',
+                    text: `${guestName} is now at Table ${table}, Seat ${seat}`,
+                    confirmButtonColor: '#1a2a44'
+                });
+                
+                renderGuests(allGuests); // Refresh the list view
+            } else {
+                Swal.fire('Error', data.error, 'error');
+            }
+        })
+        .catch(() => Swal.fire('Error', 'Connection failed.', 'error'));
+}
 
         function checkInGuest(rowId, guestName) {
             Swal.fire({
