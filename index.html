@@ -384,8 +384,14 @@
             #flap::after { top: 55px; font-size: 40px; }
 
             #card-photo { margin-right: -130px; }
+            
+            /* ADDED: Fix expanded card overlap and prevent header from getting cut off by scaling down and adjusting placement */
+            #card-photo.expanded { transform: translate(25px, 10px) rotate(0deg) scale(1.05) !important; }
+            #card-news.expanded { transform: translate(-25px, 20px) rotate(0deg) scale(0.9) !important; }
+            
             #card-invite { width: 200px; min-height: 140px; bottom: -30px; margin-left: -100px; }
-            #card-invite.expanded { transform: translate(0, -150px) scale(1.65) !important; }
+            /* Adjusted translation to match the new lowered cards */
+            #card-invite.expanded { transform: translate(0, -120px) scale(1.3) !important; }
         }
     </style>
 </head>
@@ -460,7 +466,7 @@
                 </div>
 
                 <div class="card" id="card-invite" onclick="toggleCard(this)">
-                    <div id="guest-display" class="invite-text">Hi, Name</div>
+                    <div id="guest-display" class="invite-text">Hi, Guest</div>
                     <div id="allocation-box" class="seat-allocation">We can't wait to celebrate our special day with you!</div>
                     <button class="btn-enter-card" onclick="enterSite()">Enter Website</button>
                 </div>
@@ -493,27 +499,15 @@
     const urlParams = new URLSearchParams(window.location.search);
     const inviteId = urlParams.get('id');
 
-    function triggerHardBlock(title, message) {
-        document.body.innerHTML = `
-            <div style="height: 100vh; width: 100vw; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #001f3f; color: white; text-align: center; padding: 20px; font-family: 'Georgia', serif; box-sizing: border-box; margin: 0;">
-                <div style="border: 2px solid #d4af37; padding: 40px 20px; border-radius: 10px; background: rgba(255,255,255,0.05); max-width: 500px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-                    <div style="font-size: 40px; margin-bottom: 15px;">🔒</div>
-                    <h1 style="color: #d4af37; font-size: 2.2rem; margin: 0 0 15px 0; font-family: 'Times New Roman', serif; text-transform: uppercase;">${title}</h1>
-                    <p style="opacity: 0.9; line-height: 1.6; font-size: 0.95rem; margin: 0;">${message}</p>
-                </div>
-            </div>
-        `;
-    }
-
     document.addEventListener("DOMContentLoaded", () => {
-        if (!inviteId) {
-            triggerHardBlock("Access Denied", "You need a valid, unique invitation link to view this website.");
-            return;
-        }
-
         const display = document.getElementById('guest-display');
         const allocationBox = document.getElementById('allocation-box');
         const enterBtn = document.querySelector('.btn-enter-card');
+
+        // Allow access immediately if there is no inviteId
+        if (!inviteId) {
+            return;
+        }
 
         // Set a loading state for the name
         if (display) display.innerText = "Verifying Guest...";
@@ -531,20 +525,20 @@
                 return response.json();
             })
             .then(data => {
+                // Restore button functionality regardless of validation
+                if (enterBtn) {
+                    enterBtn.innerText = "Enter Website";
+                    enterBtn.style.pointerEvents = "auto";
+                    enterBtn.style.opacity = "1";
+                }
+
                 if (data && data.valid) {
-                    // 1. Allow entry
-                    if (enterBtn) {
-                        enterBtn.innerText = "Enter Website";
-                        enterBtn.style.pointerEvents = "auto";
-                        enterBtn.style.opacity = "1";
-                    }
-                    
-                    // 2. Set the Envelope Name from the Database!
+                    // Set the Envelope Name from the Database!
                     if (display) {
                         display.innerText = "Hi, " + data.name + "!";
                     }
 
-                    // 3. Set the envelope text based on database allowance
+                    // Set the envelope text based on database allowance
                     let allowance = parseInt(data.allowance) || 0;
                     if (allocationBox) {
                         if (allowance > 0) {
@@ -554,12 +548,19 @@
                         }
                     }
                 } else {
-                    triggerHardBlock("Link Expired", "This invitation link has already been used to RSVP, or is no longer valid.<br><br>Please contact Harvy or Christine.");
+                    // Invalid link, reset default text
+                    if (display) display.innerText = "Hi, Guest";
                 }
             })
             .catch(error => {
-                triggerHardBlock("System Error", "Could not connect to the database. Please check your internet connection.");
                 console.error("Verification Error:", error);
+                // System error, reset default text and button
+                if (display) display.innerText = "Hi, Guest";
+                if (enterBtn) {
+                    enterBtn.innerText = "Enter Website";
+                    enterBtn.style.pointerEvents = "auto";
+                    enterBtn.style.opacity = "1";
+                }
             });
     });
 
