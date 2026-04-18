@@ -18,6 +18,15 @@
             --invite-text: #001f3f;
         }
 
+        /* ADDED: Custom font loading for mobile compatibility */
+        @font-face {
+            font-family: 'Old English Text MT';
+            src: url('fonts/OLDENGL.TTF') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
         body {
             font-family: 'Times New Roman', Times, serif;
             margin: 0;
@@ -106,7 +115,6 @@
             transition: opacity 1.5s cubic-bezier(0.23, 1, 0.32, 1) 1.5s, transform 1.5s cubic-bezier(0.23, 1, 0.32, 1) 1.5s;
             white-space: nowrap;
             background: rgba(0, 31, 63, 0.4);
-            /* UPDATE: Added text shadow for readability */
             text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
         }
 
@@ -153,7 +161,6 @@
             position: absolute;
             top: 0; left: 0;
             width: 100%; 
-            /* UPDATE: Increased height from 205px to 230px for a larger tap target */
             height: 230px;
             background-color: var(--navy-dark);
             clip-path: polygon(0 0, 100% 0, 100% 48%, 50% 100%, 0 48%);
@@ -271,7 +278,6 @@
         .wedding-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 5px; }
         .side-block { display: flex; flex-direction: column; align-items: center; width: 50px; }
         .bold-silver-line { height: 2px; width: 100%; background: var(--silver); }
-        /* UPDATE: Added text shadow to silver text for better contrast */
         .side-text, .month, .year { font-size: 0.5rem; padding: 2px 0; font-weight: bold; color: var(--silver-bright); text-shadow: 1px 1px 2px rgba(0,0,0,0.8); }
         
         .center-stack { display: flex; flex-direction: column; align-items: center; padding: 0 5px; border-left: 1px solid var(--silver); border-right: 1px solid var(--silver); }
@@ -385,12 +391,10 @@
 
             #card-photo { margin-right: -130px; }
             
-            /* ADDED: Fix expanded card overlap and prevent header from getting cut off by scaling down and adjusting placement */
             #card-photo.expanded { transform: translate(25px, 10px) rotate(0deg) scale(1.05) !important; }
             #card-news.expanded { transform: translate(-25px, 20px) rotate(0deg) scale(0.9) !important; }
             
             #card-invite { width: 200px; min-height: 140px; bottom: -30px; margin-left: -100px; }
-            /* Adjusted translation to match the new lowered cards */
             #card-invite.expanded { transform: translate(0, -120px) scale(1.3) !important; }
         }
     </style>
