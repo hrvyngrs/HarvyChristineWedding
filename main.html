@@ -21,6 +21,45 @@
     <link href="css/style.css" rel="stylesheet">
 
     <style>
+/* ELEGANT TURNING LOOP LOGO */
+.nav-logo-custom {
+    height: 65px;
+    width: auto;
+    display: block;
+    perspective: 1000px; /* Gives depth to the rotation */
+    
+    /* Animation sequence: Entrance first, then the Infinite Loop */
+    animation: 
+        logoReveal 2s ease-out forwards, 
+        turningLoop 6s infinite ease-in-out 2s; 
+}
+
+/* Initial focus/fade entrance */
+@keyframes logoReveal {
+    0% { opacity: 0; transform: scale(0.8) rotateY(-20deg); filter: blur(10px); }
+    100% { opacity: 1; transform: scale(1) rotateY(0deg); filter: blur(0); }
+}
+
+/* Continuous "Turning" loop with golden glow */
+@keyframes turningLoop {
+    0% { 
+        transform: rotateY(0deg); 
+        filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.2)); 
+    }
+    50% { 
+        transform: rotateY(15deg); /* Subtle 3D turn */
+        filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6)) brightness(1.1); 
+    }
+    100% { 
+        transform: rotateY(0deg); 
+        filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.2)); 
+    }
+}
+
+@media (max-width: 576px) {
+    .nav-logo-custom { height: 48px; }
+}
+
         /* =========================================
            GLOBAL & FIXES
            ========================================= */
@@ -512,10 +551,8 @@
 
 <nav class="navbar fixed-top shadow-sm navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-lg-5">
     <a href="index" class="navbar-brand d-block d-lg-none">
-        <h1 class="font-secondary text-white mb-n2 glitter-container">
-            <span class="glitter-text">H & C</span>
-        </h1>
-    </a>
+    <img src="img/logo.png" alt="Wedding Logo" class="nav-logo-custom">
+</a>
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -527,10 +564,8 @@
             <a href="#gallery" class="nav-item nav-link">Gallery</a>
         </div>
         <a href="index" class="navbar-brand mx-5 d-none d-lg-block">
-            <h1 class="font-secondary text-white mb-n2 glitter-container">
-                <span class="glitter-text">H & C</span>
-            </h1>
-        </a>
+    <img src="img/logo.png" alt="Wedding Logo" class="nav-logo-custom">
+</a>
         <div class="navbar-nav mr-auto py-0">
             <a href="#event" class="nav-item nav-link">Event Info</a>
             <a href="#entourage" class="nav-item nav-link">Entourage</a>
@@ -1517,7 +1552,38 @@
     </div>
 </div>
 
-<i class="fa fa-2x fa-angle-down text-white scroll-to-bottom"></i>
+<style>
+    @keyframes smoothFloat {
+        0% { transform: translateX(-50%) translateY(0); }
+        50% { transform: translateX(-50%) translateY(-10px); }
+        100% { transform: translateX(-50%) translateY(0); }
+    }
+    /* Added transition for a smooth disappear effect */
+    #scroll-indicator {
+        transition: opacity 0.5s ease, visibility 0.5s;
+    }
+</style>
+
+<div id="scroll-indicator" style="position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; align-items: center; cursor: pointer; animation: smoothFloat 3s cubic-bezier(0.45, 0, 0.55, 1) infinite;" onclick="window.scrollTo({top: window.innerHeight, behavior: 'smooth'});">
+    <span style="white-space: nowrap; color: #ffffff; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 2px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); font-weight: bold;">
+        Scroll to read more
+    </span>
+    <i class="fa fa-2x fa-angle-down text-white" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.8);"></i>
+</div>
+
+<script>
+    window.addEventListener('scroll', function() {
+        const indicator = document.getElementById('scroll-indicator');
+        // If user scrolls down more than 100 pixels, hide it
+        if (window.pageYOffset > 100) {
+            indicator.style.opacity = "0";
+            indicator.style.visibility = "hidden";
+        } else {
+            indicator.style.opacity = "1";
+            indicator.style.visibility = "visible";
+        }
+    });
+</script>
 <a href="#" class="btn btn-lg btn-outline-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

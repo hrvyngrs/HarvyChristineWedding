@@ -168,21 +168,24 @@
             transform-origin: top;
             transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.6s, z-index 0.1s 0.6s; 
             cursor: pointer;
-        }
-
-        #flap::after {
-            content: "❈"; 
-            position: absolute;
-            top: 60px; 
-            left: 50%;
-            transform: translateX(-50%);
-            color: #D4AF37;
-            font-size: 50px;
             display: flex;
             justify-content: center;
-            align-items: center;
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+            align-items: flex-start;
+        }
+
+        .flap-logo {
+            width: 65px;
+            height: auto;
+            margin-top: 55px; 
+            z-index: 450; 
+            position: relative;
             pointer-events: none;
+            transition: opacity 0.3s;
+            filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.4));
+        }
+
+        #envelope-wrapper.open .flap-logo {
+            opacity: 0;
         }
 
         .envelope-front-v {
@@ -385,15 +388,11 @@
 
         @media (max-width: 500px) {
             #envelope-wrapper { width: 320px; height: 260px; } 
-            
             #flap { height: 190px; } 
-            #flap::after { top: 55px; font-size: 40px; }
-
+            .flap-logo { margin-top: 50px; width: 50px; }
             #card-photo { margin-right: -130px; }
-            
             #card-photo.expanded { transform: translate(25px, 10px) rotate(0deg) scale(1.05) !important; }
             #card-news.expanded { transform: translate(-25px, 20px) rotate(0deg) scale(0.9) !important; }
-            
             #card-invite { width: 200px; min-height: 140px; bottom: -30px; margin-left: -100px; }
             #card-invite.expanded { transform: translate(0, -120px) scale(1.3) !important; }
         }
@@ -419,6 +418,7 @@
                     </defs>
                     <polygon points="0,0 100,0 100,48 50,100 0,48" stroke="url(#gold-foil-flap)" stroke-width="8" fill="none" vector-effect="non-scaling-stroke"/>
                 </svg>
+                <img src="img/logo.png" alt="Logo" class="flap-logo">
             </div>
             <div class="envelope-back"></div>
             
@@ -508,12 +508,8 @@
         const allocationBox = document.getElementById('allocation-box');
         const enterBtn = document.querySelector('.btn-enter-card');
 
-        // Allow access immediately if there is no inviteId
-        if (!inviteId) {
-            return;
-        }
+        if (!inviteId) return;
 
-        // Set a loading state for the name
         if (display) display.innerText = "Verifying Guest...";
 
         if (enterBtn) {
@@ -522,14 +518,12 @@
             enterBtn.style.opacity = "0.7";
         }
 
-        // Fetch validation, NAME, and ALLOWANCE from Google Apps Script
         fetch(`${SCRIPT_URL}?action=verifyInvite&id=${inviteId}`)
             .then(response => {
                 if (!response.ok) throw new Error("Network response was not ok");
                 return response.json();
             })
             .then(data => {
-                // Restore button functionality regardless of validation
                 if (enterBtn) {
                     enterBtn.innerText = "Enter Website";
                     enterBtn.style.pointerEvents = "auto";
@@ -537,12 +531,7 @@
                 }
 
                 if (data && data.valid) {
-                    // Set the Envelope Name from the Database!
-                    if (display) {
-                        display.innerText = "Hi, " + data.name + "!";
-                    }
-
-                    // Set the envelope text based on database allowance
+                    if (display) display.innerText = "Hi, " + data.name + "!";
                     let allowance = parseInt(data.allowance) || 0;
                     if (allocationBox) {
                         if (allowance > 0) {
@@ -552,13 +541,11 @@
                         }
                     }
                 } else {
-                    // Invalid link, reset default text
                     if (display) display.innerText = "Hi, Guest";
                 }
             })
             .catch(error => {
                 console.error("Verification Error:", error);
-                // System error, reset default text and button
                 if (display) display.innerText = "Hi, Guest";
                 if (enterBtn) {
                     enterBtn.innerText = "Enter Website";
@@ -568,7 +555,6 @@
             });
     });
 
-    // --- Envelope Animations ---
     function createHearts() {
         const scene = document.querySelector('.scene');
         for (let i = 0; i < 20; i++) {
